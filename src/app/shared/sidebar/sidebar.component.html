@@ -1,0 +1,72 @@
+<div class="sidebar overflow-auto">
+    <ul class="p-0 menu">
+        <li>
+            <h6 class="text-uppercase roboto heading link-color">process output</h6>
+        </li>
+        <li class="menu-links">
+            <a routerLink="/viewDir/currentOutput" class="nunito currentOutput">
+                <img src="assets/images/sidenav/current_output.webp" alt="" width="30px" class="coutput_img position-relative"> Current output
+            </a>
+        </li>
+    </ul>
+
+    <div style="margin-bottom: 10px;">
+        <!-- <button class="btn-primary" *ngIf="!featureListView" (click)="showFeatures()">Show features</button> -->
+        <!-- <button class="btn-primary" (click)="showFolder()">Show folders</button> -->
+    </div>
+
+    <!-- <div class="text-center">
+        ------------------&nbsp;
+        <i class="fas fa-folder-plus "></i>&nbsp;----&nbsp;<i class="fas fa-folder-open"></i> 
+    </div> -->
+
+    <div class="text-center mb-2">
+        ---------
+        <i class="fas fa-folder-plus " (click)="showFeatures()"></i>
+        <i class="fas fa-folder-open ms-3" (click)="showFolder()"></i>
+        --------- 
+    </div>
+
+    <ul class="p-0 menu" *ngIf="!treeView">
+        <li>
+            <h6 class="text-uppercase roboto heading link-color">tables</h6>
+        </li>
+        <li class="mb-3 menu-links">
+            <a routerLink="/viewDir/statusTable" class="nunito" (click)="removeData()">
+                <img src="assets/images/sidenav/status_table.png" alt="" width="30px" class="coutput_img position-relative"> Activity log
+            </a>
+        </li>
+        <li class="menu-links">
+            <a routerLink="/viewDir/usageTable" class="nunito">
+            <img src="assets/images/sidenav/usage.png" alt="" width="23px" class="usage_img position-relative"> Usage details
+            </a>
+        </li>
+    </ul>
+
+    <div *ngIf="treeView && !folderTreeView && !featureListView" class="overflow-auto" style="height: 70vh;">
+        <h6 class="text-uppercase roboto featureAll link-color" *ngIf="hideCollasibleMenu()">Folder List</h6>
+        <app-treeview></app-treeview>
+
+        <!-- <mat-spinner [diameter]="30" *ngIf="nodeItems.length === 0"></mat-spinner>
+        <tree-ngx [nodeItems]="nodeItems" #firstTreeRefS>
+            <ng-template #nodeNameTemplate let-node="node" let-context="context" let-i="index">
+                <i class="fas fa-folder"></i>
+                <span [class.active]="context.active" (click)="selectedTreeFolder(node,context)">{{node.name + "("+node.children.length+")"}}</span>
+                <i (click)="context.delete()" class="clickable treeIcon material-icons">delete</i>
+            </ng-template>
+        </tree-ngx> -->
+    </div>
+
+    <div *ngIf="!treeView && folderTreeView && !featureListView" class="overflow-auto" style="height: 42vh;">
+        <h6 class="text-uppercase roboto featureAll link-color" *ngIf="hideCollasibleMenu()">Folder List</h6>
+        <app-folder-treeview></app-folder-treeview>
+    </div>
+
+    <div *ngIf="!treeView && !folderTreeView && featureListView">
+        <h6 class="text-uppercase roboto featureAll link-color" *ngIf="hideCollasibleMenu()">Feature List</h6>
+        <ul class="p-0 collassible-menu" *ngIf="hideCollasibleMenu() && !treeView" style="overflow: auto;height: 40vh;">
+            <app-collapsible-menu *ngFor="let data of featureList" [featureData]="data" (onChangeCheckbox)="onCheckboxChanged($event)"></app-collapsible-menu>
+        </ul>
+    </div>
+    
+</div>

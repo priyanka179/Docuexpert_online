@@ -1,0 +1,57 @@
+<div class="topnav-wrapper shadow bg-white sticky-top">
+    <ng-content></ng-content>
+    <div class="topnav d-flex justify-content-between align-items-center container-lg wide-xl">
+        <div class="logo d-flex align-items-center">
+            <!-- <img src="assets/images/topnav/logo-dark.png" alt="" width="117px"> -->
+            <div routerLink="/viewDir/myfiles" class="d-flex align-items-center">
+                <img src="assets/images/logo/stat-logo-crop.png" alt="" width="40px">
+                <span class="logo-txt">DocuExpert</span>
+            </div>
+            <ul class="leftmenu d-flex list-unstyled">
+                <li><a routerLink="/viewDir/myfiles" routerLinkActive="active" (click)="myFilesClearPath()"><img src="assets/images/topnav/myfiles.png" alt="" width="20px" class="topnav_links_option"> My files</a></li>
+                <li><a routerLink="/viewDir/output-folder" routerLinkActive="active" (click)="outputFolderClearPath()"><img src="assets/images/topnav/output.jpg" alt="" width="30px" class="topnav_links_option"> Output folder</a></li>
+                <li><a routerLink="/viewDir/request-folder" routerLinkActive="active" (click)="requestFolderClearPath()"><img src="assets/images/topnav/request.png" alt="" width="30px" class="topnav_links_option"> Request folder</a></li>
+                <li><a routerLink="/viewDir/error-folder" routerLinkActive="active" (click)="errorFolderClearPath()"><img src="assets/images/topnav/error.png" alt="" width="30px" class="topnav_links_option"> Error folder</a></li>
+                <li><a routerLink="/viewDir/subscriptions" routerLinkActive="active"><img src="assets/images/topnav/pricing.webp" alt="" width="30px" class="topnav_links_option"> Plans & prices</a></li>
+            </ul>
+        </div>
+        <div class="spinner" *ngIf="showBuildBibleDownload">
+            <span>Download is in progress </span>
+            <div class="bounce1"></div>
+            <div class="bounce2"></div>
+            <div class="bounce3"></div>
+          </div>
+        <div class="rightmenu d-flex align-items-center">
+            <!-- <div class="notification d-flex justify-content-center align-items-center shadow-sm"><i class="far fa-bell"></i></div> -->
+            <div class="dropdown">
+                <div class="user d-flex justify-content-center align-items-center text-white text-uppercase shadow-sm roboto"
+                    id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                    {{getUsername() && getUsername().charAt(0)}}
+                </div>
+                <ul class="dropdown-menu custom-user-dropdown p-0 " aria-labelledby="dropdownMenuButton1">
+                    <li class="heading">
+                        <div class="dropdown-header d-flex justify-content-between align-items-center">
+                            <div class="d-flex">
+                                <div class="user-avatar text-uppercase">{{getUsername() && getUsername().substring(0, 2)}}</div>
+                                <div class="userdetails">
+                                    <h6 class="mb-1 text-capitalize">{{getUsername() && getUsername()}}</h6>
+                                    <small class="mt-0">{{getEmailId()}}</small>
+                                </div>
+                            </div>
+                            <div class="success-icon">
+                                <!-- <i class="fas fa-cog"></i> -->
+                                <i class="fas fa-check text-success f-15"></i>
+                            </div>
+                        </div>
+                    </li>
+                    <!-- <li><a class="dropdown-item d-flex align-items-center mt-2" routerLink="/viewDir/usageTable"><i class="fas fa-table f-18"></i>Usage details</a></li> -->
+                    <li><a class="dropdown-item mb-2" routerLink="/viewDir/statusTable"><i class="fas fa-chart-line f-18"></i>Status table</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item mb-2" href="javascript:void(0)" (click)="logout()"><i class="fas fa-sign-out-alt f-18"></i>Log out</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- <i class="far fa-user"></i> -->

@@ -1,0 +1,93 @@
+.row {
+    height: 100vh;
+    overflow: hidden;
+}
+.left-content {
+    background-color: #434bdf;
+}
+.logo {
+    img {
+        margin-right: 10px;
+    }
+    top: 10px;
+    right: 15px;
+}
+.registration-form {
+    width: 70%;
+    font-family: "Work Sans", sans-serif;
+    h3 {
+        font-size: 18px;
+        font-weight: 500;
+    }
+    .form-control {
+        margin-bottom: 0px;
+    }
+    .formseparator {
+        margin-bottom: 18px;
+    }
+    .form-check input {
+        width: 20px;
+        height: 20px;
+        border: 1px solid #d2d8dd;
+    }
+    .form-check-label {
+        position: relative;
+        top: 2px;
+        margin-left: 10px;
+        font-size: 0.875rem;
+    }
+    .separator {
+        border-top: 2px solid #ededed;
+        margin-top: 25px;
+    }
+    .forward {
+        border: none;
+        color: #fff;
+        text-decoration: none;
+        transition: background 0.5s ease;
+        display: inline-block;
+        cursor: pointer;
+        outline: 0;
+        text-align: center;
+        background: #434bdf;
+        position: relative;
+        font-size: 14px;
+        font-size: 0.875rem;
+        font-weight: 600;
+        border-radius: 3px;
+        line-height: 1;
+        padding: 12px 30px;
+        margin-bottom: 10px;
+        &:hover {
+            background: #d80075;
+            color: #fff;
+        }
+    }
+    .haveacc {
+        position: relative;
+        top: 3px;
+    }
+    .signin {
+        margin-left: 5px;
+    }
+    .error {
+        border-color: #dc3545 !important;
+    }
+    .error + .form-check-label {
+        color: #dc3545 !important;
+        a {
+            color: #dc3545;
+        }
+    }
+    .form-check .error::after {
+        content: '';
+            width: 18px;
+            height: 18px;
+            background-image: url("/assets/images/auth/invalid.svg");
+            background-position: center center;
+            background-size: cover;
+            position: absolute;
+            top: 5px;
+            right: 0;
+    }
+}

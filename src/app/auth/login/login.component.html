@@ -1,0 +1,61 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-7 p-0 left-content d-flex justify-content-center align-content-center">
+            <app-left-banner
+                style="display: flex;justify-content: center;align-items: center;background: linear-gradient(to bottom,transparent,rgba(0,0,0,.5));">
+            </app-left-banner>
+        </div>
+        <div class="col-lg-5 d-flex justify-content-center align-items-center position-relative login-form">
+            <div class="card">
+                <div class="card-body">
+                    <div class="logo align-items-center">
+                        <a href="https://statvalu.com/" target="_blank">
+                            <img src="https://statvalu.com/wp-content/uploads//2020/09/Statvalu-logo.svg" width="200px"
+                                alt="">
+                        </a>
+                    </div>
+
+                    <div class="text-center">
+                        <h5>Sign in</h5>
+                        <p class="mb-5">Sign in using your email account</p>
+                    </div>
+                    <form class="registration-form" [formGroup]="loginForm">
+                        <input type="email" formControlName="email" class="form-control" placeholder="Email"
+                            pattern="^[^\s@]+@[^\s@]+\.[^\s@]{2,}$"
+                            [class.is-invalid]="loginForm.get('email')?.errors && loginForm.get('email')?.touched">
+                        <div class="position-relative">
+                            <input [type]="showPassword ? 'text':'password'" formControlName="password"
+                                class="form-control" placeholder="Password"
+                                [class.is-invalid]="loginForm.get('password')?.errors && loginForm.get('password')?.touched">
+                            <i class="fas fa-eye-slash position-absolute eye cp"
+                                *ngIf="!showPassword && !(loginForm.get('password')?.errors && loginForm.get('password')?.touched)"
+                                (click)="showPassword = true"></i>
+                            <i class="fas fa-eye position-absolute eye cp"
+                                *ngIf="showPassword && !(loginForm.get('password')?.errors && loginForm.get('password')?.touched)"
+                                (click)="showPassword = false"></i>
+                        </div>
+                        <div class="invalid-feedback mb-0">
+                            Please enter valid credentials.
+                        </div>
+                        <!-- <div class="separator mb-20"></div> -->
+                        
+                        <div class="d-flex justify-content-between align-items-center">
+                            <button type="submit" name="forward" class="forward w-100" (click)="login()">Login</button>
+                        </div>
+                        <div class="text-end mt-1">
+                            <!-- <small class="text-danger"><a routerLink="/auth/reset-password">Reset password</a></small> -->
+                            <small routerLink="/auth/reset-password"><a href="javascript:void(0)"
+                                    class="text-danger nunito">Forgot password?</a></small>
+                        </div>
+                        <div class="d-flex justify-content-center donthaveacc mt-3">
+                            <p class="mb-1">Don't have an account?</p>
+                            <a routerLink="/auth/register" class="signin">Signup</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</div>

@@ -1,0 +1,189 @@
+<div class="container-fluid overflow-hidden"  *ngIf="feature !== 'Delivery Bible'">
+    <div class="pt-2 pb-3 d-flex justify-content-between align-items-center">
+        <div class="d-flex align-items-center" *ngIf="!emptyData && !error">
+            <div class="form-check form-switch mr-6">
+                <input class="form-check-input shadow-none cp" type="checkbox" id="flexSwitchCheckDefault" [(ngModel)]="switchViewValue" (change)="setView()">
+                <label class="form-check-label roboto cp" for="flexSwitchCheckDefault">{{viewName}}</label>
+            </div>
+            <div *ngIf="feature === 'Redact Personal Information'">
+                <div class="md-radio md-radio-inline m-0">
+                    <input id="4" type="radio" name="Highlight" value="Highlight" [(ngModel)]="redactInfoViewType">
+                    <label for="4">Highlight</label>
+                  </div>
+                  <div class="md-radio md-radio-inline m-0">
+                    <input id="5" type="radio" name="Redact" value="Redact" [(ngModel)]="redactInfoViewType">
+                    <label for="5">Redact</label>
+                  </div>
+                  <div class="md-radio md-radio-inline m-0">
+                    <input id="6" type="radio" name="Juxtaposed" value="Juxtaposed" [(ngModel)]="redactInfoViewType">
+                    <label for="6">Juxtaposed</label>
+                  </div>
+            </div>
+            <div class="form-check form-switch mr-6" *ngIf="!showTableView && showPdfCsvSwitch">
+                <input class="form-check-input shadow-none cp" type="checkbox" id="flexSwitchCheckDefault2" [(ngModel)]="hideCsv" [disabled]="hidePdf">
+                <label class="form-check-label roboto cp" for="flexSwitchCheckDefault2">Hide Csv</label>
+            </div>
+            <div class="form-check form-switch mr-6" *ngIf="!showTableView && showPdfCsvSwitch">
+                <input class="form-check-input shadow-none cp" type="checkbox" id="flexSwitchCheckDefault4" [(ngModel)]="hidePdf" [disabled]="hideCsv">
+                <label class="form-check-label roboto cp" for="flexSwitchCheckDefault4">Hide Pdf</label>
+            </div>
+            <div class="form-check form-switch mr-6" *ngIf="!showTableView && show_C_NC_Switch">
+                <input class="form-check-input shadow-none cp" type="checkbox" id="flexSwitchCheckDefault6" [(ngModel)]="cversion" (change)="setNCMatchedUrl()">
+                <label class="form-check-label roboto cp" for="flexSwitchCheckDefault6">{{cversion ? 'C version':'NC version'}}</label>
+            </div>
+            <div *ngIf="(feature === 'Color Detection' || this.feature === 'Language Detection') && !cversion && !showTableView" class="mr-6 cp"><p class="mb-0" (click)="canvas.showRightCanvas = true;canvas.title = 'Matched Resultes'"><i class="fas fa-info-circle text-primary"></i> <span class="matchedresults">matched results</span></p></div>
+            <div class="d-flex align-items-center pagination">
+                <div>
+                    <p class="found-text mb-0" style="font-size: 15px;margin-right: 20px;top: -1px;">{{browsable_list_size}} Records Found</p>
+                </div>
+                <div class="d-flex align-items-center">
+                    <div>
+                        <p class="text-nowrap pagination-text mb-0" style="top: -2px;">{{currIndex}} of {{browsable_list_size}}</p>
+                    </div>
+                    <div class="d-flex pagination-icon position-relative" style="top: -2px;">
+                        <i class="fas fa-chevron-left cp" (click)="prevPage()" [class.fa-disabled]="currIndex === 1"></i>
+                        <i class="fas fa-chevron-right cp" (click)="nextPage()" [class.fa-disabled]="currIndex === browsable_list_size"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div></div>
+        <div class="prevLinks nunito">
+        <button class="btn-primary" routerLink="/viewDir/myfiles">My Files</button>
+        </div>
+    </div>
+    <div class="row vh-90 flex-nowrap" *ngIf="!showTableView && !emptyData && !error && (feature !== 'Redact Personal Information') && !hideViewFeatureList.includes(feature)">
+        <div class="transit" [ngClass]="hideCsv ? 'col-lg-12' : hidePdf ? 'col d-none' : avionicsPdfCount === 1 ? 'col-lg-6':'col-lg-7'">
+            <!-- <object [data]="cversion ? pdf_C_url : pdf_NC_url" width="100%" height="100%" style="position: relative;z-index: 1;" *ngIf="pdf_C_url">
+                <embed [src]="cversion ? pdf_C_url : pdf_NC_url" width="100%" height="100%" />
+            </object> -->
+            <iframe [src]="cversion ? pdf_C_url : pdf_NC_url" width="100%" height="100%" frameborder="0" style="position: relative;z-index: 1;" *ngIf="pdf_C_url"></iframe>
+        </div>
+        <div class="transit" [ngClass]="hideCsv ? 'col d-none' : hidePdf ? 'col-lg-12' : avionicsPdfCount === 1 ? 'col-lg-6':'col-lg-5'">
+            <div class="d-flex" *ngIf="feature === 'Avionics listing'">
+                <div class="form-check" style="margin-right: 20px;margin-bottom: 10px;">
+                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" (change)="showAvionics(formcheck1.checked,formcheck2.checked)" #formcheck1>
+                    <label class="form-check-label" for="flexCheckDefault">
+                        Occm
+                    </label>
+                </div>
+            
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault24" (change)="showAvionics(formcheck1.checked,formcheck2.checked)" #formcheck2>
+                    <label class="form-check-label" for="flexCheckDefault24">
+                        Avionics File
+                    </label>
+                </div>
+            </div>
+            <div class="table-responsive" *ngIf="avionicsPdfCount !== 1" style="width: fit-content;min-width: 500px;max-width: 98vw;">
+                <table class="table table-bordered csvTable roboto table-striped bg-white">
+                    <tbody>
+                        <tr *ngFor="let data of csvData">
+                            <ng-container *ngFor="let cell of data;let i = index">
+                                <td class="text-nowrap" *ngIf="checkCsvEmptyData(data,cell)" [ngClass]="(cell === '1')&&(i==4 || i==11) ? 'bg-success':cell==='0'?'bg-danger':''">
+                                    <div class="d-flex" [class.url]="isUrl(cell)" (click)="isUrl(cell) && redirectToDir(cell)">
+                                        {{cell}} 
+                                    </div>
+                                </td>
+                            </ng-container>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <iframe [src]="cversion ? pdf_C_url : pdf_NC_url" width="100%" height="100%" frameborder="0" style="position: relative;z-index: 1;" *ngIf="pdf_C_url && avionicsPdfCount === 1"></iframe>
+        </div>
+    </div>
+
+    <div class="row vh-90 flex-nowrap" *ngIf="!showTableView && !emptyData && !error && (feature === 'Redact Personal Information') && !hideViewFeatureList.includes(feature)">
+        <div class="col-12" *ngIf="redactInfoViewType === 'Highlight'">
+            <iframe [src]="cversion ? highlight_pdf_C_url : highlight_pdf_NC_url" width="100%" height="100%" frameborder="0" style="position: relative;z-index: 1;" *ngIf="highlight_pdf_C_url"></iframe>
+        </div>
+
+        <div class="col-12" *ngIf="redactInfoViewType === 'Redact'">
+            <iframe [src]="cversion ? redact_pdf_C_url : redact_pdf_NC_url" width="100%" height="100%" frameborder="0" style="position: relative;z-index: 1;" *ngIf="redact_pdf_C_url"></iframe>
+        </div>
+
+        <div class="h-100" *ngIf="redactInfoViewType === 'Juxtaposed'">
+            <div class="row h-100">
+                <div class="col-6">
+                    <iframe [src]="cversion ? highlight_pdf_C_url : highlight_pdf_NC_url" width="100%" height="100%" frameborder="0" style="position: relative;z-index: 1;" *ngIf="highlight_pdf_C_url"></iframe>
+                </div>
+        
+                <div class="col-6">
+                    <iframe [src]="cversion ? redact_pdf_C_url : redact_pdf_NC_url" width="100%" height="100%" frameborder="0" style="position: relative;z-index: 1;" *ngIf="redact_pdf_C_url"></iframe>
+                </div>
+            </div>
+            </div>
+    </div>
+
+    <div class="vh-90 d-flex justify-content-center align-content-center" *ngIf="!showTableView && !emptyData && hideViewFeatureList.includes(feature)">
+        <h4 class="position-relative mplus" style="height: fit-content;top: 40%;">Please check Table view to see Details.</h4>
+    </div>
+
+
+    <div class="row vh-90" *ngIf="showTableView">
+        <div class="col-lg-12">
+            <div class="table-responsive w-100 overflow-auto table-wrapper" style="max-height: 90vh;">
+                <table class="table table-borderless roboto bg-white">
+                    <thead>
+                        <tr>
+                            <th scope="col">Sno</th>
+                            <th scope="col">Feature</th>
+                            <th scope="col">Input Path</th>
+                            <th scope="col">Output Path</th> 
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let data of tableData;let i = index">
+                            <td style="width: 10px;">{{i+1}}</td>
+                            <td>{{data.feature}}</td>
+                            <td (click)="_common.redirectToDir(data['Input Path'],'input')" class="url">{{data['Input Path']}}</td>
+                            <td (click)="redirectUser(data['Output Path'])" class="url">{{data['Output Path']}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="emptydata" *ngIf="emptyData">
+        <div id="notfound">
+            <div class="notfound">
+                <div class="notfound-404">
+                    <h1>:(</h1>
+                </div>
+                <h2>404 - Data not found</h2>
+                <p>It's Looking Like You haven't processed any feature yet please process one feature to continue.</p>
+                <a routerLink="/viewDir/myfiles">my files</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="error" *ngIf="error && !showTableView && (browsable_list_size === 0)">
+        <div id="notfound">
+            <div class="notfound">
+                <div class="notfound-404">
+                    <h1>:(</h1>
+                </div>
+                <h2>504 - An Error occured</h2>
+                <p>An Error occured while processing feature please check Error Folder For more details or click on check error to show table view.</p>
+                <a class="cp" (click)="showTableView=true;">check error</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<app-build-delivery-bible *ngIf="feature === 'Delivery Bible' && bdbResult" [path]="bdbPath"></app-build-delivery-bible>
+
+
+<!-- ==========================================Show Right Sidebar=============================================== -->
+<app-off-canvas #canvas>
+    <div *ngIf="(feature === 'Color Detection' || this.feature === 'Language Detection') && !cversion">
+        <div class="md-radio mb-2 m-0" *ngFor="let data of matched_Color_Lang_List;let i = index;">
+            <input [id]="'matched'+i" type="radio" [value]="data" [(ngModel)]="currentMatched_Color_lang" (change)="setNCMatchedUrl(data)">
+            <label [for]="'matched'+i">{{data}}</label>
+          </div>
+    </div>
+</app-off-canvas>
+<!-- ==========================================Show Right Sidebar=============================================== -->

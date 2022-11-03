@@ -1,0 +1,41 @@
+.example-tree-progress-bar {
+  margin-left: 30px;
+}
+
+#aria-level {
+  padding-left: 20px;
+}
+
+.fa-folder {
+  color: #ffb32c;
+  margin-right: 10px;
+  position: relative;
+  top: 1px;
+}
+
+.fa-file {
+  color: #ffb32c;
+  margin-right: 10px;
+  position: relative;
+  top: 1px;
+}
+
+.mat-tree {
+  background: #c0c0c0 ;
+}
+
+.mat-tree-node {
+  min-height: 25px;
+}
+
+.folder-icon{
+  color: #ffb32c;
+  position: relative;
+  font-size: 20px;
+  top: 2px;
+}
+
+.mat-tree-node:hover{
+  background-color: #a7a9ad;
+}
+

@@ -1,0 +1,2014 @@
+<div class="d-flex justify-content-between align-items-center overview-wrapper mb-3">
+  <div>
+    <!-- <h3 class="page-title nunito text-capitalize">{{selectedFeature === '' ? '': selectedFeature}}</h3> -->
+    <span (click)="_common.$toggleSidebar.next('');" class="sidebar-toggle bg-white shadow-sm p-1 cp"><i
+        class="fas fa-bars"></i></span>
+  </div>
+
+
+
+  <div class="d-flex align-items-center">
+    <!-- <div class="text-center processloading">
+      <div class="spinner-border text-success" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div> -->
+    <!-- <button class="btn btn-white btn-dim btn-outline-light advanced-search-btn" (click)="toggleAdvSearchForm()">Advanced Search</button> -->
+    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#advancemodel"
+      (click)="toggleAdvSearchForm()" ripple>
+      <img src="assets/images/advanced_search.png" alt="" width="20px" class="search_img position-relative">Advanced
+      search
+    </button>
+  </div>
+</div>
+
+<!-- ==========================================Combined Search=============================================== -->
+
+<!-- Modal -->
+<div class="modal fade" id="advancemodel" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Advanced Search</h5>
+        <button type="button" (click)="showCombinedSearch=false" class="btn-close" data-bs-dismiss="modal"
+          aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <ng-container *ngIf="showCombinedSearch && !selectedFeature">
+          <div class="d-flex align-items-center mt-3">
+            <p class="mr-4 fw-500">Please select search type</p>
+            <div class="md-radio md-radio-inline mt-0">
+              <input id="24" type="radio" name="type" value="File" [(ngModel)]="advancedSearchType"
+                (change)="hideAdvSearchForm()">
+              <label for="24">File</label>
+            </div>
+            <div class="md-radio md-radio-inline mt-0">
+              <input id="26" type="radio" name="type" value="Folder" [(ngModel)]="advancedSearchType"
+                (change)="hideAdvSearchForm()">
+              <label for="26">Folder</label>
+            </div>
+          </div>
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <div class="d-flex">
+              <div class="form-check mr-4" *ngIf="(advancedSearchType === 'File') && (base_path === 'Input_Folder/')">
+                <input class="form-check-input shadow-none" type="checkbox" id="1" [(ngModel)]="contentCheck">
+                <label class="form-check-label feature nunito fw-600" for="1">Content</label>
+              </div>
+              <div class="form-check mr-4">
+                <input class="form-check-input shadow-none" type="checkbox" id="3" [(ngModel)]="documentFolderCheck">
+                <label class="form-check-label feature nunito fw-600" for="3">{{advancedSearchType === 'File' ? 'File
+                  Name' :
+                  'Folder Name'}}</label>
+              </div>
+              <div class="form-check mr-4" *ngIf="(advancedSearchType === 'File') && (base_path === 'Input_Folder/')">
+                <input class="form-check-input shadow-none" type="checkbox" id="2" [(ngModel)]="metadataCheck">
+                <label class="form-check-label feature nunito fw-600" for="2">Metadata</label>
+              </div>
+              <div class="form-check mr-4" *ngIf="(advancedSearchType === 'File') && (base_path === 'Input_Folder/')">
+                <input class="form-check-input shadow-none" type="checkbox" id="4" [(ngModel)]="aircraftMetadataCheck">
+                <label class="form-check-label feature nunito fw-600" for="4">Aircraft metadata</label>
+              </div>
+            </div>
+            <div>
+              <button class="btn btn-primary combine-search position-relative" (click)="combinedSearch()"
+                style="padding-left: 17px;padding-right: 17px;" ripple data-bs-dismiss="modal">
+                <img src="assets/images/search.png" alt="" width="20px" class="search_img position-relative">Search
+              </button>
+            </div>
+          </div>
+
+          <div class="formcontainer mb-4 py-1 px-3 roboto position-relative d-flex align-items-center bg-white"
+            *ngIf="documentFolderCheck">
+            <p class="mb-2 title position-relative roboto fw-500">Document/Folder</p>
+            <form [formGroup]="documentFolderSearchForm" class="flex-grow-1">
+              <div class="d-flex justify-content-between align-items-center w-100">
+                <div class="d-flex align-items-center w-100">
+                  <input type="text" class="form-control mr-4 mb-0 flex-grow-1" placeholder="Enter a Pattern/Text"
+                    formControlName="search_rule" [class.is-invalid]="validateDirSearchForm('search_rule')">
+                  <div _ngcontent-cmd-c111="" class="form-check mr-4"><input _ngcontent-cmd-c111="" type="checkbox"
+                      id="632" formcontrolname="fixed_left"
+                      class="form-check-input shadow-none ng-valid ng-dirty ng-touched"><label _ngcontent-cmd-c111=""
+                      for="632" class="form-check-label feature text-nowrap">Begins with</label></div>
+                  <div _ngcontent-cmd-c111="" class="form-check mr-4"><input _ngcontent-cmd-c111="" type="checkbox"
+                      id="832" formcontrolname="fixed_right"
+                      class="form-check-input shadow-none ng-valid ng-dirty ng-touched"><label _ngcontent-cmd-c111=""
+                      for="832" class="form-check-label feature text-nowrap">Ends with</label></div>
+                  <!-- <input type="number" class="form-control mr-4 mb-0 w-115" placeholder="Left Fixed"
+                    formControlName="fixed_left" [class.is-invalid]="validateDirSearchForm('fixed_left')">
+                  <input type="number" class="form-control mr-4 mb-0 w-115" placeholder="Right Fixed"
+                    formControlName="fixed_right" [class.is-invalid]="validateDirSearchForm('fixed_right')"> -->
+                  <div class="md-radio md-radio-inline">
+                    <input id="4" type="radio" name="is_pattern" value="true" formControlName="is_pattern">
+                    <label for="4">Pattern</label>
+                  </div>
+                  <div class="md-radio md-radio-inline">
+                    <input id="6" type="radio" name="is_pattern" value="false" formControlName="is_pattern">
+                    <label for="6">Text</label>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+
+          <div class="formcontainer py-2 px-3 mb-4 roboto position-relative bg-white" *ngIf="contentCheck">
+            <p class="mb-2 title position-relative roboto fw-500">Content search</p>
+            <form [formGroup]="contentSearchForm" class="flex-grow-1">
+              <div class="d-flex mt-3 mb-2">
+                <div class="form-check mr-4">
+                  <input class="form-check-input shadow-none" type="checkbox" id="32" formControlName="text">
+                  <label class="form-check-label feature" for="32">Text</label>
+                </div>
+                <div class="form-check mr-4">
+                  <input class="form-check-input shadow-none" type="checkbox" id="33" formControlName="number">
+                  <label class="form-check-label feature" for="33">Number</label>
+                </div>
+                <div class="form-check mr-4">
+                  <input class="form-check-input shadow-none" type="checkbox" id="34" formControlName="date">
+                  <label class="form-check-label feature" for="34">Date</label>
+                </div>
+              </div>
+              <div class="w-100">
+                <div *ngIf="contentSearchForm.value.text">
+                  <p class="mb-2 title position-relative">Text</p>
+                  <div formArrayName="textConditions">
+                    <div class="d-flex align-items-center w-100 mb-2"
+                      *ngFor="let fg of getContentTextConditionForms(); let i=index" [formGroupName]="i">
+                      <input type="text" class="form-control mr-4 mb-0" placeholder="Enter a text"
+                        formControlName="search_string" [class.is-invalid]="validateForm('search_string')">
+                      <div class="md-radio md-radio-inline">
+                        <input id="{{ 'pattern' + i}}" type="radio" value="pattern" formControlName="value_type">
+                        <label for="{{ 'pattern' + i}}">Pattern</label>
+                      </div>
+                      <div class="md-radio md-radio-inline">
+                        <input id="{{ 'text' + i}}" type="radio" value="text" formControlName="value_type">
+                        <label for="{{ 'text' + i}}">Text</label>
+                      </div>
+                      <div class="mr-4">
+                        <select class="form-select logicalOp" aria-label="Default select example" style="width: 135px;"
+                          formControlName="condition">
+                          <option *ngFor="let data of conditionStringList" [value]="data.value">{{data.label}}
+                          </option>
+                        </select>
+                      </div>
+                      <div class="mr-4" *ngIf="getContentTextConditionForms().length > 1">
+                        <select class="form-select" aria-label="Default select example" style="width: 90px;"
+                          (change)="test()" formControlName="operator">
+                          <option value="" selected>None</option>
+                          <option value="AND">And</option>
+                          <option value="OR">Or</option>
+                          <option value="NOT">Not</option>
+                        </select>
+                      </div>
+                      <div (click)="addContentTextForm()"><i class="fas fa-plus mr-4 cp"></i></div>
+                      <div (click)="removeContentTextForm(i)" *ngIf="getContentTextConditionForms().length > 1"><i
+                          class="fas fa-minus mr-4 cp"></i>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="text-center position-relative"
+                  *ngIf="(contentSearchForm.value.text && contentSearchForm.value.date) || (contentSearchForm.value.text && contentSearchForm.value.number) || (contentSearchForm.value.text && contentSearchForm.value.number && contentSearchForm.value.date)">
+                  <div class="operator-container text-center d-flex justify-content-center background">
+                    <select class="form-select operator shadow px-3" aria-label="Default select example"
+                      formControlName="textOperator">
+                      <option value="">None</option>
+                      <option value="AND">And</option>
+                      <option value="OR">Or</option>
+                      <option value="NOT">Not</option>
+                    </select>
+                  </div>
+                </div>
+
+
+                <div *ngIf="contentSearchForm.value.number">
+                  <p class="mb-2 title position-relative">Number</p>
+                  <div formArrayName="numberConditions">
+                    <div class="d-flex align-items-center w-100 mb-2"
+                      *ngFor="let fg of getContentNumberConditionForms(); let i=index" [formGroupName]="i">
+                      <input type="number" class="form-control mr-4 mb-0" placeholder="Enter a value"
+                        formControlName="search_value" [class.is-invalid]="validateForm('search_string')"
+                        *ngIf="fg.value.condition !== 'range'">
+
+                      <input type="number" class="form-control mr-4 mb-0" placeholder="Enter start to"
+                        formControlName="start" [class.is-invalid]="validateForm('search_string')"
+                        *ngIf="fg.value.condition === 'range'">
+                      <input type="number" class="form-control mr-4 mb-0" placeholder="Enter end" formControlName="end"
+                        [class.is-invalid]="validateForm('search_string')" *ngIf="fg.value.condition === 'range'">
+
+                      <div class="mr-4">
+                        <select class="form-select logicalOp" aria-label="Default select example"
+                          style="min-width: 200px;" formControlName="condition">
+                          <option *ngFor="let data of conditionIntegerList" [value]="data.value">{{data.label}}
+                          </option>
+                        </select>
+                      </div>
+                      <div class="mr-4" *ngIf="getContentNumberConditionForms().length > 1">
+                        <select class="form-select" aria-label="Default select example" style="width: 90px;"
+                          (change)="test()" formControlName="operator">
+                          <option value="" selected>None</option>
+                          <option value="AND">And</option>
+                          <option value="OR">Or</option>
+                          <option value="NOT">Not</option>
+                        </select>
+                      </div>
+                      <div (click)="addContentNumberForm()"><i class="fas fa-plus mr-4 cp"></i></div>
+                      <div (click)="removeContentNumberForm(i)" *ngIf="getContentNumberConditionForms().length > 1"><i
+                          class="fas fa-minus mr-4 cp"></i></div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="text-center position-relative mt-3"
+                  *ngIf="(contentSearchForm.value.number && contentSearchForm.value.date) || (contentSearchForm.value.text && contentSearchForm.value.number && contentSearchForm.value.date)">
+                  <div class="operator-container text-center d-flex justify-content-center background">
+                    <select class="form-select operator shadow px-3" aria-label="Default select example"
+                      formControlName="numberOperator">
+                      <option value="">None</option>
+                      <option value="AND">And</option>
+                      <option value="OR">Or</option>
+                      <option value="NOT">Not</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div *ngIf="contentSearchForm.value.date">
+                  <p class="mb-2 title position-relative">Date</p>
+                  <div formArrayName="dateConditions">
+                    <div class="d-flex align-items-center w-100 mb-2"
+                      *ngFor="let fg of getContentDateConditionForms(); let i=index" [formGroupName]="i">
+                      <input type="date" class="form-control mr-4 mb-0" placeholder="Enter a value"
+                        formControlName="search_date" [class.is-invalid]="validateForm('search_string')"
+                        *ngIf="fg.value.condition !== 'range'">
+
+                      <input type="date" class="form-control mr-4 mb-0" placeholder="Enter start to"
+                        formControlName="start" [class.is-invalid]="validateForm('search_string')"
+                        *ngIf="fg.value.condition === 'range'">
+                      <input type="date" class="form-control mr-4 mb-0" placeholder="Enter end" formControlName="end"
+                        [class.is-invalid]="validateForm('search_string')" *ngIf="fg.value.condition === 'range'">
+
+                      <div class="mr-4">
+                        <select class="form-select logicalOp" aria-label="Default select example"
+                          style="min-width: 200px;" formControlName="condition">
+                          <option *ngFor="let data of conditionIntegerList" [value]="data.value">{{data.label}}
+                          </option>
+                        </select>
+                      </div>
+                      <div class="mr-4" *ngIf="getContentDateConditionForms().length > 1">
+                        <select class="form-select" aria-label="Default select example" style="width: 90px;"
+                          (change)="test()" formControlName="operator">
+                          <option value="" selected>None</option>
+                          <option value="AND">And</option>
+                          <option value="OR">Or</option>
+                          <option value="NOT">Not</option>
+                        </select>
+                      </div>
+                      <div (click)="addContentDateForm()"><i class="fas fa-plus mr-4 cp"></i></div>
+                      <div (click)="removeContentDateForm(i)" *ngIf="getContentDateConditionForms().length > 1"><i
+                          class="fas fa-minus mr-4 cp"></i></div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="d-flex align-items-center mt-3 w-100">
+                  <div class="form-check mr-4">
+                    <input class="form-check-input shadow-none" type="checkbox" id="224"
+                      formControlName="approx_search">
+                    <label class="form-check-label feature text-nowrap" for="224">approx search</label>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+
+          <div class="p-4 formcontainer mb-4 bg-white" *ngIf="metadataCheck">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <p class="mb-2 roboto fw-500" style="font-size: 17px;">Metadata search</p>
+              <button class="btn btn-danger shadow" style="padding-left: 26px;padding-right: 30px;"
+                (click)="removeAllMetadataForm()">Reset All</button>
+            </div>
+
+            <div class="px-2">
+              <p *ngFor="let key of metadataSearchKeys;let i = index" style="font-weight: 500;">{{"ConditionName: " +
+                metadataSearchData[key].formName + " " +
+                "Condition: " + metadataSearchData[key].logical_op + " " + "Value: " + metadataSearchData[key].value + "
+                "+
+                getOp(metadataSearchData[key].formName)}}</p>
+            </div>
+            <form [formGroup]="metadataSearchForm" style="height: 290px;" class="overflow-auto px-2 pb-3">
+              <div class="formcontainer pt-2 pb-4 px-3 roboto position-relative" formArrayName="formsArray"
+                *ngFor="let fg of getForms(); let i = index;let last = last" style="margin-top: 20px;">
+                <p class="mb-2 title2 position-relative text-nowrap">{{formsList[i].name +' '+ formsList[i].unit}}</p>
+                <div class="d-flex justify-content-between align-items-center w-100" [formGroupName]="i">
+                  <div class="d-flex align-items-center">
+                    <select class="form-select mr-4 logicalOp flex-shrink-1" aria-label="Default select example"
+                      formControlName="logical_op" (change)="checkMetadataValue(i)">
+                      <option value="">Condition</option>
+                      <option *ngFor="let data of getSelectFieldData(formsList[i].name)" [value]="data.value">
+                        {{data.label}}
+                      </option>
+                    </select>
+                    <input [type]="formsList[i].name.toLowerCase().includes('date') ? 'datetime-local':'text'" step="1"
+                      *ngIf="fg.value.logical_op !== 'range'" formControlName="value"
+                      class="form-control mr-4 mb-0 flex-grow-1" placeholder="Enter a value"
+                      (input)="checkMetadataValue()">
+
+                    <div class="d-flex w-100" *ngIf="fg.value.logical_op === 'range'">
+                      <input [type]="formsList[i].name.toLowerCase().includes('date') ? 'datetime-local':'text'"
+                        step="1" class="form-control mr-4 mb-0 flex-grow-1" placeholder="Enter a value"
+                        (input)="addRangeValue(val1.value,val2.value,i)" #val1 (input)="checkMetadataValue()">
+                      <input [type]="formsList[i].name.toLowerCase().includes('date') ? 'datetime-local':'text'"
+                        step="1" class="form-control mr-4 mb-0 flex-grow-1" placeholder="Enter a value"
+                        (input)="addRangeValue(val1.value,val2.value,i)" #val2 (input)="checkMetadataValue()">
+                    </div>
+                  </div>
+                  <div>
+                    <button class="btn btn-danger shadow"
+                      (click)="resetMetadataForm(i);removeMetadataForm(formsList[i].name)">Reset</button>
+                    <!-- <button class="btn btn-delete rounded-circle shadow" (click)="deleteForm(i)"><i
+                                    class="far fa-trash-alt cp"></i></button> -->
+                  </div>
+                  <div class="position-absolute operator-container text-center d-flex justify-content-center"
+                    *ngIf="!last">
+                    <select class="form-select operator shadow" aria-label="Default select example"
+                      [ngModelOptions]="{standalone: true}" [(ngModel)]="combineOp[i]">
+                      <option value="">None</option>
+                      <option value="AND">And</option>
+                      <option value="OR">Or</option>
+                      <option value="NOT">Not</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+
+          <div class="p-4 formcontainer mb-4 bg-white" *ngIf="aircraftMetadataCheck">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <p class="mb-2 roboto fw-500" style="font-size: 17px;">Aircraft metadata search</p>
+              <button class="btn btn-danger shadow" style="padding-left: 26px;padding-right: 30px;"
+                (click)="removeAllMetadataForm()">Reset All</button>
+            </div>
+            <!-- autocomplete -->
+            <app-aircraft-metadata></app-aircraft-metadata>
+
+            <form class="example-form w-100">
+              <mat-form-field class="example-full-width">
+                <!-- <mat-label>Number</mat-label> -->
+                <input type="text" aria-label="Number" matInput [matAutocomplete]="auto">
+                <mat-autocomplete #auto="matAutocomplete">
+                  <mat-option *ngFor="let option of options" [value]="option">
+                    {{option}}
+                  </mat-option>
+                </mat-autocomplete>
+              </mat-form-field>
+            </form>
+
+            <form [formGroup]="airCraftSearchForm" style="height: 290px;" class="overflow-auto px-2 pb-3">
+
+
+              <!-- <div class="row" style="display:flex; flex-direction: row; justify-content: center; align-items: center">
+                <div class="col-md-2">
+                  <label for="Student">MSN: &nbsp;</label>
+
+                </div>
+                <div class="col-md-10">
+                  <input type="text" class="form-control mr-4 mb-0" placeholder="Enter MSN" formControlName="msn"
+                    [class.is-invalid]="validateForm('search_string')">
+                </div>
+
+
+              </div> -->
+
+              <!-- <div class="row" style="display:flex; flex-direction: row; justify-content: center; align-items: center">
+              
+              <div class="col-md-2">
+                <label for="Student">Owner: &nbsp;</label>
+              </div>
+              <div class="col-md-10">
+                <input type="text" class="form-control mr-4 mb-0" placeholder="Enter MSN"
+                formControlName="owner" [class.is-invalid]="validateForm('search_string')">
+              </div>
+          </div> -->
+              <!-- <div style="display:flex; flex-direction: row; justify-content: center; align-items: center">
+            <label for="Student">Project: &nbsp;</label>
+            <input type="text" class="form-control mr-4 mb-0" placeholder="Enter MSN"
+            formControlName="project" [class.is-invalid]="validateForm('search_string')">
+        </div>
+        <div style="display:flex; flex-direction: row; justify-content: center; align-items: center">
+          <label for="Student">Type: &nbsp;</label>
+          <input type="text" class="form-control mr-4 mb-0" placeholder="Enter MSN"
+          formControlName="type" [class.is-invalid]="validateForm('search_string')">
+      </div> -->
+
+            </form>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="fileModal">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">File Search</h5>
+        <button type="button" (click)="showCombinedSearch=false" class="btn-close" data-bs-dismiss="modal"
+          aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="formcontainer py-2 px-3 mb-4 roboto position-relative bg-white">
+          <div>
+            <p class="mb-2 title position-relative roboto fw-500">Content search</p>
+            <button class="btn btn-primary combine-search position-relative" (click)="filecombinedSearch()"
+              style="padding-left: 17px;padding-right: 17px; float: right;" ripple data-bs-dismiss="modal">
+              <img src="assets/images/search.png" alt="" width="20px" class="search_img position-relative">Search
+            </button>
+          </div>
+
+          <form [formGroup]="contentSearchForm" class="flex-grow-1">
+            <div class="d-flex mt-3 mb-2">
+              <div class="form-check mr-4">
+                <input class="form-check-input shadow-none" type="checkbox" id="32" formControlName="text">
+                <label class="form-check-label feature" for="32">Text</label>
+              </div>
+              <div class="form-check mr-4">
+                <input class="form-check-input shadow-none" type="checkbox" id="33" formControlName="number">
+                <label class="form-check-label feature" for="33">Number</label>
+              </div>
+              <div class="form-check mr-4">
+                <input class="form-check-input shadow-none" type="checkbox" id="34" formControlName="date">
+                <label class="form-check-label feature" for="34">Date</label>
+              </div>
+            </div>
+            <div class="w-100">
+              <div *ngIf="contentSearchForm.value.text">
+                <p class="mb-2 title position-relative">Text</p>
+                <div formArrayName="textConditions">
+                  <div class="d-flex align-items-center w-100 mb-2"
+                    *ngFor="let fg of getContentTextConditionForms(); let i=index" [formGroupName]="i">
+                    <input type="text" class="form-control mr-4 mb-0" placeholder="Enter a text"
+                      formControlName="search_string" [class.is-invalid]="validateForm('search_string')">
+                    <div class="md-radio md-radio-inline">
+                      <input id="{{ 'pattern' + i}}" type="radio" value="pattern" formControlName="value_type">
+                      <label for="{{ 'pattern' + i}}">Pattern</label>
+                    </div>
+                    <div class="md-radio md-radio-inline">
+                      <input id="{{ 'text' + i}}" type="radio" value="text" formControlName="value_type">
+                      <label for="{{ 'text' + i}}">Text</label>
+                    </div>
+                    <div class="mr-4">
+                      <select class="form-select logicalOp" aria-label="Default select example" style="width: 135px;"
+                        formControlName="condition">
+                        <option *ngFor="let data of conditionStringList" [value]="data.value">{{data.label}}
+                        </option>
+                      </select>
+                    </div>
+                    <div class="mr-4" *ngIf="getContentTextConditionForms().length > 1">
+                      <select class="form-select" aria-label="Default select example" style="width: 90px;"
+                        (change)="test()" formControlName="operator">
+                        <option value="" selected>None</option>
+                        <option value="AND">And</option>
+                        <option value="OR">Or</option>
+                        <option value="NOT">Not</option>
+                      </select>
+                    </div>
+                    <div (click)="addContentTextForm()"><i class="fas fa-plus mr-4 cp"></i></div>
+                    <div (click)="removeContentTextForm(i)" *ngIf="getContentTextConditionForms().length > 1"><i
+                        class="fas fa-minus mr-4 cp"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="text-center position-relative"
+                *ngIf="(contentSearchForm.value.text && contentSearchForm.value.date) || (contentSearchForm.value.text && contentSearchForm.value.number) || (contentSearchForm.value.text && contentSearchForm.value.number && contentSearchForm.value.date)">
+                <div class="operator-container text-center d-flex justify-content-center background">
+                  <select class="form-select operator shadow px-3" aria-label="Default select example"
+                    formControlName="textOperator">
+                    <option value="">None</option>
+                    <option value="AND">And</option>
+                    <option value="OR">Or</option>
+                    <option value="NOT">Not</option>
+                  </select>
+                </div>
+              </div>
+
+
+              <div *ngIf="contentSearchForm.value.number">
+                <p class="mb-2 title position-relative">Number</p>
+                <div formArrayName="numberConditions">
+                  <div class="d-flex align-items-center w-100 mb-2"
+                    *ngFor="let fg of getContentNumberConditionForms(); let i=index" [formGroupName]="i">
+                    <input type="number" class="form-control mr-4 mb-0" placeholder="Enter a value"
+                      formControlName="search_value" [class.is-invalid]="validateForm('search_string')"
+                      *ngIf="fg.value.condition !== 'range'">
+
+                    <input type="number" class="form-control mr-4 mb-0" placeholder="Enter start to"
+                      formControlName="start" [class.is-invalid]="validateForm('search_string')"
+                      *ngIf="fg.value.condition === 'range'">
+                    <input type="number" class="form-control mr-4 mb-0" placeholder="Enter end" formControlName="end"
+                      [class.is-invalid]="validateForm('search_string')" *ngIf="fg.value.condition === 'range'">
+
+                    <div class="mr-4">
+                      <select class="form-select logicalOp" aria-label="Default select example"
+                        style="min-width: 200px;" formControlName="condition">
+                        <option *ngFor="let data of conditionIntegerList" [value]="data.value">{{data.label}}
+                        </option>
+                      </select>
+                    </div>
+                    <div class="mr-4" *ngIf="getContentNumberConditionForms().length > 1">
+                      <select class="form-select" aria-label="Default select example" style="width: 90px;"
+                        (change)="test()" formControlName="operator">
+                        <option value="" selected>None</option>
+                        <option value="AND">And</option>
+                        <option value="OR">Or</option>
+                        <option value="NOT">Not</option>
+                      </select>
+                    </div>
+                    <div (click)="addContentNumberForm()"><i class="fas fa-plus mr-4 cp"></i></div>
+                    <div (click)="removeContentNumberForm(i)" *ngIf="getContentNumberConditionForms().length > 1"><i
+                        class="fas fa-minus mr-4 cp"></i></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="text-center position-relative mt-3"
+                *ngIf="(contentSearchForm.value.number && contentSearchForm.value.date) || (contentSearchForm.value.text && contentSearchForm.value.number && contentSearchForm.value.date)">
+                <div class="operator-container text-center d-flex justify-content-center background">
+                  <select class="form-select operator shadow px-3" aria-label="Default select example"
+                    formControlName="numberOperator">
+                    <option value="">None</option>
+                    <option value="AND">And</option>
+                    <option value="OR">Or</option>
+                    <option value="NOT">Not</option>
+                  </select>
+                </div>
+              </div>
+
+              <div *ngIf="contentSearchForm.value.date">
+                <p class="mb-2 title position-relative">Date</p>
+                <div formArrayName="dateConditions">
+                  <div class="d-flex align-items-center w-100 mb-2"
+                    *ngFor="let fg of getContentDateConditionForms(); let i=index" [formGroupName]="i">
+                    <input type="date" class="form-control mr-4 mb-0" placeholder="Enter a value"
+                      formControlName="search_date" [class.is-invalid]="validateForm('search_string')"
+                      *ngIf="fg.value.condition !== 'range'">
+
+                    <input type="date" class="form-control mr-4 mb-0" placeholder="Enter start to"
+                      formControlName="start" [class.is-invalid]="validateForm('search_string')"
+                      *ngIf="fg.value.condition === 'range'">
+                    <input type="date" class="form-control mr-4 mb-0" placeholder="Enter end" formControlName="end"
+                      [class.is-invalid]="validateForm('search_string')" *ngIf="fg.value.condition === 'range'">
+
+                    <div class="mr-4">
+                      <select class="form-select logicalOp" aria-label="Default select example"
+                        style="min-width: 200px;" formControlName="condition">
+                        <option *ngFor="let data of conditionIntegerList" [value]="data.value">{{data.label}}
+                        </option>
+                      </select>
+                    </div>
+                    <div class="mr-4" *ngIf="getContentDateConditionForms().length > 1">
+                      <select class="form-select" aria-label="Default select example" style="width: 90px;"
+                        (change)="test()" formControlName="operator">
+                        <option value="" selected>None</option>
+                        <option value="AND">And</option>
+                        <option value="OR">Or</option>
+                        <option value="NOT">Not</option>
+                      </select>
+                    </div>
+                    <div (click)="addContentDateForm()"><i class="fas fa-plus mr-4 cp"></i></div>
+                    <div (click)="removeContentDateForm(i)" *ngIf="getContentDateConditionForms().length > 1"><i
+                        class="fas fa-minus mr-4 cp"></i></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="d-flex align-items-center mt-3 w-100">
+                <div class="form-check mr-4">
+                  <input class="form-check-input shadow-none" type="checkbox" id="224" formControlName="approx_search">
+                  <label class="form-check-label feature text-nowrap" for="224">approx search</label>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- <ng-container *ngIf="showCombinedSearch && !selectedFeature">
+  <div class="d-flex align-items-center mt-3">
+    <p class="mr-4 fw-500">Please select search type</p>
+    <div class="md-radio md-radio-inline mt-0">
+      <input id="24" type="radio" name="type" value="File" [(ngModel)]="advancedSearchType"
+        (change)="hideAdvSearchForm()">
+      <label for="24">File</label>
+    </div>
+    <div class="md-radio md-radio-inline mt-0">
+      <input id="26" type="radio" name="type" value="Folder" [(ngModel)]="advancedSearchType"
+        (change)="hideAdvSearchForm()">
+      <label for="26">Folder</label>
+    </div>
+  </div>
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <div class="d-flex">
+      <div class="form-check mr-4" *ngIf="(advancedSearchType === 'File') && (base_path === 'Input_Folder/')">
+        <input class="form-check-input shadow-none" type="checkbox" id="1" [(ngModel)]="contentCheck">
+        <label class="form-check-label feature nunito fw-600" for="1">Content</label>
+      </div>
+      <div class="form-check mr-4">
+        <input class="form-check-input shadow-none" type="checkbox" id="3" [(ngModel)]="documentFolderCheck">
+        <label class="form-check-label feature nunito fw-600" for="3">{{advancedSearchType === 'File' ? 'File Name' :
+          'Folder Name'}}</label>
+      </div>
+      <div class="form-check mr-4" *ngIf="(advancedSearchType === 'File') && (base_path === 'Input_Folder/')">
+        <input class="form-check-input shadow-none" type="checkbox" id="2" [(ngModel)]="metadataCheck">
+        <label class="form-check-label feature nunito fw-600" for="2">Metadata</label>
+      </div>
+    </div>
+    <div>
+      <button class="btn btn-primary combine-search position-relative" (click)="showCombinedSearch=false"
+        style="padding-left: 17px;padding-right: 17px;" ripple style="margin-right: 10px;">
+        <i class="fas fa-times"></i> Close</button>
+      <button class="btn btn-primary combine-search position-relative" (click)="combinedSearch()"
+        style="padding-left: 17px;padding-right: 17px;" ripple>
+        <img src="assets/images/search.png" alt="" width="20px" class="search_img position-relative">Search
+      </button>
+    </div>
+  </div>
+
+  <div class="formcontainer mb-4 py-1 px-3 roboto position-relative d-flex align-items-center bg-white"
+    *ngIf="documentFolderCheck">
+    <p class="mb-2 title position-relative roboto fw-500">Document/Folder</p>
+    <form [formGroup]="documentFolderSearchForm" class="flex-grow-1">
+      <div class="d-flex justify-content-between align-items-center w-100">
+        <div class="d-flex align-items-center w-100">
+          <input type="text" class="form-control mr-4 mb-0 flex-grow-1" placeholder="Enter a Pattern/Text"
+            formControlName="search_rule" [class.is-invalid]="validateDirSearchForm('search_rule')">
+          <input type="number" class="form-control mr-4 mb-0 w-115" placeholder="Left Fixed"
+            formControlName="fixed_left" [class.is-invalid]="validateDirSearchForm('fixed_left')">
+          <input type="number" class="form-control mr-4 mb-0 w-115" placeholder="Right Fixed"
+            formControlName="fixed_right" [class.is-invalid]="validateDirSearchForm('fixed_right')">
+          <div class="md-radio md-radio-inline">
+            <input id="4" type="radio" name="is_pattern" value="true" formControlName="is_pattern">
+            <label for="4">Pattern</label>
+          </div>
+          <div class="md-radio md-radio-inline">
+            <input id="6" type="radio" name="is_pattern" value="false" formControlName="is_pattern">
+            <label for="6">Text</label>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <div class="formcontainer py-2 px-3 mb-4 roboto position-relative bg-white" *ngIf="contentCheck">
+    <p class="mb-2 title position-relative roboto fw-500">Content search</p>
+    <form [formGroup]="contentSearchForm" class="flex-grow-1">
+      <div class="d-flex mt-3 mb-2">
+        <div class="form-check mr-4">
+          <input class="form-check-input shadow-none" type="checkbox" id="32" formControlName="text">
+          <label class="form-check-label feature" for="32">Text</label>
+        </div>
+        <div class="form-check mr-4">
+          <input class="form-check-input shadow-none" type="checkbox" id="33" formControlName="number">
+          <label class="form-check-label feature" for="33">Number</label>
+        </div>
+        <div class="form-check mr-4">
+          <input class="form-check-input shadow-none" type="checkbox" id="34" formControlName="date">
+          <label class="form-check-label feature" for="34">Date</label>
+        </div>
+      </div>
+      <div class="w-100">
+        <div *ngIf="contentSearchForm.value.text">
+          <p class="mb-2 title position-relative">Text</p>
+          <div formArrayName="textConditions">
+            <div class="d-flex align-items-center w-100 mb-2"
+              *ngFor="let fg of getContentTextConditionForms(); let i=index" [formGroupName]="i">
+              <input type="text" class="form-control mr-4 mb-0" placeholder="Enter a text"
+                formControlName="search_string" [class.is-invalid]="validateForm('search_string')">
+              <div class="md-radio md-radio-inline">
+                <input id="{{ 'pattern' + i}}" type="radio" value="pattern" formControlName="value_type">
+                <label for="{{ 'pattern' + i}}">Pattern</label>
+              </div>
+              <div class="md-radio md-radio-inline">
+                <input id="{{ 'text' + i}}" type="radio" value="text" formControlName="value_type">
+                <label for="{{ 'text' + i}}">Text</label>
+              </div>
+              <div class="mr-4">
+                <select class="form-select logicalOp" aria-label="Default select example" style="width: 135px;"
+                  formControlName="condition">
+                  <option *ngFor="let data of conditionStringList" [value]="data.value">{{data.label}}
+                  </option>
+                </select>
+              </div>
+              <div class="mr-4" *ngIf="getContentTextConditionForms().length > 1">
+                <select class="form-select" aria-label="Default select example" style="width: 90px;" (change)="test()"
+                  formControlName="operator">
+                  <option value="" selected>None</option>
+                  <option value="AND">And</option>
+                  <option value="OR">Or</option>
+                  <option value="NOT">Not</option>
+                </select>
+              </div>
+              <div (click)="addContentTextForm()"><i class="fas fa-plus mr-4 cp"></i></div>
+              <div (click)="removeContentTextForm(i)" *ngIf="getContentTextConditionForms().length > 1"><i
+                  class="fas fa-minus mr-4 cp"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="text-center position-relative"
+          *ngIf="(contentSearchForm.value.text && contentSearchForm.value.date) || (contentSearchForm.value.text && contentSearchForm.value.number) || (contentSearchForm.value.text && contentSearchForm.value.number && contentSearchForm.value.date)">
+          <div class="operator-container text-center d-flex justify-content-center background">
+            <select class="form-select operator shadow px-3" aria-label="Default select example"
+              formControlName="textOperator">
+              <option value="">None</option>
+              <option value="AND">And</option>
+              <option value="OR">Or</option>
+              <option value="NOT">Not</option>
+            </select>
+          </div>
+        </div>
+
+
+        <div *ngIf="contentSearchForm.value.number">
+          <p class="mb-2 title position-relative">Number</p>
+          <div formArrayName="numberConditions">
+            <div class="d-flex align-items-center w-100 mb-2"
+              *ngFor="let fg of getContentNumberConditionForms(); let i=index" [formGroupName]="i">
+              <input type="number" class="form-control mr-4 mb-0" placeholder="Enter a value"
+                formControlName="search_value" [class.is-invalid]="validateForm('search_string')"
+                *ngIf="fg.value.condition !== 'range'">
+
+              <input type="number" class="form-control mr-4 mb-0" placeholder="Enter start to" formControlName="start"
+                [class.is-invalid]="validateForm('search_string')" *ngIf="fg.value.condition === 'range'">
+              <input type="number" class="form-control mr-4 mb-0" placeholder="Enter end" formControlName="end"
+                [class.is-invalid]="validateForm('search_string')" *ngIf="fg.value.condition === 'range'">
+
+              <div class="mr-4">
+                <select class="form-select logicalOp" aria-label="Default select example" style="min-width: 200px;"
+                  formControlName="condition">
+                  <option *ngFor="let data of conditionIntegerList" [value]="data.value">{{data.label}}
+                  </option>
+                </select>
+              </div>
+              <div class="mr-4" *ngIf="getContentNumberConditionForms().length > 1">
+                <select class="form-select" aria-label="Default select example" style="width: 90px;" (change)="test()"
+                  formControlName="operator">
+                  <option value="" selected>None</option>
+                  <option value="AND">And</option>
+                  <option value="OR">Or</option>
+                  <option value="NOT">Not</option>
+                </select>
+              </div>
+              <div (click)="addContentNumberForm()"><i class="fas fa-plus mr-4 cp"></i></div>
+              <div (click)="removeContentNumberForm(i)" *ngIf="getContentNumberConditionForms().length > 1"><i
+                  class="fas fa-minus mr-4 cp"></i></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="text-center position-relative mt-3"
+          *ngIf="(contentSearchForm.value.number && contentSearchForm.value.date) || (contentSearchForm.value.text && contentSearchForm.value.number && contentSearchForm.value.date)">
+          <div class="operator-container text-center d-flex justify-content-center background">
+            <select class="form-select operator shadow px-3" aria-label="Default select example"
+              formControlName="numberOperator">
+              <option value="">None</option>
+              <option value="AND">And</option>
+              <option value="OR">Or</option>
+              <option value="NOT">Not</option>
+            </select>
+          </div>
+        </div>
+
+        <div *ngIf="contentSearchForm.value.date">
+          <p class="mb-2 title position-relative">Date</p>
+          <div formArrayName="dateConditions">
+            <div class="d-flex align-items-center w-100 mb-2"
+              *ngFor="let fg of getContentDateConditionForms(); let i=index" [formGroupName]="i">
+              <input type="date" class="form-control mr-4 mb-0" placeholder="Enter a value"
+                formControlName="search_date" [class.is-invalid]="validateForm('search_string')"
+                *ngIf="fg.value.condition !== 'range'">
+
+              <input type="date" class="form-control mr-4 mb-0" placeholder="Enter start to" formControlName="start"
+                [class.is-invalid]="validateForm('search_string')" *ngIf="fg.value.condition === 'range'">
+              <input type="date" class="form-control mr-4 mb-0" placeholder="Enter end" formControlName="end"
+                [class.is-invalid]="validateForm('search_string')" *ngIf="fg.value.condition === 'range'">
+
+              <div class="mr-4">
+                <select class="form-select logicalOp" aria-label="Default select example" style="min-width: 200px;"
+                  formControlName="condition">
+                  <option *ngFor="let data of conditionIntegerList" [value]="data.value">{{data.label}}
+                  </option>
+                </select>
+              </div>
+              <div class="mr-4" *ngIf="getContentDateConditionForms().length > 1">
+                <select class="form-select" aria-label="Default select example" style="width: 90px;" (change)="test()"
+                  formControlName="operator">
+                  <option value="" selected>None</option>
+                  <option value="AND">And</option>
+                  <option value="OR">Or</option>
+                  <option value="NOT">Not</option>
+                </select>
+              </div>
+              <div (click)="addContentDateForm()"><i class="fas fa-plus mr-4 cp"></i></div>
+              <div (click)="removeContentDateForm(i)" *ngIf="getContentDateConditionForms().length > 1"><i
+                  class="fas fa-minus mr-4 cp"></i></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="d-flex align-items-center mt-3 w-100">
+          <div class="form-check mr-4">
+            <input class="form-check-input shadow-none" type="checkbox" id="224" formControlName="approx_search">
+            <label class="form-check-label feature text-nowrap" for="224">approx search</label>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <div class="p-4 formcontainer mb-4 bg-white" *ngIf="metadataCheck">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <p class="mb-2 roboto fw-500" style="font-size: 17px;">Metadata search</p>
+      <button class="btn btn-danger shadow" style="padding-left: 26px;padding-right: 30px;"
+        (click)="removeAllMetadataForm()">Reset All</button>
+    </div>
+
+    <div class="px-2">
+      <p *ngFor="let key of metadataSearchKeys;let i = index" style="font-weight: 500;">{{"ConditionName: " +
+        metadataSearchData[key].formName + " " +
+        "Condition: " + metadataSearchData[key].logical_op + " " + "Value: " + metadataSearchData[key].value + " "+
+        getOp(metadataSearchData[key].formName)}}</p>
+    </div>
+    <form [formGroup]="metadataSearchForm" style="height: 290px;" class="overflow-auto px-2 pb-3">
+      <div class="formcontainer pt-2 pb-4 px-3 roboto position-relative" formArrayName="formsArray"
+        *ngFor="let fg of getForms(); let i = index;let last = last" style="margin-top: 20px;">
+        <p class="mb-2 title2 position-relative text-nowrap">{{formsList[i].name +' '+ formsList[i].unit}}</p>
+        <div class="d-flex justify-content-between align-items-center w-100" [formGroupName]="i">
+          <div class="d-flex align-items-center">
+            <select class="form-select mr-4 logicalOp flex-shrink-1" aria-label="Default select example"
+              formControlName="logical_op" (change)="checkMetadataValue(i)">
+              <option value="">Condition</option>
+              <option *ngFor="let data of getSelectFieldData(formsList[i].name)" [value]="data.value">{{data.label}}
+              </option>
+            </select>
+            <input [type]="formsList[i].name.toLowerCase().includes('date') ? 'datetime-local':'text'" step="1"
+              *ngIf="fg.value.logical_op !== 'range'" formControlName="value" class="form-control mr-4 mb-0 flex-grow-1"
+              placeholder="Enter a value" (input)="checkMetadataValue()">
+
+            <div class="d-flex w-100" *ngIf="fg.value.logical_op === 'range'">
+              <input [type]="formsList[i].name.toLowerCase().includes('date') ? 'datetime-local':'text'" step="1"
+                class="form-control mr-4 mb-0 flex-grow-1" placeholder="Enter a value"
+                (input)="addRangeValue(val1.value,val2.value,i)" #val1 (input)="checkMetadataValue()">
+              <input [type]="formsList[i].name.toLowerCase().includes('date') ? 'datetime-local':'text'" step="1"
+                class="form-control mr-4 mb-0 flex-grow-1" placeholder="Enter a value"
+                (input)="addRangeValue(val1.value,val2.value,i)" #val2 (input)="checkMetadataValue()">
+            </div>
+          </div>
+          <div>
+            <button class="btn btn-danger shadow"
+              (click)="resetMetadataForm(i);removeMetadataForm(formsList[i].name)">Reset</button>
+            <button class="btn btn-delete rounded-circle shadow" (click)="deleteForm(i)"><i
+                            class="far fa-trash-alt cp"></i></button>
+          </div>
+          <div class="position-absolute operator-container text-center d-flex justify-content-center" *ngIf="!last">
+            <select class="form-select operator shadow" aria-label="Default select example"
+              [ngModelOptions]="{standalone: true}" [(ngModel)]="combineOp[i]">
+              <option value="">None</option>
+              <option value="AND">And</option>
+              <option value="OR">Or</option>
+              <option value="NOT">Not</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</ng-container> -->
+
+<div class="uploadlink p-3 mb-3 bg-white" *ngIf="showUploadDrive">
+  <div class="d-flex justify-content-between align-items-center">
+    <div>
+      <p class="title position-relative roboto">Upload from drive</p>
+    </div>
+    <div class="d-flex align-items-center">
+      <!-- [disabled]="!user" -->
+      <button class="btn btn-primary combine-search position-relative" (click)="uploadFromLink()"
+        [disabled]="!isLoggedIn">Upload</button>
+      <button class="btn btn-light create-btn position-relative closebutton"
+        (click)="showUploadDrive = !showUploadDrive">Close</button>
+    </div>
+  </div>
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <div class="d-flex">
+      <div class="form-check mr-4">
+        <input class="form-check-input shadow-none" type="radio" id="link32" name="linktype" value="gd"
+          [(ngModel)]="linkType">
+        <label class="form-check-label feature" for="link32">Google drive</label>
+      </div>
+      <div class="form-check mr-4">
+        <input class="form-check-input shadow-none" type="radio" id="link33" name="linktype" value="od"
+          [(ngModel)]="linkType" disabled>
+        <label class="form-check-label feature" for="link33">One drive</label>
+      </div>
+      <div class="form-check mr-4">
+        <input class="form-check-input shadow-none" type="radio" id="link34" name="linktype" value="cloud"
+          [(ngModel)]="linkType" disabled>
+        <label class="form-check-label feature" for="link34">Cloud</label>
+      </div>
+    </div>
+    <div class="d-flex align-items-center">
+      <div *ngIf="!isLoggedIn" class="d-flex align-items-center">
+        <!-- <span style="margin-right: 12px;">Login with</span> -->
+        <img src="assets/images/google_signin.png" alt="" width="182px" class="loginwith cp"
+          (click)="loginWithGoogle()">
+        <a href="https://youtu.be/b2pvAwEl9Kw" style="font-size: 15px;" target="_blank"><i
+            class="far fa-question-circle"></i> need help?</a>
+        <!-- <img src="assets/images/upload/amazon_web_services_96px.png" alt="" width="30px" class="loginwith cp rounded-circle shadow-m"> -->
+        <!-- <img src="assets/images/upload/onedrive_96px.png" alt="" width="30px" class="cp rounded-circle shadow-m"> -->
+      </div>
+      <div class="d-flex" *ngIf="isLoggedIn">
+        <div class="user d-flex justify-content-center align-items-center text-white text-uppercase shadow-sm roboto"
+          style="font-size: 14px;margin-right: 10px;">
+          u
+        </div>
+        <button class="btn btn-primary" (click)="uploadLinkLogout()">Log out</button>
+      </div>
+    </div>
+  </div>
+
+  <form [formGroup]="inputLinkForm">
+    <div class="d-flex align-items-center nunito mb-2">
+      <label for="exampleFormControlInput346" class="form-label text-nowrap mr position-relative">Folder name</label>
+      <input type="text" class="form-control mb-0" id="exampleFormControlInput346"
+        [placeholder]="isLoggedIn ? 'Enter your link':'Please log in to continue'" formControlName="folderName"
+        [class.is-invalid]="inputLinkForm.get('folderName')?.errors && inputLinkForm.get('folderName')?.touched">
+    </div>
+    <div class="d-flex align-items-center nunito mb-2">
+      <label for="exampleFormControlInput347" class="form-label text-nowrap mr position-relative">Project name</label>
+      <input type="text" class="form-control mb-0" id="exampleFormControlInput347"
+        [placeholder]="isLoggedIn ? 'Enter your link':'Please log in to continue'" formControlName="projectName"
+        [class.is-invalid]="inputLinkForm.get('projectName')?.errors && inputLinkForm.get('projectName')?.touched">
+    </div>
+    <ng-container formArrayName="links">
+      <div class="d-flex align-items-center mb-2 nunito" *ngFor="let link of inputLinks.controls; let i=index"
+        [formGroupName]="i">
+        <label [for]="'exampleFormControlInput1'+i" class="form-label text-nowrap position-relative"
+          style="margin-right: 18px;">Input link {{i+1}}</label>
+        <input type="text" class="form-control mb-0" [id]="'exampleFormControlInput1'+i"
+          [placeholder]="isLoggedIn ? 'Enter your link':'Please log in to continue'" formControlName="input_link"
+          style="margin-right: 1rem;" [class.is-invalid]="uploadLinkValidation(i,'input_link')"
+          pattern="(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})">
+        <!-- <input type="text" formControlName="name" class="form-control mb-0" style="margin-right: 1rem;" placeholder="name" [class.is-invalid]="uploadLinkValidation(i,'name')"> -->
+
+        <select class="form-select nunito" formControlName="name" [class.is-invalid]="uploadLinkValidation(i,'name')"
+          style="font-size: 14px;height: 42px;margin-right: 1rem;">
+          <option value="" disabled>Enter link type</option>
+          <option value="HT" [hidden]="checkSelection('HT')">HT</option>
+          <option value="OCCM" [hidden]="checkSelection('OCCM')">OCCM</option>
+          <option value="LDND" [hidden]="checkSelection('LDND')">LDND</option>
+          <option value="SB" [hidden]="checkSelection('SB')">SB</option>
+          <option value="AD" [hidden]="checkSelection('AD')">AD</option>
+          <option value="MPD" [hidden]="checkSelection('MPD')">MPD </option>
+          <option value="Delivery Bible Template" [hidden]="checkSelection('Delivery Bible Template')">Delivery Bible
+            Template </option>
+          <option value="Delivery Bible Question Template"
+            [hidden]="checkSelection('Delivery Bible Question Template')">Delivery Bible Question
+            Template </option>
+          <option value="AircraftData" [hidden]="checkSelection('AircraftData')">Aircraft Data</option>
+          <option value="ConfigurationFile" [hidden]="checkSelection('ConfigurationFile')">Configuration File</option>
+          <option value="DOCUMENT">DOCUMENT</option>
+
+        </select>
+
+        <i class="fas fa-plus cp" [style.marginRight.rem]="inputLinks.controls.length>1 ? 1:0"
+          (click)="addInputLinks()"></i>
+        <i class="fas fa-minus cp" (click)="removeInputLinks(i)" *ngIf="inputLinks.controls.length>1"></i>
+      </div>
+    </ng-container>
+    <div class="d-flex align-items-center nunito">
+      <label for="exampleFormControlInput34" class="form-label text-nowrap mr position-relative"
+        style="margin-right: 18px;">Output Link</label>
+      <input type="text" class="form-control mb-0" id="exampleFormControlInput34"
+        [placeholder]="isLoggedIn ? 'Enter your link':'Please log in to continue'" formControlName="outputLink"
+        [class.is-invalid]="inputLinkForm.get('outputLink')?.errors && inputLinkForm.get('outputLink')?.touched"
+        pattern="(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})">
+    </div>
+  </form>
+</div>
+<!-- ==========================================Combined Search=============================================== -->
+
+<!-- ==========================================Folder Paths=============================================== -->
+<div class="directoryview w-100 d-flex flex-wrap justify-content-between align-items-center mb-3 p-2">
+  <div class="roboto flex-grow-1">
+    <i class="fas fa-arrow-left" (click)="back()" [class.fa-disabled]="pathList.length==0"></i>
+    <span class="myfile cp" (click)="goToMyFiles()">{{rootDirName}}</span>
+    <span *ngFor="let data of pathList;let i=index" class="separator cp" (click)="goToPath(data,i)">
+      <span class="separator">/</span>
+      <span class="path text-break" style="word-wrap: break-word;">{{data}}</span>
+    </span>
+  </div>
+  <div class="d-flex">
+    <i class="fas fa-file-export" *ngIf="varifyOptions" (click)="showFileMovement()" title="Move File"></i>
+    <i class="fas fa-check cp" *ngIf="varifyOptions" (click)="verifyFunc('verify')" title="Approved"></i>
+    <i class="fas fa-times cp" *ngIf="varifyOptions" (click)="verifyFunc('not-verify')" title="Not-approved"></i>
+    <i class="fas fa-question cp" *ngIf="varifyOptions" (click)="verifyFunc('tbd')" title="To be discussed"></i>
+    <i class="fas fa-clipboard-list" *ngIf="varifyOptions && ispdfClicked" title="Notes" (click)="openList()"></i>
+    <i class="far fa-trash-alt cp" title="Delete" (click)="deleteDirectories()"
+      *ngIf="!selectedFeature && isAccess"></i>
+    <i class="fas fa-cloud-download-alt cp" title="Download" (click)="download()" *ngIf="!selectedFeature"></i>
+    <i class="fas fa-tree cp" title="Shows the folders and files in a tree structured format"
+      (click)="showTreeView()"></i>
+    <!-- <i class="fas fa-file-signature" *ngIf="isAccess" title="Directory name mode full or short" (click)="changeDirNameMode()"></i> -->
+    <!-- <i class="fas fa-expand cp" title="Full Screen" (click)="fullscreen()"></i> -->
+    <i class="fas fa-list cp" title="List view" (click)="listView()"></i>
+    <i class="fas fa-th cp" *ngIf="largeView" title="Grid view" title="Change view" (click)="changeView()"></i><i
+      class="fas fa-grip-vertical cp" *ngIf="!largeView" (click)="changeView()"></i>
+    <!-- <i class="fas fa-list cp" title="Expand" (click)="listView()"></i> -->
+    <!-- <i class="fas fa-folder cp"></i> -->
+    <i class="fas fa-calendar cp" *ngIf="varifyOptions && ispdfClicked" (click)="addNotes()"></i>
+    <i class="fas fa-tags cp" *ngIf="varifyOptions && ispdfClicked" (click)="addTags()"></i>
+
+  </div>
+</div>
+<!-- ==========================================Folder Paths=============================================== -->
+
+
+<div class="directory-container border mb-4 bg-white" [class.ifAdvanceSearch]="showCombinedSearch" #directorycontainer>
+  <div *ngIf="!showBuildDeliveryUi && !showBuildDeliveryUi2"
+    class="search d-flex align-items-center px-4 border-bottom">
+    <i class="fas fa-search"></i>
+    <input type="text" class="flex-grow-1 border-0" placeholder="Search MSN, project, folders, files"
+      [(ngModel)]="searchTerm" (input)="searchFoldersAndFiles()">
+    <select class="form-select nunito fw-bold" aria-label="Default select example" [(ngModel)]="searchOption"
+      (change)="resetFoldersAndFiles()">
+      <option value="All" class="fw-bold">All</option>
+      <option value="Folders" class="fw-bold">Folders</option>
+      <option value="Files" class="fw-bold">Files</option>
+    </select>
+    <button class="btn btn-primary create-btn" *ngIf="isAccess" (click)="createFolderModal()"><i
+        class="fas fa-plus position-relative" style="top: -1px;"></i> Create</button>
+    <!-- <button class="btn btn-light create-btn" (click)="createFolderModal()"><img
+        src="assets/images/input_folder/create.svg" alt="" width="14px" class="create-icon"> Create</button> -->
+    <div class="dropdown">
+      <button *ngIf="isAccess" class="btn btn-primary" id="dropdownMenuButton1" data-bs-toggle="dropdown"
+        aria-expanded="false"><i class="fas fa-cloud-upload-alt"></i>Upload</button>
+      <ul class="dropdown-menu dropdown-menu-end custom-dropdown" aria-labelledby="dropdownMenuButton1">
+        <li><a class="dropdown-item" href="javascript:void(0)" (click)="fileInput.click();checkUploadInprogress()">
+            <img src="assets/images/upload_file.jpg" alt="" width="26px" style="margin-right: 6px;">Upload files
+          </a>
+        </li>
+        <li>
+          <a class="dropdown-item" href="javascript:void(0)" (click)="uploadLinkLoggedIn()"><img
+              src="assets/images/link.png" alt="" width="18px" style="margin-right: 6px;margin-left: 4px;"> Link</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- <div class="row justify-content-center mt-3">
+    <div class="col-sm-12 col-md-9 col-lg-9 ">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Projects</th>
+            <th>No. of Files</th>
+            <th>No. of Folders</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Project 1</td>
+            <td>File 1</td>
+            <td>folder1</td>
+          </tr>
+
+          <tr>
+            <td>Project 2</td>
+            <td>File 2</td>
+            <td>folder 2</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div> -->
+
+  <div class="step-btn-container px-4 pt-4 d-flex justify-content-between" *ngIf="selectedFeature">
+    <div>
+      <button class="btn" [ngClass]="selectedStep==='step1'?'btn-primary':'btn-outline-primary'"
+        (click)="selectedFeature === 'Document Classification' ? showDocClassificationPdfFolder() : showPdfDirectory()">{{selectedFeature
+        === 'Document Classification' ? 'Step one (select pdf folder)':'Step one (select pdf)'}}</button>
+      <button class="btn btn-outline-primary" [ngClass]="selectedStep==='step2'?'btn-primary':'btn-outline-primary'"
+        (click)="showCsvDirectory()" *ngIf="twoStepFeatures.includes(selectedFeature)">Step two (select csv)</button>
+      <button class="btn btn-outline-primary" [ngClass]="selectedStep==='step3'?'btn-primary':'btn-outline-primary'"
+        (click)="showOptions()" *ngIf="showOption.includes(selectedFeature)">{{twoStepFeatures.includes(selectedFeature)
+        ? 'Step Three' : 'Step Two'}} (select options)</button>
+      <button class="btn btn-outline-primary" *ngIf="selectedFeature === 'Document Classification'"
+        [ngClass]="selectedStep==='step4' ? 'btn-primary':'btn-outline-primary'"
+        (click)="showDocClassificationPdfFile()">Step 3 (select pdf option)</button>
+      <button class="btn btn-primary" (click)="process()"
+        *ngIf="selectedFeature !== 'Page Reordering' && selectedFeature !== 'Document merge'" ripple><i
+          class="far fa-file-alt"></i>Process</button>
+    </div>
+    <div *ngIf="selectedPdfPaths.length > 0 && selectedFeature !== 'Page Reordering'">
+      <p (click)="canvas2.showRightCanvas = true;canvas2.title = 'Selected Pdf Paths';" class="cp">
+        {{selectedPdfPaths.length}} pdf directory selected</p>
+    </div>
+  </div>
+
+  <div class="d-flex flex-column justify-content-center align-items-center position-relative" style="top: 30%;"
+    *ngIf="showFetchDirSpinner">
+    <mat-spinner [diameter]="40"></mat-spinner>
+  </div>
+
+  <div class="d-flex flex-column justify-content-center align-items-center nodirectory cp"
+    *ngIf="showEmptyDirectory() && router.url === '/viewDir/myfiles' && !showFetchDirSpinner"
+    (click)="fileInput.click();checkUploadInprogress()">
+    <i class="fas fa-cloud-upload-alt fa-4x"></i>
+    <p class="nunito">No Folder and Files Found Click here To Upload</p>
+  </div>
+
+  <!-- ==========================================Show All Directory=============================================== -->
+  <div class="showAllFoldersFiles" *ngIf="showAllFoldersFiles" [ngClass]="largeView ? 'p-4':'p-2'">
+
+    <!-- google folder -->
+    <pagination-template #p="paginationApi" (pageChange)="gpage = $event" id="first2"
+      *ngIf="showFolder && (gfilteredFolderList.length > 0)">
+      <div class="d-flex justify-content-between pagination" [class.mb-3]="!listViewVal" [class.mb-2]="listViewVal">
+        <div class="d-flex align-items-center">
+          <img src="assets/images/upload/google.ico" alt="" width="24px"
+            class="loginwith cp rounded-circle shadow-m position-relative" style="top: 2.5px;">
+          <p class="found-text">{{gfilteredFolderList.length}} Project{{gfilteredFolderList.length>1 ? 's':''}} found
+          </p>
+          <div class="form-check mr position-relative featureselectalldir">
+            <input class="form-check-input shadow-none" type="checkbox" [(ngModel)]="gselectAllFoldersCheck"
+              id="dircheck124" (change)="selectAllGFolder()">
+            <label class="form-check-label feature" for="dircheck124">Select all folders</label>
+          </div>
+        </div>
+        <div class="d-flex align-items-center">
+          <div>
+            <p class="text-nowrap pagination-text">
+              <input class="position-relative" type="text" value="p.getCurrent()" [(ngModel)]="gpage"
+                style="width: 20px;text-align: center;border: none;outline: none;top: 0px;">of
+              {{p.getLastPage()}}
+            </p>
+          </div>
+          <select class="form-select" aria-label="Default select example" [(ngModel)]="gpageSize"
+            (change)="gpage = 1;storegFolderPageSize()">
+            <option value="100">100</option>
+            <option value="50">50</option>
+            <option value="25">25</option>
+            <option value="10">10</option>
+          </select>
+          <div class="d-flex pagination-icon"><i class="fas fa-chevron-left cp" (click)="p.previous()"
+              [class.fa-disabled]="p.isFirstPage()"></i><i class="fas fa-chevron-right cp" (click)="p.next()"
+              [class.fa-disabled]="p.isLastPage()"></i></div>
+        </div>
+      </div>
+    </pagination-template>
+
+
+    <!-- style="max-height: 400px;" -->
+    <div class="mb-3" [ngClass]="largeView ? 'row':'d-flex flex-wrap'" *ngIf="showFolder">
+      <div [class.col-lg-2]="largeView && !listViewVal"
+        [ngClass]="{'col-lg-4 col-md-6 col-sm-12':!largeView && listViewVal}"
+        [class.folder-list]="!largeView && !listViewVal"
+        *ngFor="let directory of gfilteredFolderList | paginate: { itemsPerPage: gpageSize, currentPage: gpage, id: 'first2' }">
+        <app-directory [largeView]="largeView" [pathlist]="pathList" [data]="directory" [showCheckbox]="showCheckbox"
+          (onSelectDirectory)="selectDirectory($event)"
+          (metadata)="canvas.showRightCanvas = true;canvas.title = directory.name+' Properties';"
+          (dblclick)="openDirectory(directory)" (click)="showTreeViewofFolder(directory)"></app-directory>
+      </div>
+    </div>
+    <!-- google folder -->
+
+
+    <!-- folder -->
+    <pagination-template #p="paginationApi" (pageChange)="page = $event" id="first"
+      *ngIf="showFolder && (filteredFolderList.length > 0) && !showBuildDeliveryUi && !showBuildDeliveryUi2">
+      <div class="d-flex justify-content-between pagination" [class.mb-3]="!listViewVal" [class.mb-2]="listViewVal">
+        <div class="d-flex align-items-center">
+          <i class="fas fa-folder shadow-m" style="font-size: 17px;background-color: #fff;
+          color: #080694; margin: 3px 10px 0px 3px; border-radius: 50px; width: 24px;
+          height: 24px; text-align: center; line-height: 24px;"></i>
+          <p class="found-text ms-2">{{filteredFolderList.length}} Folder{{filteredFolderList.length>1 ? 's':''}} found
+          </p>
+          <div class="form-check mr position-relative featureselectalldir">
+            <input class="form-check-input shadow-none" type="checkbox" [(ngModel)]="selectAllFoldersCheck"
+              id="dircheck12" (change)="selectAllFolder()">
+            <label class="form-check-label feature" for="dircheck12">Select all folders</label>
+          </div>
+        </div>
+        <div class="d-flex align-items-center">
+          <div>
+            <p class="text-nowrap pagination-text">
+              <input class="position-relative" type="text" value="p.getCurrent()" [(ngModel)]="page"
+                style="width: 20px;text-align: center;border: none;outline: none;top: 0px;">of
+              {{p.getLastPage()}}
+            </p>
+          </div>
+          <select class="form-select" aria-label="Default select example" [(ngModel)]="pageSize"
+            (change)="page = 1;storeFolderPageSize()">
+            <option value="100">100</option>
+            <option value="50">50</option>
+            <option value="25">25</option>
+            <option value="10">10</option>
+          </select>
+          <div class="d-flex pagination-icon"><i class="fas fa-chevron-left cp" (click)="p.previous()"
+              [class.fa-disabled]="p.isFirstPage()"></i><i class="fas fa-chevron-right cp" (click)="p.next()"
+              [class.fa-disabled]="p.isLastPage()"></i></div>
+        </div>
+      </div>
+    </pagination-template>
+    <!-- style="max-height: 400px;" -->
+    <div class="mb-3" [ngClass]="largeView? 'row':'d-flex flex-wrap'"
+      *ngIf="showFolder && !showBuildDeliveryUi && !showBuildDeliveryUi2">
+      <div [class.col-lg-2]="largeView && !listViewVal"
+        [ngClass]="{'col-lg-4 col-md-6 col-sm-12':!largeView && listViewVal}"
+        [class.folder-list]="!largeView && !listViewVal"
+        *ngFor="let directory of filteredFolderList | paginate: { itemsPerPage: pageSize, currentPage: page, id: 'first' }">
+        <app-directory [largeView]="largeView" [data]="directory" [showCheckbox]="showCheckbox"
+          (onSelectDirectory)="selectDirectory($event)"
+          (metadata)="canvas.showRightCanvas = true;canvas.title = directory.name+' Properties';"
+          (dblclick)="openDirectory(directory)" (click)="showTreeViewofFolder(directory)"></app-directory>
+        <!-- <span><button  mat-button [id]="directory.name" style="visibility: hidden;" [matMenuTriggerFor]="aboveMenu"></button></span> -->
+      </div>
+    </div>
+    <!-- <mat-menu #aboveMenu="matMenu" xPosition="after">
+        <button mat-menu-item>Add Folder</button>
+        <button mat-menu-item>Remove Folder</button>
+        <button mat-menu-item>Add Users</button>
+        <button mat-menu-item>Show Build Bible</button>
+      </mat-menu> -->
+    <!-- <div style="visibility: hidden; position: fixed" [style.left]="contextMenuPosition.x"
+          [style.top]="contextMenuPosition.y" [matMenuTriggerFor]="contextMenu">
+        </div> -->
+    <!-- <mat-menu #contextMenu="matMenu">
+      <button (click)="onContextMenuAction1('Add Folder')">Add Folder</button>
+      <button (click)="onContextMenuAction2('Remove Folder')">Remove Folder</button>
+      <button (click)="onContextMenuAction2(Add User)">Add User</button>
+      <button (click)="onContextMenuAction2(Show Build Bible)">Show Build Bible</button>
+    </mat-menu> -->
+    <app-build-delivery-bible *ngIf="showBuildDeliveryUi && !showBuildDeliveryUi2"
+      [path]="base_path+this._auth.org_name + '/' + this._auth.user_name+'/'+pathList.join('/')">
+    </app-build-delivery-bible>
+    <app-build-delivery-bible2 *ngIf="showBuildDeliveryUi2"
+      [path]="base_path+this._auth.org_name + '/' + this._auth.user_name+'/'+pathList.join('/')">
+    </app-build-delivery-bible2>
+    <!-- folder -->
+
+    <!--files-->
+
+    <pagination-template #p2="paginationApi" (pageChange)="filepage = $event" id="second"
+      *ngIf="showFile && (filteredFileList.length > 0) && !showBuildDeliveryUi && !showBuildDeliveryUi2">
+      <div class="d-flex justify-content-between pagination">
+        <div class="d-flex align-items-center">
+          <i class="fas fa-file shadow-m" style="font-size: 17px;background-color: #fff;
+          color: #080694; margin: 3px 10px 0px 3px; border-radius: 50px; width: 24px;
+          height: 24px; text-align: center; line-height: 24px;"></i>
+          <p class="found-text">{{filteredFileList.length}} File{{filteredFileList.length>1 ? 's':''}} found</p>
+          <div class="form-check mr position-relative featureselectalldir">
+            <input class="form-check-input shadow-none" type="checkbox" [(ngModel)]="selectAllFilesCheck" id="dircheck8"
+              (change)="selectAllFile()">
+            <label class="form-check-label feature" for="dircheck8">Select all files</label>
+          </div>
+        </div>
+        <div class="d-flex align-items-center">
+          <button *ngIf="ispdfClicked" class="btn btn-primary text-nowrap" style="padding: 3px 8px;
+          font-size: 12px;" data-bs-toggle="modal" data-bs-target="#fileModal">File Search</button>
+          <div *ngIf="ispdfClicked">
+            <i class="fas fa-expand" title="Show Full PDF" (click)="showFullPdf()"></i>
+          </div>
+          <div class="ms-2">
+            <p class="text-nowrap pagination-text">{{p2.getCurrent()+' of '+p2.getLastPage()}}</p>
+          </div>
+          <select class="form-select" aria-label="Default select example" [(ngModel)]="filePageSize"
+            (change)="filepage = 1;storeFilePageSize()">
+            <option value="100">100</option>
+            <option value="50">50</option>
+            <option value="25">25</option>
+            <option value="10">10</option>
+          </select>
+          <div class="d-flex pagination-icon"><i class="fas fa-chevron-left cp" (click)="p2.previous()"
+              [class.fa-disabled]="p2.isFirstPage()"></i><i class="fas fa-chevron-right cp" (click)="p2.next()"
+              [class.fa-disabled]="p2.isLastPage()"></i></div>
+        </div>
+      </div>
+    </pagination-template>
+    <!-- File -->
+
+    <div class="row position-relative">
+      <div [ngClass]="(ispdfClicked || issearchClicked) ? 'col-md-4' : 'col-sm-12 '">
+        <div class="mt-3" [ngClass]="largeView ? 'row':'d-flex flex-wrap'"
+          *ngIf="showFile && !showBuildDeliveryUi && !showBuildDeliveryUi2">
+          <div [class.col-lg-2]="largeView && !listViewVal" [ngClass]="{'col-md-4 col-sm-12':!largeView && listViewVal}"
+            [class.col-lg-12]="(ispdfClicked || issearchClicked)" [class.folder-list]="!largeView && !listViewVal"
+            *ngFor="let directory of filteredFileList | paginate: { itemsPerPage: filePageSize, currentPage: filepage, id: 'second' }">
+            <app-directory [largeView]="largeView" [pathlist]="pathList" [data]="directory"
+              [showCheckbox]="showCheckbox" (onSelectDirectory)="selectDirectory($event)"
+              (metadata)="canvas.showRightCanvas = true;canvas.title = directory.name+' Properties';getDirectoryMetadata(directory)"
+              (dblclick)="openFile(directory)" (click)="showTreeViewofFolder(directory)"></app-directory>
+          </div>
+        </div>
+
+        <div class="card showquestion" *ngIf="showQuestionList && ispdfClicked">
+          <div class="card-header">
+            <h5 class="mb-0">Verify Details
+              <i class="fas fa-times cancel" (click)="showQuestionList=false"></i>
+              <i class="fas fa-undo" (click)="undoFunc()"></i>
+            </h5>
+          </div>
+          <div class="card-body">
+            <div class="mb-3">
+              <p class="d-inline">Select All</p>
+              <div class="d-inline float-end">
+                <input type="radio" class="form-check-input" [(ngModel)]="selectAllQues" (click)="setselectAllQues()"
+                  name="selectAllQues" value="varified">
+                <i class="fas fa-check"></i>
+                <input type="radio" class="form-check-input" [(ngModel)]="selectAllQues" name="selectAllQues"
+                  (click)="setselectAllQues()" value="cancel">
+                <i class="fas fa-times"></i>
+                <input type="radio" class="form-check-input" [(ngModel)]="selectAllQues" name="selectAllQues"
+                  value="tbd" (click)="setselectAllQues()">
+                <i class="fas fa-question"></i>
+              </div>
+            </div>
+            <div class="mb-4" *ngFor="let ques of varifyQuestionList;let i=index;">
+              <p class="d-inline">{{ques.question}}</p>
+
+              <div class="d-flex">
+                <input type="text" placeholder="Add notes" [(ngModel)]="ques.note" class="form-control">
+                <div class=" my-auto">
+                  <input type="radio" class="form-check-input" [(ngModel)]="ques.response" [name]="'val'+i"
+                    value="varified">
+                  <i class="fas fa-check"></i>
+                  <input type="radio" class="form-check-input" [(ngModel)]="ques.response" [name]="'val'+i"
+                    value="cancel">
+                  <i class="fas fa-times"></i>
+                  <input type="radio" class="form-check-input" [(ngModel)]="ques.response" [name]="'val'+i" value="tbd">
+                  <i class="fas fa-question"></i>
+                </div>
+              </div>
+            </div>
+            <div class="text-center">
+              <button class="btn btn-primary w-100 justify-content-center" (click)="submitQuery()">Submit <i
+                  class="fas fa-paper-plane"></i></button>
+            </div>
+            <!-- <p>Is date validate?</p>
+            <input type="text" placeholder="Add note" class="form-control w-auto d-inline">
+            <div class="d-inline float-end pt-3">
+              <input type="radio" class="form-check-input" name="verifydata">
+              <i class="fas fa-check"></i>
+              <input type="radio" class="form-check-input" name="verifydata">
+              <i class="fas fa-times"></i>
+              <input type="radio" class="form-check-input" name="verifydata">
+              <i class="fas fa-question"></i>
+            </div>
+            <p>Is date validate?</p>
+            <input type="text" placeholder="Add note" class="form-control w-auto d-inline">
+            <div class="d-inline float-end pt-3">
+              <input type="radio" class="form-check-input" name="verifydata">
+              <i class="fas fa-check"></i>
+              <input type="radio" class="form-check-input" name="verifydata">
+              <i class="fas fa-times"></i>
+              <input type="radio" class="form-check-input" name="verifydata">
+              <i class="fas fa-question"></i>
+            </div> -->
+          </div>
+        </div>
+
+        <div class="card showquestion" *ngIf="notes">
+          <div class="card-header">
+            <h6 class="mb-0">Add Notes
+              <i class="fas fa-times cancel float-end" (click)="notes=false"></i>
+            </h6>
+          </div>
+          <div class="card-body">
+            <div class="form-group">
+              <textarea class="form-control w-100" rows="6" style="height: 140px;" placeholder="Enter Notes"></textarea>
+              <button class="btn btn-primary mt-3">Submit</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="card showquestion" *ngIf="tag">
+          <div class="card-header">
+            <h6 class="mb-0">Add Tags
+              <i class="fas fa-times cancel float-end" (click)="tag=false"></i>
+            </h6>
+          </div>
+          <div class="card-body">
+            <div class="form-group">
+              <!-- <mat-form-field class="example-chip-list" appearance="fill">
+                <mat-label>Video keywords</mat-label>
+                <mat-chip-list #chipList aria-label="Video keywords" multiple [formControl]="formControl">
+                  <mat-chip
+                      *ngFor="let keyword of keywords"
+                      [selected]="keyword"
+                      [value]="keyword"
+                      (removed)="removeKeyword(keyword)">
+                    {{keyword}}
+                  </mat-chip>
+                  <input
+                    placeholder="New keyword..."
+                    [matChipInputFor]="chipList"
+                    (matChipInputTokenEnd)="addKeywordFromInput($event)">
+                </mat-chip-list>
+              </mat-form-field> -->
+              <!-- <textarea class="form-control w-100" rows="6" style="height: 140px;" placeholder="Enter Notes"></textarea> -->
+
+              <mat-form-field class="example-chip-list w-100" appearance="fill">
+                <mat-label>Tags</mat-label>
+                <mat-chip-list #chipList aria-label="Tags">
+                  <mat-chip *ngFor="let tag of tagList" (removed)="remove(tag)">
+                    {{tag.name}}
+                    <button matChipRemove>
+                      <mat-icon>cancel</mat-icon>
+                    </button>
+                  </mat-chip>
+                  <input placeholder="Add tags" [matChipInputFor]="chipList"
+                    [matChipInputSeparatorKeyCodes]="separatorKeysCodes" [matChipInputAddOnBlur]="addOnBlur"
+                    (matChipInputTokenEnd)="add($event)">
+                </mat-chip-list>
+              </mat-form-field>
+              <div class="text-center">
+                <button class="btn btn-primary">Submit</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div class="col-md-8 position-relative" *ngIf="ispdfClicked && !issearchClicked ">
+        <iframe [src]="pdfFilePathright" title="abcdefg" class="vh-90" width="100%" height="100%" frameborder="0"
+          style="position: relative;z-index: 1;" *ngIf="ispdfClicked && !issearchClicked">
+        </iframe>
+        <div class="highlight-btn-iframe align-items-center">
+          <i class="fas fa-times" (click)="ispdfClicked=false"></i>
+        </div>
+      </div>
+      <div class="col-md-8 position-relative" *ngIf="issearchClicked && !ispdfClicked">
+        <iframe [src]="searchPathright" title="abcdefg" class="vh-90" width="100%" height="100%" frameborder="0"
+          style="position: relative;z-index: 1;" *ngIf="issearchClicked && !ispdfClicked">
+        </iframe>
+        <div class="highlight-btn-iframe align-items-center">
+          <i class="fas fa-times" (click)="closeSearchView()"></i>
+        </div>
+      </div>
+    </div>
+    <!-- File -->
+  </div>
+  <!-- ==========================================Show All Directory=============================================== -->
+
+
+  <!-- ==========================================Show All Pdf Folders And Files(Single Step Features)=============================================== -->
+  <div class="showAllPdfFoldersFiles" *ngIf="showAllPdfFoldersFiles" [ngClass]="largeView ? 'p-4':'p-2'">
+    <div class="mb-3" *ngIf="selectedFeature === 'Page Reordering' && pdfurl">
+      <div class="mt-4 d-flex w-100">
+        <div class="flex-grow-1 position-relative" style="height: 600px;margin-right: 20px;">
+          <div class="form-check position-absolute inplace">
+            <input class="form-check-input shadow-none" type="checkbox" id="pr1" [(ngModel)]="featureOptions.inPlace">
+            <label class="form-check-label feature nunito fw-600" for="pr1">In place</label>
+          </div>
+          <iframe [src]="pdfurl" width="100%" height="100%" frameborder="0"
+            style="position: relative;z-index: 1;"></iframe>
+          <div class="position-absolute" style="top: -6px;right: 154px;z-index: 999;"><button
+              class="btn btn-primary mt-3" (click)="savePageReordering()"><i
+                class="far fa-file-alt"></i>Process</button></div>
+        </div>
+        <div>
+          <div cdkDropList class="example-list-pdfnum" (cdkDropListDropped)="pdfNumPagedrop($event)"
+            style="height: auto;max-height:600px;overflow:auto;">
+            <div class="example-box-pdfnum" *ngFor="let pnum of pdfpagenums" cdkDrag>
+              <div class="example-custom-placeholder" *cdkDragPlaceholder></div>
+              {{pnum}}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- folder -->
+    <pagination-template #p="paginationApi" (pageChange)="pdfPage = $event" id="third"
+      *ngIf="showPdfFolder && (filteredPdfFolderList.length > 0) && selectedFeature !== 'Avionics listing'">
+      <div class="d-flex align-items-center justify-content-between mb-3 pagination">
+        <div class="d-flex align-items-center">
+          <p class="found-text mr">{{filteredPdfFolderList.length}} Folder{{filteredPdfFolderList.length>1 ? 's':''}}
+            found</p>
+          <div class="form-check mr position-relative featureselectalldir">
+            <input class="form-check-input shadow-none" type="checkbox" [(ngModel)]="selectAllPdfFoldersCheck"
+              id="dircheck4" (change)="selectAllPdfFolder()">
+            <label class="form-check-label feature" for="dircheck4">Select all folders</label>
+          </div>
+        </div>
+        <div class="d-flex align-items-center">
+          <div>
+            <p class="text-nowrap pagination-text"><input class="position-relative" type="text" value="p.getCurrent()"
+                [(ngModel)]="pdfPage" style="width: 20px;text-align: center;border: none;outline: none;top: 0px;">of
+              {{p.getLastPage()}}</p>
+          </div>
+          <select class="form-select" aria-label="Default select example" [(ngModel)]="pdfPageSize"
+            (change)="pdfPage = 1;storePdfFolderPageSize()">
+            <option value="100">100</option>
+            <option value="50">50</option>
+            <option value="25">25</option>
+            <option value="10">10</option>
+          </select>
+          <div class="d-flex pagination-icon">
+            <i class="fas fa-chevron-left cp" (click)="p.previous()" [class.fa-disabled]="p.isFirstPage()"></i>
+            <i class="fas fa-chevron-right cp" (click)="p.next()" [class.fa-disabled]="p.isLastPage()"></i>
+          </div>
+        </div>
+      </div>
+    </pagination-template>
+    <div [ngClass]="largeView ? 'row':'d-flex flex-wrap'"
+      *ngIf="showPdfFolder && (selectedFeature !== 'Avionics listing')">
+      <div [class.col-lg-2]="largeView && !listViewVal"
+        [ngClass]="{'col-lg-4 col-md-6 col-sm-12':!largeView && listViewVal}"
+        [class.folder-list]="!largeView && !listViewVal"
+        *ngFor="let directory of filteredPdfFolderList | paginate: { itemsPerPage: pdfPageSize, currentPage: pdfPage, id: 'third' }">
+        <app-directory [largeView]="largeView" [pathlist]="pathList" [data]="directory"
+          (onSelectDirectory)="selectDirectory($event)" [showCheckbox]="true"
+          (onSelect)="selectPdfFolder(directory.name,directory.path)" (dblclick)="openDirectory(directory)"
+          (click)="showTreeViewofFolder(directory)"></app-directory>
+      </div>
+    </div>
+    <!-- folder -->
+
+    <!-- google folder -->
+    <pagination-template #p="paginationApi" (pageChange)="gpdfPage = $event" id="g1"
+      *ngIf="showPdfFolder && (gfilteredPdfFolderList.length > 0) && selectedFeature !== 'Avionics listing'">
+      <div class="d-flex align-items-center justify-content-between my-3 pagination">
+        <div class="d-flex align-items-center">
+          <img src="assets/images/upload/google.ico" alt="" width="24px" class="loginwith cp rounded-circle shadow-m">
+          <p class="found-text mr">{{gfilteredPdfFolderList.length}} Folder{{gfilteredPdfFolderList.length>1 ? 's':''}}
+            found</p>
+          <div class="form-check mr position-relative featureselectalldir">
+            <input class="form-check-input shadow-none" type="checkbox" [(ngModel)]="gselectAllPdfFoldersCheck"
+              id="dircheck42" (change)="selectAllGPdfFolder()">
+            <label class="form-check-label feature" for="dircheck42">Select all folders</label>
+          </div>
+        </div>
+        <div class="d-flex align-items-center">
+          <div>
+            <p class="text-nowrap pagination-text"><input class="position-relative" type="text" value="p.getCurrent()"
+                [(ngModel)]="gpdfPage" style="width: 20px;text-align: center;border: none;outline: none;top: 0px;">of
+              {{p.getLastPage()}}</p>
+          </div>
+          <select class="form-select" aria-label="Default select example" [(ngModel)]="gpdfPageSize"
+            (change)="gpdfPage = 1;storegPdfFolderPageSize()">
+            <option value="100">100</option>
+            <option value="50">50</option>
+            <option value="25">25</option>
+            <option value="10">10</option>
+          </select>
+          <div class="d-flex pagination-icon"><i class="fas fa-chevron-left cp" (click)="p.previous()"
+              [class.fa-disabled]="p.isFirstPage()"></i><i class="fas fa-chevron-right cp" (click)="p.next()"
+              [class.fa-disabled]="p.isLastPage()"></i></div>
+        </div>
+      </div>
+    </pagination-template>
+    <div [ngClass]="largeView ? 'row':'d-flex flex-wrap'"
+      *ngIf="showPdfFolder && selectedFeature !== 'Avionics listing'">
+      <div [class.col-lg-2]="largeView && !listViewVal"
+        [ngClass]="{'col-lg-4 col-md-6 col-sm-12':!largeView && listViewVal}"
+        [class.folder-list]="!largeView && !listViewVal"
+        *ngFor="let directory of gfilteredPdfFolderList | paginate: { itemsPerPage: gpdfPageSize, currentPage: gpdfPage, id: 'g1' }">
+        <app-directory [largeView]="largeView" [pathlist]="pathList" [data]="directory"
+          (onSelectDirectory)="selectDirectory($event)" [showCheckbox]="true"
+          (onSelect)="selectPdfFolder(directory.name,directory.path)" (dblclick)="openDirectory(directory)"
+          (click)="showTreeViewofFolder(directory)"></app-directory>
+      </div>
+    </div>
+    <!-- google folder -->
+
+    <p *ngIf="selectedFeature === 'Avionics listing'">Select input pdf and avionics pdf (Optional)</p>
+    <!-- File -->
+    <pagination-template #p="paginationApi" (pageChange)="pdfFilePage = $event" id="fourth"
+      *ngIf="showPdfFile && selectedFeature !== 'Anchor Text Based Document Ordering' && (filteredPdfFileList.length > 0) && selectedFeature !== 'Delivery Bible'">
+      <div class="d-flex justify-content-between pagination" style="margin-top: 34px;">
+        <div class="d-flex align-items-center">
+          <p class="found-text position-relative" style="top: 10px;">{{filteredPdfFileList.length}}
+            File{{filteredPdfFileList.length>1 ? 's':''}} found</p>
+          <div class="form-check mr position-relative featureselectalldir2">
+            <input class="form-check-input shadow-none" type="checkbox" [(ngModel)]="selectAllPdfFilesCheck"
+              id="dircheck3" (change)="selectAllPdfFile()">
+            <label class="form-check-label feature" for="dircheck3">Select all files</label>
+          </div>
+        </div>
+        <div class="d-flex align-items-center">
+
+          <div>
+            <p class="text-nowrap pagination-text">
+              <input class="position-relative" type="text" value="p.getCurrent()" [(ngModel)]="pdfFilePage"
+                style="width: 20px;text-align: center;border: none;outline: none;top: 0px;">of {{p.getLastPage()}}
+            </p>
+          </div>
+          <select class="form-select" aria-label="Default select example" [(ngModel)]="pdfFilePageSize"
+            (change)="pdfFilePage = 1;storePdfFilePageSize()">
+            <option value="100">100</option>
+            <option value="50">50</option>
+            <option value="25">25</option>
+            <option value="10">10</option>
+          </select>
+          <div class="d-flex pagination-icon"><i class="fas fa-chevron-left cp" (click)="p.previous()"
+              [class.fa-disabled]="p.isFirstPage()"></i><i class="fas fa-chevron-right cp" (click)="p.next()"
+              [class.fa-disabled]="p.isLastPage()"></i></div>
+        </div>
+      </div>
+    </pagination-template>
+    <div class="mt-1" [ngClass]="largeView ? 'row':'d-flex flex-wrap'"
+      *ngIf="showPdfFile && selectedFeature !== 'Anchor Text Based Document Ordering' && selectedFeature !== 'Document merge' && selectedFeature !== 'Delivery Bible'">
+      <div [class.col-lg-2]="largeView && !listViewVal"
+        [ngClass]="{'col-lg-4 col-md-6 col-sm-12':!largeView && listViewVal}"
+        [class.folder-list]="!largeView && !listViewVal"
+        *ngFor="let directory of filteredPdfFileList | paginate: { itemsPerPage: pdfFilePageSize, currentPage: pdfFilePage, id: 'fourth' }">
+        <app-directory [largeView]="largeView" [pathlist]="pathList" [data]="directory" [showCheckbox]="true"
+          (onSelectDirectory)="selectDirectory($event)" (onSelect)="selectPdfFile(directory.name)"
+          (dblclick)="openFile(directory)" (click)="showTreeViewofFolder(directory)"></app-directory>
+      </div>
+    </div>
+
+    <div class="d-flex align-items-center" *ngIf="selectedFeature === 'Document merge'">
+      <input type="text" [(ngModel)]="featureOptions.doc_merge_filename" class="form-control mt-3 w-25 mr-4"
+        placeholder="Enter file name">
+      <div class="form-check" style="margin-right: 20px;">
+        <input class="form-check-input shadow-none" type="checkbox" id="pr2" [(ngModel)]="featureOptions.inPlace">
+        <label class="form-check-label feature nunito fw-600" for="pr2">In place</label>
+      </div>
+      <div class="text-end">
+        <button class="btn btn-primary" (click)="process()">
+          <i class="far fa-file-alt"></i>Process
+        </button>
+      </div>
+    </div>
+    <div cdkDropListGroup *ngIf="selectedFeature === 'Document merge'" class="mt-4 d-flex">
+      <div class="example-container">
+        <h5>Input PDF list</h5>
+
+        <div cdkDropList [cdkDropListData]="docMergePdf" class="example-list shadow-m"
+          (cdkDropListDropped)="drop($event)" [cdkDropListEnterPredicate]="noReturnPredicate">
+          <div class="example-box"
+            *ngFor="let item of docMergePdf | paginate: { itemsPerPage: pdfFilePageSize, currentPage: pdfFilePage, id: 'fourth'}"
+            cdkDrag [class.bg-selecteditem]="selectedItemColor(item)" (dblclick)="selectItem(item)"
+            (click)="openFile(item,true)">
+            <app-svg-pdf-file size="30" style="margin-right: 6px;"></app-svg-pdf-file>
+            {{getFileNameBeforeDrop(item.path)}}
+          </div>
+        </div>
+      </div>
+
+      <div class="example-container">
+        <h5>PDFs to merge</h5>
+
+        <div cdkDropList [cdkDropListData]="docMergeSelectedPdf" class="example-list shadow-m"
+          (cdkDropListDropped)="drop($event)">
+          <div class="example-box position-relative" *ngFor="let item of docMergeSelectedPdf;let i = index;" cdkDrag
+            [title]="getFileNameAfterDrop(item.path)">
+            <app-svg-pdf-file size="30" style="margin-right: 6px;"></app-svg-pdf-file>
+            {{getFileNameAfterDrop(item.path).length>31 ?
+            getFileNameAfterDrop(item.path).slice(0,32)+'...':getFileNameAfterDrop(item.path)}}
+            <i class="fas fa-minus cp" (click)="removeItem(i)"
+              style="position: absolute;top: 50%;transform: translateY(-40%);right: 20px;font-size: 16px;"></i>
+          </div>
+        </div>
+      </div>
+
+      <div style="height: 400px;width: 50%;" *ngIf="pdfurl">
+        <iframe [src]="pdfurl" width="100%" height="100%" frameborder="0"
+          style="position: relative;z-index: 1;"></iframe>
+      </div>
+    </div>
+    <!-- File -->
+  </div>
+  <!-- ==========================================Show All Pdf Folders And Files(Single Step Features)=============================================== -->
+
+
+  <!-- ==========================================Show All Csv Folders And Files(Two Step Features)=============================================== -->
+  <div class="showAllCsvFoldersFiles" *ngIf="showAllCsvFoldersFiles" [ngClass]="largeView ? 'p-4':'p-2'">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <div *ngIf="approxSearchFeatureList.includes(selectedFeature)"
+        class="d-flex justify-content-between align-items-center">
+        <input class="form-control w-field nunito" type="text" placeholder="search keywords"
+          (input)="getSearchKeywords($event.target)" [disabled]="selectedCsvPaths.length > 0">
+        <p class="roboto mx-3">Choose keywords or csv</p>
+      </div>
+      <p>{{selectedCsvPaths.length + ' csv is selected'}}</p>
+    </div>
+
+    <!-- folder -->
+    <pagination-template #p="paginationApi" (pageChange)="csvPage = $event" id="five"
+      *ngIf="showCsvFolder && (filteredCsvFolderList.length > 0)">
+      <div class="d-flex justify-content-between pagination my-4">
+        <div class="d-flex align-items-center">
+          <p class="found-text">{{filteredCsvFolderList.length}} Folder{{filteredCsvFolderList.length>0 ? 's':''}} found
+          </p>
+          <div class="form-check mr position-relative featureselectalldir2">
+            <input class="form-check-input shadow-none" type="checkbox" [(ngModel)]="selectAllCsvFoldersCheck"
+              id="dircheck2" (change)="selectAllCsvFolder()">
+            <label class="form-check-label feature" for="dircheck2">Select all folders</label>
+          </div>
+        </div>
+        <div class="d-flex align-items-center">
+          <div>
+            <p class="text-nowrap pagination-text"><input class="position-relative" type="text" value="p.getCurrent()"
+                [(ngModel)]="csvPage" style="width: 20px;text-align: center;border: none;outline: none;top: 0px;">of
+              {{p.getLastPage()}}</p>
+          </div>
+          <select class="form-select" aria-label="Default select example" [(ngModel)]="csvPageSize"
+            (change)="csvPage = 1;storeCsvFolderPageSize()">
+            <option value="100">100</option>
+            <option value="50">50</option>
+            <option value="25">25</option>
+            <option value="10">10</option>
+          </select>
+          <div class="d-flex pagination-icon"><i class="fas fa-chevron-left cp" (click)="p.previous()"
+              [class.fa-disabled]="p.isFirstPage()"></i><i class="fas fa-chevron-right cp" (click)="p.next()"
+              [class.fa-disabled]="p.isLastPage()"></i></div>
+        </div>
+      </div>
+    </pagination-template>
+    <div [ngClass]="largeView ? 'row':'d-flex flex-wrap'" *ngIf="showCsvFolder">
+      <div [class.col-lg-2]="largeView && !listViewVal"
+        [ngClass]="{'col-lg-4 col-md-6 col-sm-12':!largeView && listViewVal}"
+        [class.folder-list]="!largeView && !listViewVal"
+        *ngFor="let directory of filteredCsvFolderList | paginate: { itemsPerPage: csvPageSize, currentPage: csvPage, id: 'five' }">
+        <app-directory [largeView]="largeView" [pathlist]="pathList" [data]="directory" [showCheckbox]="true"
+          (onSelectDirectory)="selectDirectory($event)" (dblclick)="openDirectory(directory)"
+          (click)="showTreeViewofFolder(directory)" (onSelect)="selectCsvFolder(directory.name)"></app-directory>
+      </div>
+    </div>
+    <!-- folder -->
+
+    <!-- File -->
+    <pagination-template #p="paginationApi" (pageChange)="csvFilepage = $event" id="six"
+      *ngIf="showCsvFile && (filteredCsvFileList.length > 0)">
+      <div class="d-flex justify-content-between pagination">
+        <div class="d-flex align-items-center">
+          <p class="found-text position-relative" style="top: 10px;">{{filteredCsvFileList.length}}
+            File{{filteredCsvFileList.length>1 ? 's':''}} found</p>
+          <div class="form-check mr position-relative featureselectalldir2" style="top: 4px;">
+            <input class="form-check-input shadow-none" type="checkbox" [(ngModel)]="selectAllCsvFilesCheck"
+              id="dircheck1" (change)="selectAllCsvFile()">
+            <label class="form-check-label feature" for="dircheck1">Select all files</label>
+          </div>
+        </div>
+        <div class="d-flex align-items-center">
+          <div>
+            <p class="text-nowrap pagination-text"><input class="position-relative" type="text" value="p.getCurrent()"
+                [(ngModel)]="csvFilepage" style="width: 20px;text-align: center;border: none;outline: none;top: 0px;">of
+              {{p.getLastPage()}}</p>
+          </div>
+          <select class="form-select" aria-label="Default select example" [(ngModel)]="csvFilePageSize"
+            (change)="csvFilepage = 1;storeCsvFilePageSize()">
+            <option value="100">100</option>
+            <option value="50">50</option>
+            <option value="25">25</option>
+            <option value="10">10</option>
+          </select>
+          <div class="d-flex pagination-icon"><i class="fas fa-chevron-left cp" (click)="p.previous()"
+              [class.fa-disabled]="p.isFirstPage()"></i><i class="fas fa-chevron-right cp" (click)="p.next()"
+              [class.fa-disabled]="p.isLastPage()"></i></div>
+        </div>
+      </div>
+    </pagination-template>
+    <div class="mt-3" [ngClass]="largeView ? 'row':'d-flex flex-wrap'" *ngIf="showCsvFile">
+      <div [class.col-lg-2]="largeView && !listViewVal"
+        [ngClass]="{'col-lg-4 col-md-6 col-sm-12':!largeView && listViewVal}"
+        [class.folder-list]="!largeView && !listViewVal"
+        *ngFor="let directory of filteredCsvFileList | paginate: { itemsPerPage: csvFilePageSize, currentPage: csvFilepage, id: 'six' }">
+        <app-directory [largeView]="largeView" [pathlist]="pathList" [data]="directory" [showCheckbox]="true"
+          (onSelectDirectory)="selectDirectory($event)" (dblclick)="openFile(directory)"
+          (click)="showTreeViewofFolder(directory)" (onSelect)="selectCsvFile(directory.name)"></app-directory>
+      </div>
+    </div>
+    <!-- File -->
+  </div>
+  <!-- ==========================================Show All Csv Folders And Files(Single Step Features)=============================================== -->
+
+
+  <!-- ==========================================Show All Feature Options=============================================== -->
+  <div class="options p-4" *ngIf="selectedStep==='step3' && showOption.includes(selectedFeature)">
+    <div class="d-flex align-items-center flex-wrap roboto gap-lg-3 gap-xxl-4">
+      <select class="form-select field mr" aria-label="Default select example" [(ngModel)]="featureOptions.search_on"
+        *ngIf="selectedFeature === 'Highlight Term'">
+        <option value="Google">Google</option>
+        <option value="You Tube">You Tube</option>
+      </select>
+      <div class="form-check mr" *ngIf="approxSearchFeatureList.includes(selectedFeature)">
+        <input class="form-check-input shadow-none" type="checkbox" id="approx_search" name="test"
+          [(ngModel)]="featureOptions.approx_search">
+        <label class="form-check-label feature" for="approx_search">approx search</label>
+      </div>
+      <input type="number" class="form-control field" *ngIf="selectedFeature === 'Sentiment Detection'"
+        placeholder="Top K Sentences" [(ngModel)]="featureOptions.top_lines" min="0"
+        oninput="this.value = Math.abs(this.value)">
+      <input type="text" placeholder="Password" class="form-control field" [(ngModel)]="featureOptions.password"
+        *ngIf="selectedFeature === 'Encryption' || selectedFeature === 'Decryption'">
+      <ng-multiselect-dropdown [placeholder]="'Select metadata to delete'" [settings]="dropdownSettings"
+        [data]="metaDataDeleteList" [(ngModel)]="featureOptions.del_attr_list"
+        style="width: 250px;font-family: 'Roboto', sans-serif;font-size: 15px;"
+        *ngIf="selectedFeature === 'Metadata Deletion'"></ng-multiselect-dropdown>
+      <select class="form-select field mr" aria-label="Default select example" [(ngModel)]="featureOptions.page_pattern"
+        *ngIf="showPaternOptionList.includes(selectedFeature)" (change)="toggleCsvTable()">
+        <option value="">Select option</option>
+        <ng-container *ngFor="let item of patterns">
+          <option [value]="item.value" *ngIf="item.feature !== selectedFeature">{{item.viewValue}}</option>
+        </ng-container>
+      </select>
+      <input type="text" class="form-control field mr" [(ngModel)]="featureOptions.page_list_or_csv"
+        *ngIf="showPaternOptionList.includes(selectedFeature) && showPatternInputList.includes(featureOptions.page_pattern)"
+        placeholder="Enter value">
+      <select class="form-select field" aria-label="Default select example"
+        *ngIf="selectedFeature === 'Image Augmentation'" [(ngModel)]="featureOptions.location">
+        <option *ngFor="let item of positions" [value]="item.value">{{item.viewValue}}</option>
+      </select>
+      <input type="text" class="form-control field mr"
+        *ngIf="selectedFeature === 'Image Augmentation' && featureOptions.location === 'custom positions'"
+        [(ngModel)]="featureOptions.img_aug_customval" placeholder="Enter x1,y1,x2,y2">
+
+      <input class="form-control field mr" type="text" placeholder="Watermark string"
+        *ngIf="selectedFeature === 'Watermarking'" [(ngModel)]="featureOptions.watermark_string">
+      <select class="form-select field mr" *ngIf="selectedFeature === 'Watermarking'"
+        [(ngModel)]="featureOptions.color">
+        <option value="red">Red</option>
+        <option value="blue">Blue</option>
+        <option value="green">Green</option>
+        <option value="yellow">Yellow</option>
+      </select>
+      <input class="form-control field mr" type="number" placeholder="Opacity 0 to 1"
+        *ngIf="selectedFeature === 'Watermarking'" [(ngModel)]="featureOptions.opacity"
+        onblur="if(this.value>1)this.value=1;if(this.value<0)this.value=0">
+      <select class="form-select field" *ngIf="selectedFeature === 'Watermarking'" [(ngModel)]="featureOptions.strokes">
+        <option value="">Strokes</option>
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="4">4</option>
+      </select>
+
+      <input class="form-control field" type="text" placeholder="Bookmark Text"
+        *ngIf="selectedFeature === 'Add Bookmarks' && featureOptions.page_pattern !== 'csv'"
+        [(ngModel)]="featureOptions.bookmark_word_or_csv">
+
+      <div class="d-flex flex-wrap" *ngIf="selectedFeature === 'Redact Personal Information'">
+        <div class="form-check mr-4">
+          <input class="form-check-input shadow-none" type="checkbox" id="186"
+            [(ngModel)]="featureOptions.redactPersonalInfo.email">
+          <label class="form-check-label feature" for="186">Email</label>
+        </div>
+        <div class="form-check mr-4">
+          <input class="form-check-input shadow-none" type="checkbox" id="188"
+            [(ngModel)]="featureOptions.redactPersonalInfo.phone">
+          <label class="form-check-label feature" for="188">Phone</label>
+        </div>
+        <div class="form-check mr-4">
+          <input class="form-check-input shadow-none" type="checkbox" id="190"
+            [(ngModel)]="featureOptions.redactPersonalInfo.people">
+          <label class="form-check-label feature" for="190">People</label>
+        </div>
+        <div class="form-check mr-4">
+          <input class="form-check-input shadow-none" type="checkbox" id="196"
+            [(ngModel)]="featureOptions.redactPersonalInfo.address">
+          <label class="form-check-label feature" for="196">Address</label>
+        </div>
+        <div class="form-check mr-4">
+          <input class="form-check-input shadow-none" type="checkbox" id="197"
+            [(ngModel)]="featureOptions.redactPersonalInfo.date_of_birth">
+          <label class="form-check-label feature" for="197">Date Of Birth</label>
+        </div>
+        <div class="form-check mr-4">
+          <input class="form-check-input shadow-none" type="checkbox" id="198"
+            [(ngModel)]="featureOptions.redactPersonalInfo.account_number">
+          <label class="form-check-label feature" for="198">Account Number</label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input shadow-none" type="checkbox" id="200"
+            [(ngModel)]="featureOptions.redactPersonalInfo.pps_number">
+          <label class="form-check-label feature" for="200">PPS Number</label>
+        </div>
+      </div>
+
+      <div class="form-check" *ngIf="selectedFeature === 'Image Augmentation' || selectedFeature === 'Watermarking'">
+        <input class="form-check-input shadow-none" type="checkbox" id="pr4" [(ngModel)]="featureOptions.inPlace">
+        <label class="form-check-label feature nunito fw-600" for="pr4">In place</label>
+      </div>
+
+      <input type="number" class="form-control field"
+        *ngIf="selectedFeature === 'Content Based Grouping' || selectedFeature === 'Extractive Summary'"
+        [(ngModel)]="featureOptions.number_of_groups" min="0"
+        [placeholder]="selectedFeature === 'Content Based Grouping' ? 'number of groups' : 'summary_num_pages'">
+
+      <input type="text" class="form-control field mr" [(ngModel)]="featureOptions.anchor_text"
+        placeholder="anchor text" *ngIf="anchorTextFeatureList.includes(selectedFeature)">
+      <input type="text" class="form-control field" [(ngModel)]="featureOptions.region_size" placeholder="region size"
+        *ngIf="selectedFeature === 'Anchor Text Based Extraction'">
+
+      <input type="number" class="form-control field" [(ngModel)]="featureOptions.height" placeholder="height" min="0"
+        *ngIf="selectedFeature === 'Hight Based Highlight'">
+
+      <select class="form-select field mr" *ngIf="selectedFeature === 'Split Pdf'"
+        [(ngModel)]="featureOptions.split_pattern">
+        <option value="" disabled>Split Pattern</option>
+        <option value="every nth page">every nth page</option>
+        <option value="odd split">odd split</option>
+        <option value="chunk size split">chunk size split</option>
+        <option value="even split">even split</option>
+      </select>
+      <input type="number" class="form-control field" [(ngModel)]="featureOptions.input_page_list"
+        placeholder="page list" min="0"
+        *ngIf="selectedFeature === 'Split Pdf' && ((featureOptions.split_pattern === 'every nth page') || (featureOptions.split_pattern === 'chunk size split'))">
+    </div>
+
+    <div>
+      <p class="mplus" *ngIf="showCsvTableList.includes(selectedFeature) && showCsvTable"
+        [class.mt-3]="featureOptions.page_pattern === 'csv'">Please Select One Csv</p>
+      <div class="w-100 overflow-auto table-wrapper" *ngIf="showCsvTableList.includes(selectedFeature) && showCsvTable">
+        <table class="table table-borderless roboto">
+          <thead>
+            <tr>
+              <th scope="col" class="text-capitalize"></th>
+              <th scope="col" class="text-capitalize">File Name</th>
+              <th scope="col" class="text-capitalize">File Path</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="border-bottom" *ngFor="let item of csvFilesForMetadataUpdation;let i = index;">
+              <td style="width: 50px;">
+                <div class="md-radio m-0">
+                  <input [id]="i" type="radio" name="g2" [value]="item" #radio
+                    [(ngModel)]="featureOptions.rule_file_path">
+                  <label [for]="i" class="p-0"></label>
+                </div>
+              </td>
+              <td (click)="featureOptions.rule_file_path = item" class="user-select-none">{{item.split('/').pop()}}</td>
+              <td class="url" (click)="openCsv(item)">{{item.replace('Input_Folder'+'/'+ _auth.org_name + '/' +
+                _auth.user_name, 'MyFiles')}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- image logo File -->
+      <div class="mt-3" [ngClass]="largeView ? 'row g-3':'d-flex flex-wrap'" *ngIf="showImageFile">
+        <div [ngClass]="largeView ? 'col-lg-4 col-xl-2':'folder-list'" *ngFor="let directory of filteredImageFileList">
+          <app-directory [largeView]="largeView" [pathlist]="pathList" [data]="directory" [showCheckbox]="true"
+            (onSelectDirectory)="selectDirectory($event)" (onSelect)="selectImageFile(directory.name)"></app-directory>
+        </div>
+      </div>
+      <!-- image logo File -->
+    </div>
+  </div>
+  <!-- ==========================================Show All Feature Options=============================================== -->
+</div>
+
+
+<input hidden type="file" accept=".pdf, .csv, .png, .jpg, .jpeg,.xlsx" #fileInput (change)="uploadFiles($event)"
+  (click)="fileInput.value=null;" multiple [hidden]="true" [disabled]="_upload.isUploadProcessing">
+
+<!-- ==========================================Show Right Sidebar=============================================== -->
+<app-off-canvas #canvas>
+  <table class="lato mt-3">
+    <tbody>
+      <tr *ngFor="let key of directoryMetadataKeys">
+        <td style="padding-bottom: 4px;font-size: 14px;text-transform: capitalize;user-select: text !important;">{{key}}
+        </td>
+        <!-- <td style="padding-left: 15px;font-size: 14px;" *ngIf="!key.includes('Date')">{{directoryMetadata[key]}}</td>
+        <td style="padding-left: 15px;font-size: 14px;" *ngIf="key.includes('Date')">{{directoryMetadata[key] | date}}</td> -->
+        <td style="padding-left: 15px;font-size: 14px;user-select: text !important;">{{directoryMetadata[key]}}</td>
+      </tr>
+    </tbody>
+  </table>
+</app-off-canvas>
+<!-- ==========================================Show Right Sidebar=============================================== -->
+
+
+<!-- ==========================================Show Right Sidebar for showing pdf paths=============================================== -->
+<app-off-canvas #canvas2>
+  <ul class="p-0">
+    <li *ngFor="let path of selectedPdfPaths">{{'MyFiles/'+path.split('/').slice(3).join('/')}}</li>
+  </ul>
+</app-off-canvas>
+<!-- ==========================================Show Right Sidebar for showing pdf paths=============================================== -->
+
+
+
+
+
+<app-preview-pdf [path]="pdfFilePath" *ngIf="showPdfViewer" (onClose)="showPdfViewer= false"></app-preview-pdf>
+<app-preview-csv [path]="csvFilePath" *ngIf="showCsvViewer" (onClose)="showCsvViewer= false"></app-preview-csv>
+<app-preview-txt [path]="txtFilePath" *ngIf="showTxtViewer" (onClose)="showTxtViewer= false"></app-preview-txt>
+<app-preview-image [path]="imgFilePath" *ngIf="showImgViewer" (onClose)="showImgViewer= false"></app-preview-image>
+<!-- <app-add-user ></app-add-user> -->
+<app-add-user></app-add-user>
+
+<!-- <div class="spinner" *ngIf="showBuildBibleDownload">
+  <span>Download is in progress </span>
+  <div class="bounce1"></div>
+  <div class="bounce2"></div>
+  <div class="bounce3"></div>
+</div> -->

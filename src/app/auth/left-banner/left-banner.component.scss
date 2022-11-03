@@ -1,0 +1,37 @@
+.content-left-wrapper {
+    font-family: 'Work Sans', sans-serif;
+    .content {
+        color: #fff;
+        width: fit-content;
+        padding: 60px 90px 35px 90px;
+        h2 {
+            font-weight: 400;
+            font-size: 2rem;
+            margin: 20px 0 15px 0;
+        }
+        p {
+            opacity: .8;
+            font-size: .9375rem;
+            margin-bottom: 50px;
+        }
+        a {
+            color: #fff;
+            padding: 12px 25px;
+            border-radius: 25px !important;
+            background: #434bdf;
+            font-weight: 600;
+            box-shadow: 0 0 30px 0 rgb(0 0 0 / 20%);
+            font-size: .875rem;
+            transition: all .3s ease-in-out;
+            &:hover {
+                background-color: #d80075;
+            }
+        }
+        .copy {
+            margin-top: 25px;
+            opacity: .5;
+            font-size: 14px;
+        }
+    }
+}
+

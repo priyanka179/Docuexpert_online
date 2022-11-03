@@ -1,0 +1,41 @@
+.maincontainer {
+    // margin-top: 64px;
+    margin-top: 20px;
+
+    // margin-top: 128px;
+    .sidebar {
+        // min-width: 230px;
+        // width: 220px;
+        width: 180px;
+        // width: 270px;
+        // height: 80vh;
+        // overflow: auto;
+        // margin-right: 48px;
+    }
+    .tree{
+        min-width: 177px;
+        width: auto;
+    }
+
+    .content-fullwidth {
+        width: 100%;
+        transition: all .3s;
+    }
+
+    .content-halfwidth {
+        width: calc(100vw - 180px);
+    }
+}
+
+.sidebar-toggle {
+    color: #8094ae;
+    top: 76px;
+    // transform: translateY(-50%);
+    left: 0;
+    font-size: 17px;
+}
+
+.overflow-y {
+    overflow-y: auto;
+    overflow-x: hidden;
+}

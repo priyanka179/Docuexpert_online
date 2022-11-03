@@ -1,0 +1,81 @@
+$black: #364a63;
+$lightblack: #526484;
+
+.preview-csv {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 1200;
+    background-color: #fff;
+    font-weight: 500;
+    // font-family: "Lato", sans-serif;
+}
+
+.table-responsive {
+    box-shadow: 0 1px 20px rgb(0 0 0 / 30%);
+    width: auto;
+    max-height: 84.2vh !important;
+    height: fit-content !important;
+}  
+
+.vh-90 {
+    height: 90vh;
+}
+
+
+.csvtable {
+    cursor: cell;
+    thead {
+        tr {
+            th {
+                min-width: 97.8px;
+                padding: 4px 0;
+                height: 35px;
+                background-color: #F5F6F7;
+                border: 1px solid rgb(231, 231, 231);
+                text-align: center;
+                font-size: 14px;
+                font-weight: 400;
+            }
+        }
+    }
+    tbody {
+        tr {
+            td {
+                min-width: 96px;
+                height: 35px;
+                background-color: #fff;
+                border: 1px solid rgb(231, 231, 231);
+                padding: 0 8px;
+                user-select: all !important;
+            }
+            .slno {
+                width: 96px;
+                background-color: #F5F6F7;
+                font-size: 14px;
+                vertical-align: middle;
+            }
+        }
+    }
+}
+
+.close-btn {
+    top: 0;
+    right: 42px;
+    z-index: 1002;
+    box-shadow: 0 0 7px 2px rgb(0 0 0 / 15%);
+    transition: all 0.4s ease;
+    .btn-close {
+        font-size: 12px;
+    }
+}
+
+.fun-btn{
+        margin-left: 5px;
+        margin-right: 5px;
+        top: -7px;
+}

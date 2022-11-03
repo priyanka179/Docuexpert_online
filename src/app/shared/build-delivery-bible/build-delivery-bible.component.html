@@ -1,0 +1,208 @@
+<div class="d-flex flex-column justify-content-center align-items-center mt-5" *ngIf="showFetchDirSpinner">
+    <mat-spinner [diameter]="40"></mat-spinner>
+</div>
+
+<!-- <div> <button class="btn btn-primary" (click)="showAllFile()">Show All</button></div> -->
+
+<div *ngIf="fullView">
+    <div [class.p-4]="router.url === '/viewDir/currentOutput'" *ngIf="!showFetchDirSpinner">
+        <div class="showDropFolder position-fixed bg-white shadow-lg roboto px-2" *ngIf="showOnDragOver">
+            {{onDragOverFolderName}}</div>
+        <div class="prevLinks nunito d-flex justify-content-between fw-bold mt-2">
+            <button class="btn btn-primary"
+                (click)="showGraph();canvas.showRightCanvas = true;canvas.title = 'Delivery Bible Output Graph'"
+                *ngIf="!checkPath()">Show Graph</button>
+            <span class="text-capitalize cp px-3" *ngIf="router.url === '/viewDir/currentOutput'"
+                (click)="goToMyfiles()">My Files</span>
+        </div>
+        <div class="d-flex justify-content-end align-items-center fw-bold lato" *ngIf="!checkPath()">
+            <span class="totalrecord">{{completedFileSeggregationNum()}} Record{{completedFileSeggregationNum() > 1 ?
+                's':''}} found</span>
+            <button class="btn btn-primary d-flex align-content-center" (click)="downloadAll()"
+                *ngIf="router.url !== '/viewDir/currentOutput'">
+                <mat-spinner [diameter]="20" *ngIf="isDownloadAllProcessing" style="margin-right: 10px;"
+                    [color]="'accent'"></mat-spinner>
+                Download all
+            </button>
+        </div>
+        <ng-container *ngFor="let letter of getNumbers()">
+            <div>
+                <p class="roboto alphabet text-secondary" style="margin-left: 10px;margin-top: 20px;font-weight: 600;"
+                    [id]="getLetters(letter)"><span><input class="form-check-input  directory-check" type="checkbox" (change)="selectAlphabate($event,letter)"/></span>{{" "+getLetters(letter)+"-"+getCategoryName(letter)}}</p>
+                    
+            </div>
+
+            <!-- (dragover)="showOnDragOver=true;onDragOverFolderName=dir.name;$event.preventDefault();" -->
+            <div class="d-flex flex-wrap" *ngIf="checkPath() && router.url !== '/viewDir/currentOutput'">
+                <ng-container *ngFor="let dir of getPrevFolders(letter)">
+                    <p class="fw-bold nunito shadow p-1 prevfolder roboto"
+                        style="margin-left: 10px;width: fit-content;cursor: pointer;"
+                        [class.bg-active]="showActive(dir.name)" (click)="openFolder(dir.name,getLetters(letter))"
+                        [class.drag-over]="dir.drag" ondragover="return false;"
+                        (dragleave)="dir.drag = false;showOnDragOver=false;"
+                        (drop)="dropUnclassifiedFile($event,dir.path+'/'+dir.name,letter);dir.drag = false;showOnDragOver=false;">
+                        {{dir.name}}<span [ngClass]="dir.total_files > 0 ?'record-success':'record-failure'">{{'
+                            ('+dir.total_files+')'}}</span>
+                    </p>
+                </ng-container>
+            </div>
+            <p class="fw-bold nunito text-primary shadow px-1 cp" style="margin-left: 10px;width: fit-content;"
+                (click)="backToDirectory()" *ngIf="checkPath() && router.url !== '/viewDir/currentOutput'">
+                <i class="fas fa-arrow-left"></i>
+            </p>
+            <div class="p-4 pt-0 d-flex flex-wrap" *ngIf="getFolderList(letter).length > 0 && largeView && !listview"
+                style="row-gap: 40px;">
+                <div class="folder-list" *ngFor="let directory of getFolderList(letter)">
+                    <app-directory [data]="directory" [showCheckbox]="false" [showBibleDirDetails]="true"
+                        (dblclick)="openDirectory(directory,getLetters(letter));" [showInfoBtn]="true"
+                        [draggable]="directory.directory === 'File'"
+                        (dragstart)="dragStart($event,directory.path+ '/'+directory.name);"
+                        (drop)="!checkPath() && dropUnclassifiedFile($event,directory.path+'/'+directory.name,letter);"
+                        (dragover)="$event.preventDefault();" [showCheckbox]="true"></app-directory>
+                </div>
+            </div>
+            <!-- -----------------------------------List View--------------------------------------------------------- -->
+            <div class="p-4 pt-0 d-flex flex-wrap" *ngIf="getFolderList(letter).length > 0 && !largeView && listview">
+                <div class="col-lg-4 col-md-6" *ngFor="let directory of getFolderList(letter)">
+                    <app-directory [data]="directory" [showCheckbox]="false" [showBibleDirDetails]="true"
+                        (dblclick)="openDirectory(directory,getLetters(letter));" [showInfoBtn]="true"
+                        [draggable]="directory.directory === 'File'"
+                        (dragstart)="dragStart($event,directory.path+ '/'+directory.name);"
+                        (drop)="!checkPath() && dropUnclassifiedFile($event,directory.path+'/'+directory.name,letter);"
+                        (dragover)="$event.preventDefault();" [showCheckbox]="true"></app-directory>
+                </div>
+            </div>
+            <!-- -----------------------------------small View--------------------------------------------------------- -->
+            <div class="p-4 pt-0 d-flex flex-wrap" *ngIf="getFolderList(letter).length > 0 && !largeView && !listview"
+                style="row-gap: 40px;">
+                <div class="folder-list" *ngFor="let directory of getFolderList(letter)">
+                    <app-directory [data]="directory" [showCheckbox]="false" [showBibleDirDetails]="true"
+                        (dblclick)="openDirectory(directory,getLetters(letter));" [showInfoBtn]="true"
+                        [draggable]="directory.directory === 'File'"
+                        (dragstart)="dragStart($event,directory.path+ '/'+directory.name);"
+                        (drop)="!checkPath() && dropUnclassifiedFile($event,directory.path+'/'+directory.name,letter);"
+                        (dragover)="$event.preventDefault();" [showCheckbox]="true"></app-directory>
+                        
+                </div>
+            </div>
+        </ng-container>
+        <div class="row">
+            <div>
+                <p class="roboto alphabet" style="margin-left: 10px;margin-top: 20px;font-weight: 600;">Unclassified</p>
+                <!-- <p class="fw-bold nunito shadow p-1 prevfolder roboto"
+                style="margin-left: 10px;width: fit-content;cursor: pointer;" (click)="openUnclassified()"
+                *ngIf="checkPath() && router.url !== '/viewDir/currentOutput'" [class.drag-over]="unclassifiedDrag"
+                (dragover)="unclassifiedDrag = true;$event.preventDefault();" (dragleave)="unclassifiedDrag = false"
+                (drop)="dropUnclassifiedFile($event,'Output_Folder/ONLINE@STS/shubham21/SVA_NC/output/Delivery Bible l5s6nblex7/Unclassified',null)">
+                unclassified
+            </p> -->
+            </div>
+            <!-- --------------------------------------Unclassified-------------------------------------------------------- -->
+            <div class="p-4 pt-0 d-flex flex-wrap" *ngIf="unclassified.length > 0"
+                [ngStyle]="{'row-gap':listview ? '0px' : '40px'}">
+                <!-- <div [class.col-md-4]="ispdfClicked"> -->
+                    <div [ngClass]="listview?'col-lg-4 col-md-6':'folder-list'" [class.col-md-4]="ispdfClicked" *ngFor="let directory of unclassified">
+                        <app-directory [data]="directory" [showCheckbox]="false" [showBibleDirDetails]="true"
+                            (dblclick)="openDirectory(directory,'unclassified')" [showInfoBtn]="true" draggable="true"
+                            (dragstart)="dragStart($event,directory.path+ '/'+directory.name,true)" [showCheckbox]="true">
+                        </app-directory>
+                    </div>
+                <!-- </div> -->
+                
+            </div>
+
+            
+        </div>
+    </div>
+
+    <app-off-canvas #canvas>
+        <div #graphcontainer style="width: 50vw;margin-top: 40px;">
+            <canvas #myChart style="width:100%;"></canvas>
+        </div>
+    </app-off-canvas>
+
+</div>
+
+<div *ngIf="!showFetchDirSpinner && !fullView">
+    <div class="row">
+        <div [class.col-md-4]="ispdfClicked">
+            <ng-container>
+                <div>
+                    <p class="roboto alphabet text-secondary"
+                        style="margin-left: 10px;margin-top: 20px;font-weight: 600;"
+                        [id]="getLetters(selectedFolderLatter)">{{getLetters(selectedFolderLatter)}}</p>
+                </div>
+
+                <!-- (dragover)="showOnDragOver=true;onDragOverFolderName=dir.name;$event.preventDefault();" -->
+                <!-- <div class="d-flex flex-wrap" *ngIf="checkPath() && router.url !== '/viewDir/currentOutput'">
+            <ng-container *ngFor="let dir of getPrevFolders(selectedFolderLatter)">
+                <p class="fw-bold nunito shadow p-1 prevfolder roboto"
+                    style="margin-left: 10px;width: fit-content;cursor: pointer;"
+                    [class.bg-active]="showActive(dir.name)" (click)="openFolder(dir.name,getLetters(selectedFolderLatter))"
+                    [class.drag-over]="dir.drag"
+                    ondragover="return false;"
+                    (dragleave)="dir.drag = false;showOnDragOver=false;"
+                    (drop)="dropUnclassifiedFile($event,dir.path+'/'+dir.name,selectedFolderLatter);dir.drag = false;showOnDragOver=false;">
+                    {{dir.name}}<span [ngClass]="dir.total_files > 0 ?'record-success':'record-failure'">{{'
+                        ('+dir.total_files+')'}}</span>
+                </p>
+            </ng-container>
+        </div> -->
+                <!-- <p class="fw-bold nunito text-primary shadow px-1 cp" style="margin-left: 10px;width: fit-content;"
+            (click)="backToDirectory()" *ngIf="checkPath() && router.url !== '/viewDir/currentOutput'">
+            <i class="fas fa-arrow-left"></i>
+        </p> -->
+                <div class="p-4 pt-0 d-flex flex-wrap"
+                    *ngIf="getFolderList(selectedFolderLatter).length > 0 && largeView && !listview"
+                    style="row-gap: 40px;">
+                    <div class="folder-list" *ngFor="let directory of getFolderList(selectedFolderLatter)">
+                        <app-directory [data]="directory" [showCheckbox]="false" [showBibleDirDetails]="true"
+                            (dblclick)="openDirectory(directory,getLetters(selectedFolderLatter));" [showInfoBtn]="true"
+                            [draggable]="directory.directory === 'File'"
+                            (dragstart)="dragStart($event,directory.path+ '/'+directory.name);"
+                            (drop)="!checkPath() && dropUnclassifiedFile($event,directory.path+'/'+directory.name,selectedFolderLatter);"
+                            (dragover)="$event.preventDefault();" [showCheckbox]="true"></app-directory>
+                    </div>
+                </div>
+                <!-- -----------------------------------List View--------------------------------------------------------- -->
+                <div class="p-4 pt-0 d-flex flex-wrap"
+                    *ngIf="getFolderList(selectedFolderLatter).length > 0 && !largeView && listview">
+                    <div class="col-lg-4 col-md-6" *ngFor="let directory of getFolderList(selectedFolderLatter)">
+                        <app-directory [data]="directory" [showCheckbox]="false" [showBibleDirDetails]="true"
+                            (dblclick)="openDirectory(directory,getLetters(selectedFolderLatter));" [showInfoBtn]="true"
+                            [draggable]="directory.directory === 'File'"
+                            (dragstart)="dragStart($event,directory.path+ '/'+directory.name);"
+                            (drop)="!checkPath() && dropUnclassifiedFile($event,directory.path+'/'+directory.name,selectedFolderLatter);"
+                            (dragover)="$event.preventDefault();" [showCheckbox]="true"></app-directory>
+                    </div>
+                </div>
+                <!-- -----------------------------------small View--------------------------------------------------------- -->
+                <div class="p-4 pt-0 d-flex flex-wrap"
+                    *ngIf="getFolderList(selectedFolderLatter).length > 0 && !largeView && !listview"
+                    style="row-gap: 40px;">
+                    <div class="folder-list" *ngFor="let directory of getFolderList(selectedFolderLatter)">
+                        <app-directory [data]="directory" [showCheckbox]="false" [showBibleDirDetails]="true"
+                            (dblclick)="openDirectory(directory,getLetters(selectedFolderLatter));" [showInfoBtn]="true"
+                            [draggable]="directory.directory === 'File'"
+                            (dragstart)="dragStart($event,directory.path+ '/'+directory.name);"
+                            (drop)="!checkPath() && dropUnclassifiedFile($event,directory.path+'/'+directory.name,selectedFolderLatter);"
+                            (dragover)="$event.preventDefault();" [showCheckbox]="true"></app-directory>
+                    </div>
+                </div>
+            </ng-container>
+        </div>
+
+        <div class="col-md-8" *ngIf="ispdfClicked">
+            <!-- <app-preview-pdf [path]="pdfFilePath" *ngIf="isLinkClicked" (onClose)="isLinkClicked= false"></app-preview-pdf> -->
+            <iframe [src]="pdfFilePath" class="vh-90" width="100%" height="100%" frameborder="0"
+                style="position: relative;z-index: 1;" *ngIf="ispdfClicked"></iframe>
+            <div class="highlight-btn-iframe align-items-center">
+                <i class="fas fa-times" (click)="ispdfClicked=false"></i>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+<app-preview-pdf [path]="fullViewPath" *ngIf="showPdfViewer" (onClose)="showPdfViewer= false"></app-preview-pdf>

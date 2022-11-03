@@ -1,0 +1,42 @@
+.minimize-tray {
+    position: fixed;
+    // top: 50px;
+    // left: 20px;
+    top: 11%;
+    left: 40%;
+    z-index: 1000;
+    min-width: 270px;
+    height: auto;
+    background-color: #fff;
+
+    h6.uploadtxt {
+        font-size: 14px;
+        font-weight: 600;
+        top: 4px;
+    }
+
+    .progress {
+        height: 11px;
+        min-width: 200px;
+        margin-left: 15px;
+    }
+
+    .maximize {
+        margin-top: 10px;
+
+        button {
+            font-size: 11px;
+            padding: 2px 20px !important;
+        }
+    }
+
+    .downloaddetails {
+        font-size: 11px;
+    }
+}
+
+.btn-close {
+    font-size: 12px;
+    position: relative;
+    margin-left: 16px;
+}

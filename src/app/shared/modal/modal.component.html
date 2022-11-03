@@ -1,0 +1,50 @@
+<!-- <ng-container *ngIf="maximize && processing">
+  <div class="overlay"></div>
+  <div class="documodal text-center">
+    <h2 class="nunito">All Processing Info</h2>
+    <div class="d-flex justify-content-between align-items-center single-feature-progress" *ngFor="let item of [1,2,3,4,5,6,7,8,10]">
+      <h2 class="nunito text-nowrap featurename">Highlight People Terms</h2>
+      <div class="progress flex-grow-1 border">
+        <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75"
+          aria-valuemin="0" aria-valuemax="100" [style.width]="progressPercentage + '%'">
+          {{ progressPercentage + "%" }}
+        </div>
+      </div>
+    </div>
+    <div class="minimize position-fixed">
+      <button class="btn btn-primary" (click)="maximize = !maximize">
+        Minimize To System Tray
+      </button>
+    </div>
+  </div>
+</ng-container> -->
+
+<!-- *ngIf="!maximize && processing" -->
+<ng-container *ngIf="processing">
+  <!-- #elem (mousemove)="onMouseMove($event)" (mousedown)="onMouseDown()" -->
+  <div class="minimize-tray shadow p-2 d-flex align-items-center" style="z-index: 999;" ngDraggable [bounds]="document.body" [inBounds]="true">
+    <div *ngFor="let item of processList" class="d-flex flex-grow-1 align-items-center">
+      <div>
+        <h6 class="nunito text-capitalize featuretext position-relative text-nowrap fw-bold">{{item}}</h6>
+      </div>
+      <div class="progress w-100 mx-2">
+        <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" [style.width]="progressPercentage + '%'">
+          {{ progressPercentage + "%" }}
+        </div>
+      </div>
+    </div>
+    <div class="maximize" *ngIf="processCompleted">
+      <button class="btn btn-primary" routerLink="/viewDir/currentOutput" (click)="processing = false" *ngIf="currFeature !== 'Hard time folder'">
+        current output
+      </button>
+      <button class="btn btn-primary" routerLink="/viewDir/statusTable" (click)="processing = false"
+        *ngIf="currFeature === 'Hard time folder'">
+        status table
+      </button>
+    </div>
+    <div>
+      <button class="btn-close" (click)="processing = false" *ngIf="processCompleted"></button>
+    </div>
+  </div>
+</ng-container>
+

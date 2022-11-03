@@ -1,0 +1,211 @@
+<div class="mx-4 mt-2 d-flex justify-content-between align-items-center">
+    <div class="d-flex">
+        <div class="form-check mr-4">
+            <input class="form-check-input shadow-none" type="checkbox" id="1" [(ngModel)]="contentCheck">
+            <label class="form-check-label feature" for="1">Content</label>
+        </div>
+        <div class="form-check mr-4">
+            <input class="form-check-input shadow-none" type="checkbox" id="3" [(ngModel)]="documentFolderCheck">
+            <label class="form-check-label feature" for="3">Document/Folder</label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input shadow-none" type="checkbox" id="2" [(ngModel)]="metadataCheck">
+            <label class="form-check-label feature" for="2">Metadata</label>
+        </div>
+    </div>
+    <div class="d-flex align-items-center">
+        <!-- <a routerLink="/viewDir/myfiles" class="goback nunito mr-4"><i class="fas fa-chevron-left"></i>MyFiles</a> -->
+        <div class="logo d-flex align-items-center" routerLink="/viewDir/myfiles">
+            <i class="fas fa-chevron-left" style="margin-right: 10px;"></i>
+            <img src="assets/images/logo/stat-logo-crop.png" alt="" width="40px">
+            <span class="logo-txt">DocuExpert</span>
+        </div>
+    </div>
+</div>
+
+<div class="d-flex justify-content-between align-items-center px-4 mt-3" *ngIf="!showTable"> 
+    <button class="btn btn-primary">Select Folders to search with</button>
+    <button class="btn btn-primary">Combined Search</button>
+</div>
+
+<ng-container *ngIf="contentCheck && !showTable">
+    <div class="m-4 formcontainer p-4 pb-4 roboto position-relative mb-6">
+        <p class="mb-2">Content Search</p>
+        <form [formGroup]="contentSearchForm">
+            <div class="d-flex justify-content-between align-items-center">
+                <div class="d-flex align-items-center">
+                    <input type="text" class="form-control mr-4 mb-0" placeholder="Enter a Pattern/Text"
+                        formControlName="search_string" [class.is-invalid]="validateForm('search_string')">
+                    <input type="number" class="form-control mr-4 mb-0 w-25" placeholder="Left Fixed"
+                        formControlName="fixed_left" [class.is-invalid]="validateForm('fixed_left')">
+                    <input type="number" class="form-control mr-4 mb-0 w-25" placeholder="Right Fixed"
+                        formControlName="fixed_right" [class.is-invalid]="validateForm('fixed_right')">
+                    <div class="md-radio md-radio-inline">
+                        <input id="5" type="radio" name="type" value="Pattern" formControlName="type">
+                        <label for="5">Pattern</label>
+                    </div>
+                    <div class="md-radio md-radio-inline">
+                        <input id="6" type="radio" name="type" value="Text" formControlName="type">
+                        <label for="6">Text</label>
+                    </div>
+                </div>
+                <!-- <div>
+                    <button class="btn btn-primary shadow-sm" type="button" (click)="contentSearch()">Search</button>
+                </div> -->
+            </div>
+        </form>
+    </div>
+</ng-container>
+
+<ng-container *ngIf="documentFolderCheck && !showTable">
+    <div class="m-4 formcontainer p-4 pb-4 roboto position-relative">
+        <p class="mb-2">Document/Folder</p>
+        <form [formGroup]="fileFolderSearchForm">
+            <div class="d-flex justify-content-between align-items-center">
+                <div class="d-flex align-items-center">
+                    <input type="text" class="form-control mr-4 mb-0" placeholder="Enter a Pattern/Text"
+                        formControlName="search_string" [class.is-invalid]="validateDirSearchForm('search_string')">
+                    <input type="number" class="form-control mr-4 mb-0 small-control" placeholder="Left Fixed"
+                        formControlName="fixed_left" [class.is-invalid]="validateDirSearchForm('fixed_left')"
+                        *ngIf="fileFolderSearchForm.value.type === 'Pattern'">
+                    <input type="number" class="form-control mr-4 mb-0 small-control" placeholder="Right Fixed"
+                        formControlName="fixed_right" [class.is-invalid]="validateDirSearchForm('fixed_right')"
+                        *ngIf="fileFolderSearchForm.value.type === 'Pattern'">
+                    <select class="form-select mr-4 small-control" aria-label="Default select example"
+                        formControlName="file_search">
+                        <option value="True">File</option>
+                        <option value="False">Folder</option>
+                    </select>
+                    <div class="md-radio md-radio-inline">
+                        <input id="5" type="radio" name="type" value="Pattern" formControlName="type">
+                        <label for="5">Pattern</label>
+                    </div>
+                    <div class="md-radio md-radio-inline">
+                        <input id="6" type="radio" name="type" value="Text" formControlName="type">
+                        <label for="6">Text</label>
+                    </div>
+                </div>
+                <!-- <div>
+                    <button class="btn btn-primary shadow-sm" type="button"
+                        (click)="doucumentFolderSearch()">Search</button>
+                </div> -->
+            </div>
+        </form>
+    </div>
+</ng-container>
+
+<ng-container *ngIf="metadataCheck && !showTable">
+    <div class="m-4 p-4 mb-6 shadow">
+        <p class="mb-2 roboto">Metadata Search</p>
+        <div class="d-flex justify-content-between align-items-center">
+            <select class="form-select w-25 nunito" aria-label="Default select example" [(ngModel)]="formsListSelectVal"
+                (change)="addForm()">
+                <option value="" selected>Please select to add fields</option>
+                <option *ngFor="let data of formsList" [value]="data.name">{{data.name}}</option>
+            </select>
+            <button class="btn btn-primary" (click)="metadataSearch()">Search</button>
+        </div>
+
+        <form [formGroup]="metadataSearchForm" style="height: auto;">
+            <div class="formcontainer p-4 roboto position-relative" formArrayName="formsArray"
+                *ngFor="let fg of getForms(); let i = index;let last = last" style="margin-top: 20px;">
+                <p class="mb-2">{{addedFormsList[i].name +' '+ addedFormsList[i].unit}}</p>
+                <div class="d-flex justify-content-between align-items-center" [formGroupName]="i">
+                    <div class="d-flex align-items-center">
+                        <select class="form-select mr-4" aria-label="Default select example"
+                            formControlName="logical_op">
+                            <option value="">Condition</option>
+                            <option *ngFor="let data of getSelectFieldData(addedFormsList[i].name)"
+                                [value]="data.value">{{data.label}}</option>
+                        </select>
+                        <input [type]="addedFormsList[i].name.toLowerCase().includes('date') ? 'datetime-local':'text'"
+                            step="1" *ngIf="fg.value.logical_op !== 'range'" formControlName="value"
+                            class="form-control mr-4 mb-0" placeholder="Enter a value">
+
+                        <div class="d-flex" *ngIf="fg.value.logical_op === 'range'">
+                            <input
+                                [type]="addedFormsList[i].name.toLowerCase().includes('date') ? 'datetime-local':'text'"
+                                step="1" class="form-control mr-4 mb-0 range" placeholder="Enter a value"
+                                (input)="addRangeValue(val1.value,val2.value,i)" #val1>
+
+                            <input
+                                [type]="addedFormsList[i].name.toLowerCase().includes('date') ? 'datetime-local':'text'"
+                                step="1" class="form-control mr-4 mb-0 range" placeholder="Enter a value"
+                                (input)="addRangeValue(val1.value,val2.value,i)" #val2>
+                        </div>
+                    </div>
+                    <div>
+                        <!-- <button class="btn btn-danger shadow" (click)="fg.reset()">Reset</button> -->
+                        <button class="btn btn-delete rounded-circle shadow" (click)="deleteForm(i)"><i
+                                class="far fa-trash-alt cp"></i></button>
+                    </div>
+                    <div class="position-absolute operator-container text-center d-flex justify-content-center"
+                        *ngIf="!last">
+                        <select class="form-select operator shadow" aria-label="Default select example"
+                            [ngModelOptions]="{standalone: true}" [(ngModel)]="combineOp[i]">
+                            <option value="AND">And</option>
+                            <option value="OR">Or</option>
+                            <option value="NOT">Not</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</ng-container>
+
+<ng-container *ngIf="showTable">
+    <div class="m-4"><button class="btn btn-primary" (click)="searchAgain()">Search Again</button></div>
+    <div class="overflow-auto table-wrapper m-4">
+        <table class="table table-borderless roboto">
+            <thead>
+                <tr *ngIf="tableData">
+                    <th scope="col" class="text-capitalize" *ngFor="let data of displayedColumns">{{data}}</th>
+                </tr>
+                <tr *ngIf="!tableData">
+                    <th class="text-uppercase">no record found</th>
+                </tr>
+            </thead>
+            <tbody *ngIf="tableData">
+                <tr class="border-bottom" *ngFor="let data of tableData;let i=index">
+                    <td class="pl-2">{{i+1}}</td>
+                    <td style="font-weight: 500;user-select: text;">{{data.split('\\').pop().split('/').pop()}}</td>
+                    <td style="user-select: text;">{{data.substring(0,
+                        data.lastIndexOf("/")+1).replace("Input_Folder","MyFiles")}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</ng-container>
+
+
+
+
+
+<!-- <input type="text" *ngIf="fg.value.logical_op !== 'range'" formControlName="value"
+                        class="form-control mr-4 mb-0" placeholder="Enter a value"
+                        [class.is-invalid]="fg.get('value').errors">
+
+                    <input type="text" *ngIf="fg.value.logical_op === 'range'" formControlName="range1"
+                        class="form-control mr-4 mb-0 range" placeholder="Enter a value"
+                        [class.is-invalid]="fg.get('range1').errors">
+
+                    <input type="text" *ngIf="fg.value.logical_op === 'range'" formControlName="range2"
+                        class="form-control mr-4 mb-0 range" placeholder="Enter a value"
+                        [class.is-invalid]="fg.get('range2').errors"> -->
+
+<!-- <div>
+        <div class="md-radio md-radio-inline">
+            <input id="1" type="radio" name="g2" value="Content" [(ngModel)]="formTypeRadioVal" (change)="showView()">
+            <label for="1">Content</label>
+        </div>
+        <div class="md-radio md-radio-inline">
+            <input id="2" type="radio" name="g2" value="Metadata" [(ngModel)]="formTypeRadioVal" (change)="showView()">
+            <label for="2">Metadata</label>
+        </div>
+        <div class="md-radio md-radio-inline">
+            <input id="3" type="radio" name="g2" value="Document/Folder" [(ngModel)]="formTypeRadioVal"
+                (change)="showView()">
+            <label for="3">Document/Folder</label>
+        </div>
+    </div> -->

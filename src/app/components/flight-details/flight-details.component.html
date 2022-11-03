@@ -1,0 +1,115 @@
+<ng-container *ngIf="feature === 'Hard time folder'">
+    <div class="container-fluid mt-4 mb-5">
+        <div class="row gy-4">
+            <div class="col-xl-1" *ngFor="let data of ['HT','OCCM','LDND','SB','AD']">
+                <div class="card shadow-m cp text-center roboto" [class.active]="data === currActiveTab"
+                    (click)="showResult = true;getVisualizeData(data);relationGraph = null;resultPdfUrl=null;currActiveTab=data">
+                    <div class="card-body">
+                        {{data}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div style="height: 90vh;">
+        <div *ngIf="relationGraph">
+            <button (click)="showRelationGraphView = !showRelationGraphView"
+                class="btn btn-primary mb-3 mx-2">{{showRelationGraphView ? 'Table view':'Graph view'}}</button>
+        </div>
+        <div class="row m-0 h-100">
+            <div class="col shadow-lg bg-white p-3 position-relative green-border" *ngIf="pdfurl && !resultPdfUrl && grid1">
+                <div>
+                    <i class="fas fa-expand cp expandBtn position-absolute" style="font-size: 22px;" (click)="grid1=true;grid2=false;grid3=false;grid4=false;" *ngIf="grid1 && grid2 && grid3 && grid4"></i>
+                    <i class="fas fa-compress-arrows-alt cp expandBtn position-absolute" style="font-size: 22px;" *ngIf="!grid2 && !grid3 && !grid4" (click)="grid1=true;grid2=true;grid3=true;grid4=true;"></i>
+                    <i class="fas fa-download position-absolute cp" (click)="gridPdfDownload(pdfurl,grid1PdfName)"></i>
+                </div>
+                <iframe [src]="pdfurl" width="100%" class="h-100" frameborder="0" *ngIf="pdfurl" style="position: relative;z-index: 1;"></iframe>
+                <div class="pdfname position-absolute bg-white nunito px-2 fw-bold" [title]="grid1PdfName">{{grid1PdfName.length>12 ? grid1PdfName.slice(0,12)+"...":grid1PdfName}}</div>
+            </div>
+
+            <div class="d-flex" [ngClass]="resultPdfUrl ? !grid1 && !grid3 && !grid4 ? 'col':'col-3':'col'" *ngIf="csvData.length > 0 && grid2">
+                <div>
+                    <i class="fas fa-expand cp" style="font-size: 22px;margin-right: 10px;" (click)="grid1=false;grid2=true;grid3=false;grid4=false;" *ngIf="grid1 && grid2 && grid3 && grid4"></i>
+                    <i class="fas fa-compress-arrows-alt cp" style="font-size: 22px;margin-right: 10px;" (click)="grid1=true;grid2=true;grid3=true;grid4=true;" *ngIf="!grid1 && !grid3 && !grid4"></i>
+                </div>
+                <div class="table-responsive green-border pt-0 w-100" style="height: fit-content;">
+                    <table class="table table-bordered roboto roboto shadow pnsnTable w-100">
+                        <thead>
+                            <tr>
+                                <td>PN</td>
+                                <td>SN</td>
+                                <td>Details</td>
+                                <td>File</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="cp" *ngFor="let data of csvData;let i=index;" [class.selectedRow]="data.isSelected"
+                                (click)="showRelationGraph(i,data['Part Number'],data['Serial Number']);openPdf(data['File'],data['Part Number'],data['Serial Number'],true)">
+                                <td style="vertical-align:middle;white-space: nowrap;">{{data['Part Number']}}</td>
+                                <td style="vertical-align:middle;white-space: nowrap;">{{data['Serial Number']}}</td>
+                                <td style="vertical-align:middle;white-space: nowrap;">
+                                    <!-- <i class="fas fa-check text-success border" style="margin-right:10px;padding: 3px;font-size: 14px;"></i> -->
+                                    {{data['Found word']}}
+                                </td>
+                                <td (click)="openPdf(data['File'],data['Part Number'],data['Serial Number'],true)"
+                                    class="url">show</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="shadow-lg position-relative p-3 bg-white green-border" [ngClass]="!grid1 && !grid2 && !grid4 ? 'col':'col-7'" *ngIf="resultPdfUrl && grid3">
+                <!-- <button (click)="downloadableView()" class="btn btn-primary mb-3">downloadable view</button> -->
+                <div>
+                    <i class="fas fa-expand cp expandBtn position-absolute" style="font-size: 22px;" (click)="grid1=false;grid2=false;grid3=true;grid4=false;" *ngIf="grid1 && grid2 && grid3 && grid4"></i>
+                    <i class="fas fa-compress-arrows-alt cp expandBtn position-absolute" style="font-size: 22px;" (click)="grid1=true;grid2=true;grid3=true;grid4=true;" *ngIf="!grid1 && !grid2 && !grid4"></i>
+                    <i class="fas fa-times close-btn position-absolute cp" (click)="grid1=true;grid2=true;grid3=true;grid4=true;resultPdfUrl=null;"></i>
+                    <i class="fas fa-download position-absolute cp" style="right: 240px;" (click)="gridPdfDownload(resultPdfUrl,grid3PdfName)"></i>
+                </div>
+                <iframe [src]="resultPdfUrl" width="100%" height="100%" frameborder="0" style="position: relative;z-index: 1;" class="shadow"></iframe>
+                <div class="pdfname position-absolute bg-white nunito px-2 fw-bold" [title]="grid3PdfName">{{grid3PdfName.length>19 ? grid3PdfName.slice(0,20)+"...":grid3PdfName}}</div>
+            </div>
+
+            <div class="d-flex" [ngClass]="resultPdfUrl ? !grid1 && !grid2 && !grid3 ? 'col' : 'col-2' :'col'" *ngIf="relationGraph && grid4">
+                <div>
+                    <i class="fas fa-expand cp" style="font-size: 22px;margin-right: 10px;" (click)="grid1=false;grid2=false;grid3=false;grid4=true;" *ngIf="grid1 && grid2 && grid3 && grid4"></i>
+                    <i class="fas fa-compress-arrows-alt cp" style="font-size: 22px;margin-right: 10px;" (click)="grid1=true;grid2=true;grid3=true;grid4=true;" *ngIf="!grid1 && !grid2 && !grid3"></i>
+                </div>
+                <div class="table-responsive green-border w-100" style="max-height: 300px;overflow: auto;height: fit-content;" *ngIf="!showRelationGraphView">
+                    <table class="table table-bordered roboto roboto bg-white mb-0 w-100">
+                        <tbody>
+                            <tr *ngFor="let data of graphTableData">
+                                <td style="text-align: center;vertical-align: center;" >{{data[0]}}</td>
+                                <td style="text-align: center;vertical-align: center;" class="url cp" (click)="downloadableView(data[1])">show</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <app-relation-graph class="w-100" [relationGraph]="relationGraph" *ngIf="relationGraph && showRelationGraphView">
+                </app-relation-graph>
+            </div>
+        </div>
+    </div>
+    
+    
+    <!-- <div id="app" style="width: 80vw;height:90vh;background-color:#fff;margin: 0 auto;border: 1px solid #999999"></div> -->
+    
+    <!-- <td>
+        <ul style="padding-left: 10px;padding-top: 10px;">
+            <li class="mb-2" *ngFor="let dd of data.details">
+                <i class="fas fa-check text-success border" style="margin-right:14px;" *ngIf="dd.isAvailable"></i>
+                <i class="fas fa-times text-danger border" style="margin-right:14px;" *ngIf="!dd.isAvailable"></i>
+                <span class="url" (click)="openPdf()">{{dd['Found word']}}</span>
+            </li>
+        </ul>
+    </td> -->
+
+</ng-container>
+
+<ng-container *ngIf="feature === 'Hard time dashboard'">
+    <app-hardtimedashboard></app-hardtimedashboard>
+</ng-container>
+
+<!-- Hard time dashboard -->

@@ -1,0 +1,66 @@
+<button id="addUserModalButton" [hidden]="true" data-backdrop="static" data-keyboard="false" data-bs-toggle="modal" data-bs-target="#exampleModal"></button>
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" [class.active]="addUserFlag" id="exampleModalLabel" (click)="setAddUserList()">Add User </h5>
+        <h5 class="modal-title" [class.active]="updateUserFlag" (click)="setUpdateUserList()">Update User Role</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <div class="row justify-content-center">
+          <div class="col-sm-12 col-md-12">
+            <table class="table table-bordered table-striped">
+              <thead>
+                <tr>
+                  <th>Select</th>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>Organisation</th>
+                  <th>User Role</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let user of userList">
+                  <td><input type="checkbox" name="user.isSelected" [(ngModel)]="user.isSelected" [checked]="user.isSelected"></td>
+                  <td>{{user.username}}</td>
+                  <td>{{user.email}}</td>
+                  <td>{{user.org_name}}</td>
+                  <td>
+                    <select class="form-select" [(ngModel)]="user.role" aria-label="Default select example">
+                      <option value="">Select Role</option>
+                      <option value="admin">Admin</option>
+                      <option value="user">User</option>
+                      <option value="consultant">Consultant</option>
+                    </select>
+                  </td>
+                </tr>
+                <!-- <tr>
+            <td><input type="checkbox" name="checkbox" checked></td>
+            <td>abc</td>
+            <td>abc@gmail.com</td>
+            <td>Yes</td>
+            <td>
+              <select class="form-select" aria-label="Default select example">
+                <option selected>Select Role</option>
+                <option value="admin">Admin</option>
+                <option value="user">User</option>
+                <option value="consultant">Consultant</option>
+              </select>
+            </td>
+          </tr> -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <!-- <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button> -->
+        <button *ngIf="addUserFlag" type="button" class="btn btn-primary" (click)="addSelectedUser()">Add</button>
+        <button *ngIf="updateUserFlag" type="button" class="btn btn-primary" (click)="addSelectedUser()">Update</button>
+      </div>
+    </div>
+  </div>
+</div>

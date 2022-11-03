@@ -1,0 +1,222 @@
+$black: #364a63;
+$lightblack: #526484;
+$blue: #827acb;
+$lightgrey: #8094ae;
+$heading-color: rgb(128, 148, 174);
+$bg-color: #f9f9fb;
+
+.status-table-wrapper {
+    height: 100vh;
+    margin-top: 40px;
+    .logo {
+        .logo-txt {
+            font-size: 18px;
+            font-weight: 500;
+            color: #526484;
+            margin-left: 10px;
+            font-family: 'M PLUS 2', sans-serif;
+        }
+    }
+    .sidebar {
+        width: 270px;
+        height: 100vh;
+        overflow: auto;
+        background-color: $bg-color;
+        .form-check {
+            position: relative;
+            top: 2px;
+        }
+        .menu {
+            margin-top: 60px;
+            margin-bottom: 30px;
+            border-width: 1.8px !important;
+            ul {
+                margin-bottom: 30px;
+                li {
+                    i {
+                        margin-right: 10px;
+                    }
+                    color: $lightgrey;
+                    font-weight: 600;
+                    font-size: 14px;
+                    margin-bottom: 18px;
+                }
+            }
+        }
+        .heading {
+            font-size: 11px;
+            line-height: 1.2;
+            letter-spacing: 0.2em;
+            color: $heading-color;
+            text-transform: uppercase;
+            font-weight: 600;
+            margin-bottom: 30px;
+        }
+    }
+
+    .table-wrapper {
+        box-shadow: 0 5px 5px -3px rgb(0 0 0 / 20%), 0 8px 10px 1px rgb(0 0 0 / 14%), 0 3px 14px 2px rgb(0 0 0 / 12%);
+        height: auto;
+        max-height: 52vh;
+    }
+
+    .docutablewrapper {
+        width: 100vw;
+        padding-left: 0px;
+        padding-right: 20px;
+        .titleHeading {
+            position: relative;
+            top: 5px;
+            h4 {
+                font-size: 20px;
+                font-weight: 600;
+            }
+        }
+        .searchfilter {
+            h4 {
+                color: $black;
+            }
+        }
+        .docu-table {
+            .tableDetailsMenu {
+                margin-top: 20px;
+                margin-bottom: 5px;
+                p {
+                    font-size: 13.5px;
+                    margin-right: 20px;
+                    background-color: $bg-color;
+                    padding: 6px 14px;
+                    border-radius: 5px;
+                    color: $black;
+                    font-weight: 600;
+                }
+                .badge {
+                    border-radius: 50px;
+                    font-size: 10px;
+                    background-color: #e3e3e9;
+                    margin-left: 10px;
+                    position: relative;
+                    color: $black;
+                    top: -2px;
+                    font-weight: 700;
+                }
+                .form-check {
+                    font-size: 13.5px;
+                    position: relative;
+                    top: -6px;
+                    color: $black;
+                    font-weight: 600;
+                    input {
+                        margin-right: 10px;
+                    }
+                }
+            }
+        }
+    }
+}
+
+.px-6 {
+    padding-left: 1.5rem;
+    padding-right: 1rem;
+}
+
+.border-bottom {
+    border-bottom: 1px solid #eeebeb !important;
+}
+
+@keyframes blinkPending {
+    from {
+        background-color: #ffc107;
+    }
+    50% {
+        background-color: #ffc107;
+        box-shadow: #ffc107 0 -1px 7px 1px, inset #ffc107 0 -1px 9px, #ffc107 0 2px 0;
+    }
+    to {
+        background-color: #ffc107;
+    } 
+}
+
+.led-pending {
+    margin-right: 10px;
+    width: 8px;
+    height: 8px;
+    background-color: #ffc107;
+    border-radius: 50%;
+    box-shadow: rgba(136, 123, 6, 0.2) 0 -1px 7px 1px, inset #b8ac0d 0 -1px 9px, rgba(211, 208, 13, 0.5) 0 2px 12px;
+    animation: blinkPending 0.5s infinite;
+}
+th,td {
+    user-select: all;
+}
+
+@media (min-width: 1400px) {
+.table-wrapper {
+        max-height: 63vh !important;
+    }
+}
+
+.form-control, .form-select {
+    // width: 150px;
+    height: 30px;
+    font-size: 13px;
+}
+.currPage {
+    width: 60px;
+    height: 30px;
+}
+.back {
+    margin-right: 10px;
+}
+
+.vfolder {
+    tbody {
+        tr, td {
+            vertical-align: middle;
+        }
+    }
+    a {
+        color: $black;
+    }
+}
+.column_heading::first-letter {
+    text-transform: uppercase;
+}
+.topoptions {
+    input,
+    select {
+        font-size: 14px;
+        height: 35px;
+    }
+}
+
+table {
+    th {
+        font-size: 14px;
+    }
+}
+
+.tab {
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    a {
+        color: $black;
+        flex-grow: 1;
+        font-size: 15px;
+        font-weight: 600;
+        &:hover {
+            color: #F2906C;
+        }
+    }
+}
+.light-pink {
+    color: #F2906C !important;
+    border-bottom: 2px solid #F2906C;
+}
+
+.title {
+    font-size: 20px !important;
+    margin-left: 10px !important;
+    color: $lightblack;
+    font-weight: 700;
+    background-color: #fff !important;
+}

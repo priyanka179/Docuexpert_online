@@ -1,0 +1,29 @@
+<ng-container *ngIf="_common.showVUploadModal">
+    <div class="minimize-tray shadow p-2" style="z-index: 999;" ngDraggable [bounds]="document.body" [inBounds]="true">
+        <div class="mb-2 d-flex align-items-center">
+            <div class="d-flex justify-content-between align-items-center">
+                <h6 class="nunito uploadtxt position-relative">Average progress</h6>
+            </div>
+            <div class="progress">
+                <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"
+                    aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"
+                    [style.width]="_common.vuploadProgress + '%'">
+                    {{ _common.vuploadProgress + "%" }}
+                </div>
+            </div>
+            <button class="btn-close" (click)="_common.showVUploadModal = false" *ngIf="_common.vuploadComplete"></button>
+        </div>
+
+        <div class="mb-0 d-flex align-items-center" *ngFor="let progress of _common.vdocumentProgress;let i = index;">
+            <div class="d-flex justify-content-between align-items-center">
+                <h6 class="nunito uploadtxt position-relative">Link{{i+1}}</h6>
+            </div>
+            <div class="progress">
+                <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75"
+                    aria-valuemin="0" aria-valuemax="100" [style.width]="progress + '%'">
+                    {{ progress + "%" }}
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-container>

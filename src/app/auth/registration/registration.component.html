@@ -1,0 +1,85 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-6 p-0 left-content d-flex justify-content-center align-content-center">
+            <app-left-banner
+                style="display: flex;justify-content: center;align-items: center;background: linear-gradient(to bottom,transparent,rgba(0,0,0,.5));">
+            </app-left-banner>
+        </div>
+        <div class="col-lg-6 d-flex justify-content-center align-items-center position-relative">
+            <form class="registration-form" [formGroup]="userRegForm">
+                <h3 class="mb-20">Fill details</h3>
+                <!-- ^[a-zA-Z][a-zA-Z0-9]*$ -->
+                <input type="text" formControlName="user_name" class="form-control" placeholder="User Name"
+                    [class.is-invalid]="validateFields('user_name')" pattern="^(\d|\w)+$" maxlength="30">
+                <div class="invalid-feedback" *ngIf="this.userRegForm.get('user_name').hasError('pattern')">
+                    Spaces and special characters are not allowed
+                </div>
+                <div class="invalid-feedback"
+                    *ngIf="validateFields('user_name') && !this.userRegForm.get('user_name').hasError('pattern')">
+                    Enter username.
+                </div>
+                <div class="formseparator"></div>
+                <input type="email" formControlName="email" class="form-control" placeholder="Email"
+                    pattern=".+@(statvalu)\.com$" [class.is-invalid]="validateFields('email')">
+                <div class="invalid-feedback mb-2" *ngIf="this.userRegForm.get('email').hasError('pattern')">
+                    Email must contain statvalu.com.
+                </div>
+                <div class="invalid-feedback"
+                    *ngIf="validateFields('email') && !this.userRegForm.get('email').hasError('pattern')">
+                    Enter an email.
+                </div>
+                <div class="formseparator"></div>
+                <input type="password" formControlName="password" class="form-control" placeholder="New Password"
+                    [class.is-invalid]="validateFields('password')" minlength="6">
+                <div class="invalid-feedback" *ngIf="this.userRegForm.get('password').hasError('minlength')">
+                    Password should contain atleast 6 characters
+                </div>
+                <div class="invalid-feedback"
+                    *ngIf="validateFields('password') && !this.userRegForm.get('password').hasError('minlength')">
+                    Enter password (you can use letters numbers and periods).
+                </div>
+                <div class="formseparator"></div>
+                <input type="password" formControlName="confirm_password" class="form-control"
+                    placeholder="Confirm Password" [class.is-invalid]="validateFields('confirm_password')">
+                <div class="invalid-feedback" *ngIf="this.userRegForm.get('confirm_password').hasError('mustMatch')">
+                    Password must match
+                </div>
+                <div class="invalid-feedback" *ngIf="validateFields('confirm_password')">
+                    Password must match
+                </div>
+                <div class="formseparator"></div>
+                <input type="text" formControlName="org_name" class="form-control" placeholder="Organisation Name"
+                    [class.is-invalid]="validateFields('org_name')">
+                <div class="invalid-feedback" *ngIf="validateFields('org_name')">
+                    Organisation Name is required.
+                </div>
+                <div class="formseparator"></div>
+                <div class="form-check position-relative">
+                    <input class="form-check-input shadow-none" type="checkbox" id="flexCheckDefault"
+                        formControlName="privacy_policy_check"
+                        [class.error]="!this.userRegForm.get('privacy_policy_check').value && this.userRegForm.get('privacy_policy_check').touched">
+                    <label class="form-check-label" for="flexCheckDefault">
+                        I agree <a href="https://docuexpert.online/media/License_Agreement.pdf" target="_blank">Terms and
+                            Conditions</a>
+                    </label>
+                </div>
+                <!-- <div class="invalid-feedback" *ngIf="!this.userRegForm.get('privacy_policy_check').value">
+                    Accept terms and conditions.
+                </div> -->
+                <div class="separator mb-20"></div>
+                <div class="d-flex justify-content-between align-items-center">
+                    <div class="d-flex haveacc">
+                        <p>Already have an account?</p>
+                        <a routerLink="/auth/login" class="signin">Sign in</a>
+                    </div>
+                    <button type="submit" name="forward" class="forward" (click)="registerUser()">Sign up</button>
+                </div>
+            </form>
+
+
+            <div class="logo d-flex align-items-center position-absolute">
+                <a href="https://statvalu.com/" target="_blank"><img src="https://statvalu.com/wp-content/uploads//2020/09/Statvalu-logo.svg" width="200px" alt=""></a>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,6 @@
+.form-control {
+    font-size: 18px;
+    &::placeholder {
+        font-size: 14px;
+    }
+}

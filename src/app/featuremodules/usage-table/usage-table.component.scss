@@ -1,0 +1,200 @@
+$black: #364a63;
+$lightblack: #526484;
+$blue: #827acb;
+$lightgrey: #8094ae;
+
+$heading-color: rgb(128, 148, 174);
+$link-color: #6e82a5;
+
+.common {
+    width: 50px;
+    height: 50px;
+    background-color: #fff;
+    border-radius: 50%;
+}
+
+.docu-table-wrapper {
+    .right-arrow-wrapper {
+        top: 5px;
+        left: 5px;
+        @extend .common;
+    }
+    .left-arrow-wrapper {
+        top: 5px;
+        right: 8px;
+        @extend .common;
+    }
+    .featurelist {
+        height: 100vh;
+        overflow: auto;
+        transition: all 0.3s;
+        .heading {
+            font-size: 11px;
+            line-height: 1.2;
+            letter-spacing: 0.2em;
+            color: $heading-color;
+            text-transform: uppercase;
+            font-weight: 600;
+            margin-bottom: 30px;
+        }
+        .featuremenu {
+            li {
+                color: $lightgrey;
+                margin-bottom: 18px;
+                padding-bottom: 10px;
+                font-size: 13px;
+                font-weight: 700;
+                cursor: pointer;
+                &:hover {
+                    color: $blue;
+                    font-weight: bold;
+                }
+                .dot {
+                    position: absolute;
+                    top: 6px;
+                    left: -15px;
+                    border-radius: 50%;
+                }
+                &.active {
+                    color: $blue !important;
+                    font-weight: bold;
+                }
+                &.active .dot {
+                    width: 4px;
+                    height: 4px;
+                    background-color: $blue;
+                }
+            }
+        }
+
+        .fa-arrow-left {
+            top: 24px;
+            right: 25px;
+            color: $lightblack;
+        }
+        &.show {
+            width: 250px;
+        }
+        &.hide {
+            width: 0px !important;
+            overflow: hidden !important;
+            transform: translateX(-200%);
+        }
+    }
+    .featuredetails {
+        transition: all 0.3s;
+        height: 100vh;
+        background-color: #f4f8fb;
+        .heading {
+            h6 {
+                margin-bottom: 30px;
+            }
+        }
+        h4 {
+            color: $black;
+        }
+        .event {
+            padding-top: 20px;
+            padding-bottom: 30px;
+            padding-left: 15px;
+            margin-top: 30px;
+            margin-left: 15px;
+            position: relative;
+            z-index: 10;
+            box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+            p {
+                font-size: 28px;
+            }
+            small {
+                color: $lightgrey;
+                font-size: 12px;
+                font-weight: 600;
+            }
+        }
+        .eventall {
+            box-shadow: none;
+            margin-top: 15px;
+            padding-bottom: 0px;
+            @extend .event;
+        }
+        &.show {
+            width: 250px;
+        }
+        &.hide {
+            width: 0px;
+            overflow: hidden;
+        }
+    }
+    .docu-table-wrapper {
+        transition: all 0.3s;
+        &.showRightView {
+            width: calc(100vw - 500px);
+            height: 100vh;
+        }
+        &.showFullView {
+            width: 96vw;
+            height: fit-content;
+            margin-top: 15px;
+        }
+        .search {
+            padding-top: 22px;
+            padding-bottom: 22px;
+            input {
+                outline: none;
+                font-size: 14px;
+                color: $lightgrey;
+            }
+        }
+        .docu-table {
+            margin-top: 20px;
+            height: auto;
+            max-height: 460px;
+            .table-wrapper {
+                height: auto;
+                max-height: 450px;
+            }
+            table {
+                font-size: 13px;
+                // border-collapse: separate;
+                thead {
+                    tr {
+                        th {
+                            color: $lightgrey;
+                            white-space: nowrap;
+                            font-weight: 500;
+                        }
+                    }
+                }
+                tbody {
+                    tr {
+                        cursor: pointer;
+                        td {
+                            white-space: nowrap;
+                            color: $lightblack;
+                            padding-top: 15px;
+                            padding-bottom: 15px;
+                        }
+                        &:hover {
+                            box-shadow: rgba(0, 0, 0, 0.18) 0px 2px 4px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+h6 {
+    color: $blue;
+    font-size: 13px;
+    margin-bottom: 60px;
+}
+.border-bottom {
+    border-bottom: 1px solid #eeebeb !important;
+}
+.pl-30 {
+    padding-left: 30px;
+}
+.column_heading::first-letter {
+    text-transform: uppercase;
+}

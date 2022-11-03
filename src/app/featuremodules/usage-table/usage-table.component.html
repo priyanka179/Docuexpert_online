@@ -1,0 +1,65 @@
+<div class="docu-table-wrapper d-flex overflow-hidden position-relative">
+
+    <div class="right-arrow-wrapper shadow-sm d-flex justify-content-center align-items-center position-absolute cp" (click)="toogleSidebar = !toogleSidebar;" *ngIf="toogleSidebar === false"><i class="fas fa-arrow-right"></i></div>
+    <div class="featurelist py-4 pl-30 shadow-lg position-relative" [class.hidescrollbar]="hideScrollbar" (mouseover)="hideScrollbar = false" (mouseout)="hideScrollbar = true" [ngClass]="toogleSidebar ? 'show':'hide'">
+        <h6 class="text-uppercase roboto"><span style="font-weight: 500;">docu</span><b>expert</b></h6>
+        <h6 class="text-uppercase roboto heading">previous links</h6>
+        <ul class="featuremenu p-0 nunito mb-5">
+            <li class="position-relative" routerLink="/viewDir/myfiles">My files</li>
+            <li class="position-relative"  routerLink="/viewDir/statusTable">Status table</li>
+            <!-- <li class="position-relative">Request Table</li> -->
+        </ul>
+        <div class="left-arrow-wrapper position-absolute cp d-flex justify-content-center align-items-center shadow-sm" (click)="toogleSidebar = !toogleSidebar"><i class="fas fa-arrow-left"></i></div>
+    </div>
+
+
+    <div class="featuredetails py-4" [ngClass]="toogleSidebar ? 'show':'hide'">
+        <div class="heading border-bottom"><h6 class="text-uppercase roboto pl-30">usage details</h6></div>
+        <h4 class="pl-30 mt-4">Actions</h4>
+        <div class="event bg-white cp">
+            <p class="mb-1 roboto">{{totalRequest > 9999999999 ? '9999999999+' : totalRequest}}</p>
+            <small class="nunito">Requests</small>
+        </div>
+        <div class="eventall cp">
+            <p class="mb-1 roboto">{{remainingPages > 9999999999 ? '9999999999+' : remainingPages}}</p>
+            <small class="nunito">Remaining pages</small>
+        </div>
+        <div class="eventall cp">
+            <p class="mb-1 roboto">{{remainingDocuments > 9999999999 ? '9999999999+' : remainingDocuments}}</p>
+            <small class="nunito">Remaining documents</small>
+        </div>
+    </div>
+
+
+    <div class="docu-table-wrapper shadow-lg" [ngClass]="toogleSidebar ? 'showRightView':'showFullView'">
+        <div class="border-bottom search">
+            <input type="text" class="border-0 w-100 roboto pl-30" [(ngModel)]="search_string" (input)="filter()" placeholder="Search by feature name">
+        </div>
+        <div class="docu-table px-3 overflow-hidden">
+            <div class="w-100 overflow-auto table-wrapper" [class.hidescrollbar]="hideTableScrollbar" (mouseover)="hideTableScrollbar = false" (mouseout)="hideTableScrollbar = true">
+                <table class="table table-borderless table-striped roboto">
+                    <thead>
+                      <tr>
+                        <th scope="col" class="column_heading" style="position: sticky;top: 0;background-color: #fff;" *ngFor="let data of displayedColumns">{{data}}</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let tdata of filteredTableData;let i=index">
+                        <td class="text-center">{{tdata.sno}}</td>
+                        <td>{{tdata.feature_name}}</td>
+                        <td style="text-align: center;">{{tdata.total_requests_made}}</td>
+                        <td style="text-align: center;">{{tdata.complete_percentage}}</td>
+                        <td style="text-align: center;">{{tdata.max_pages_usage_allow}}</td>
+                        <td style="text-align: center;">{{tdata.max_document_usage_allow}}</td>
+                        <td style="text-align: center;">{{tdata.page_usage_done}}</td>
+                        <td style="text-align: center;">{{tdata.page_usage_remaining}}</td>
+                        <td style="text-align: center;">{{tdata.document_usage_done}}</td>
+                        <td style="text-align: center;">{{tdata.document_usage_remaining}}</td>
+                        <td class="text-center">{{tdata.subscription_end_date}}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+            </div>
+        </div>
+    </div>
+</div>

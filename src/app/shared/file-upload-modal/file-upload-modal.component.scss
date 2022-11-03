@@ -1,0 +1,47 @@
+.fileuploadmodal {
+    position: fixed;
+    bottom: 0;
+    right: 30px;
+    min-width: 360px;
+    // max-width: 360px;
+    box-shadow: 0 2px 8px 0 rgb(0 0 0 / 20%);
+    .header {
+        width: 100.2%;
+        background-color: #323232;
+        padding: 20px 24px;
+        p,
+        a {
+            color: #fff;
+            font-size: 14px;
+        }
+        .uploadcount {
+            margin-right: 4px;
+        }
+        .upload-errors {
+            margin-left: 10px;
+            &:hover {
+                text-decoration: underline;
+            }
+        }
+    }
+    .body {
+        height: 52px;
+        background-color: #fff;
+        padding: 20px 24px;
+        padding-left: 20px;
+        p {
+            font-size: 14px;
+            margin-left: 10px;
+        }
+        .uploadtext {
+            position: relative;
+            top: 1px;
+            .filesize {
+                margin-left: 10px;
+            }
+        }
+    }
+}
+p {
+    margin-bottom: 0;
+}

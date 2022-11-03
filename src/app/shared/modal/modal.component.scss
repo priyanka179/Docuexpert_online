@@ -1,0 +1,82 @@
+.overlay {
+    position: fixed;
+    background-color: rgba(0,0,0,.4);
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    z-index: 1000;
+}
+
+.documodal {
+    position: fixed;
+    width: 80vw;
+    height: auto;
+    max-height: 300px;
+    overflow: auto;
+    background-color: #fff;
+    z-index: 1001;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    padding: 20px;
+    h2 {
+        font-weight: 600;
+    }
+    .single-feature-progress {
+        margin-top: 30px;
+        .featurename {
+            font-size: 26px;
+            margin-right: 60px;
+        }
+        .progress {
+            font-size: 20px;
+            height: 18px;
+        }
+    }
+    .minimize {
+        // margin-top: 25px;
+        top: 20px;
+        left: 20px;
+        button {
+            font-family: "Nunito Sans", sans-serif !important;
+        }
+    }
+}
+
+.minimize-tray {
+    position: fixed;
+    // top: 50px;
+    // left: 20px;
+    top: 11%;
+    left: 40%;
+    z-index: 1000;
+    // min-width: 188px;
+    height: auto;
+    background-color: #fff;
+    h6 {
+        font-size: 14px;
+        font-weight: 600;
+    }
+    .featuretext {
+        top: 3.5px;
+    }
+    .progress {
+        height: 11px;
+        min-width: 200px;
+    }
+    .maximize {
+        // margin-top: 10px;
+        button {
+            font-size: 11px;
+            padding: 2px 20px !important;
+        }
+    }
+}
+
+.btn-close {
+    font-size: 12px;
+    position: relative;
+    top: -5px;
+    margin-left: 16px;
+}

@@ -1,0 +1,20 @@
+<li class="bulk position-relative nunito" [class.disableCursor]="disabled"
+    [ngClass]="statusTable ? 'statustablelinks':'menu-links'">
+    <div href="javascript:void(0)" class="featureheading w-100 h-100" (click)="featureData.expand = !featureData.expand"
+        [class.disable]="disabled">{{featureData.heading}}<i class="fas fa-angle-right"
+            *ngIf="!featureData.expand"></i><i class="fas fa-angle-down" *ngIf="featureData.expand"></i></div>
+    <div style="overflow: hidden;height: 0vh;" class="expandablemenu"
+        [@openCloseAnimation]="featureData.expand ? 'open':'closed'">
+        <div class="form-check" *ngFor="let data of featureData.features">
+            <input class="form-check-input shadow-none" type="checkbox" name="test" [(ngModel)]="data.checked"
+                [id]="data.featureName" (change)="onCheckboxChecked(data.featureName,data.checked)">
+            <label class="form-check-label feature" [for]="data.featureName" [class.active]="data.checked">
+                {{data.showFeatureName}}
+            </label>
+        </div>
+    </div>
+</li>
+
+
+
+<!-- <i class="fas fa-tasks" *ngIf="!statusTable"></i> -->

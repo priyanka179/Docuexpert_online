@@ -1,0 +1,37 @@
+<mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
+  <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding (click)="selectedNode(node)">
+    <mat-icon class="mat-icon-rtl-mirror" [hidden]="node.item[0].total_count<=0" style="cursor:pointer;"
+      [attr.aria-label]="'Toggle ' + node.item[0].name" matTreeNodeToggle>
+      {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
+    </mat-icon>
+    <!-- <i class="fas" [class.fa-folder]="node.item[0].type=='directory'" [class.fa-file]="node.item[0].type=='pdf'" [class.fa-image]="node.item[0].type=='png'" ></i> -->
+
+    <!-- <i class="fas" [class.fa-folder]="node.item[0].type=='directory'" [class.fa-file]="node.item[0].type!='directory'"></i>  -->
+    <mat-icon *ngIf="node.item[0].type=='directory'" class="folder-icon">{{'folder'}}</mat-icon>
+    <mat-icon *ngIf="node.item[0].type=='png'" style="color: rgb(0, 0, 255);" class="folder-icon">{{'image'}}</mat-icon>
+    <mat-icon *ngIf="node.item[0].type=='pdf'" style="color: rgb(255, 0, 0);" class="folder-icon">{{'picture_as_pdf'}}
+    </mat-icon>
+    <span (click)="selectedNode(node)">{{node.item[0].name+"("+node.item[0].total_count+")"}}</span>
+    <mat-spinner [diameter]="20" *ngIf="node.isLoading" mode="indeterminate" class="example-tree-progress-bar">
+    </mat-spinner>
+  </mat-tree-node>
+  <mat-tree-node *matTreeNodeDef="let node; when: hasChild" matTreeNodePadding (click)="selectedNode(node)">
+    <mat-icon class="mat-icon-rtl-mirror" [hidden]="node.item[0].total_count<=0" style="cursor:pointer;"
+      [attr.aria-label]="'Toggle ' + node.item[0].name" matTreeNodeToggle>
+      {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
+    </mat-icon>
+
+    <mat-icon *ngIf="node.item[0].type=='directory'" class="folder-icon">{{'folder'}}</mat-icon>
+    <mat-icon *ngIf="node.item[0].type=='png'" class="folder-icon">{{'image'}}</mat-icon>
+    <mat-icon *ngIf="node.item[0].type=='pdf'" class="folder-icon">{{'picture_as_pdf'}}</mat-icon>
+
+
+
+
+    <!-- <i class="fas" [class.fa-folder]="node.item[0].type=='directory'" [class.fa-file-pdf-o]="node.item[0].type=='pdf'" [class.fa-image]="node.item[0].type=='png'" ></i> -->
+    <span>{{node.item[0].name+"("+node.item[0].total_count+")"}}</span>
+    <mat-spinner [diameter]="20" *ngIf="node.isLoading" mode="indeterminate" class="example-tree-progress-bar">
+    </mat-spinner>
+  </mat-tree-node>
+  <!-- <mat-spinner [diameter]="30" *ngIf="nodeItems.length === 0"></mat-spinner> -->
+</mat-tree>

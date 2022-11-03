@@ -1,0 +1,19 @@
+<div class="table-responsive m-4">
+    <div class="d-flex align-items-center">
+        <button class="btn btn-primary mb-3 mr-4" (click)="clearance = true">Clearance</button>
+
+        <input type="date" class="form-control mb-3 mr-4" *ngIf="clearance">
+        <input type="date" class="form-control mb-3 mr-4" *ngIf="clearance">
+        <input type="number" min="1" class="form-control mb-3 mr-4" placeholder="flight hours" *ngIf="clearance">
+        <input type="number" min="1" class="form-control mb-3 mr-4" placeholder="cycles" *ngIf="clearance">
+
+        <button class="btn btn-primary mb-3" (click)="clearance = false" *ngIf="clearance">Update</button>
+    </div>
+    <table class="table table-bordered nunito">
+        <tbody>
+            <tr *ngFor="let item of csvData; let i = index" [class.bg-sky]="i==0">
+                <td *ngFor="let data of item; let j = index" class="text-nowrap text-center" [class.text-capitalize]="i==0" [attr.contenteditable]="j==32 || j==33 || j==34">{{ data }}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>

@@ -1,0 +1,64 @@
+.folder-list {
+    width: 120px;
+    height: 82px;
+    margin-bottom: 5px;
+    margin-right: 20px;
+}
+.alphabet {
+    font-size: 17px;
+    color: rgb(36, 34, 34);
+}
+.prevfolder {
+    transition: all .3s;
+    color: rgb(57, 57, 156);
+    &:hover {
+        transform: translateY(-12%);
+    }
+}
+.bg-active {
+    background-color: rgb(166, 166, 206);
+    color: #000 !important;
+    border-radius: 5px;
+}
+.record-failure {
+    color: brown;
+}
+.record-success {
+    color: rgb(34, 153, 34);
+    font-weight: 600;
+}
+.fa-arrow-left {
+    color: #000;
+}
+.drag-over {
+    transform: translateY(-12%);
+    background-color: grey;
+    color: #fff !important;
+    border-radius: 5px;
+}
+.showDropFolder {
+    top: 20%;
+    left: 10px;
+    font-size: 40px;
+}
+.totalrecord {
+    margin-right: 20px;
+}
+
+.highlight-btn-iframe{
+    // background-color: #6576ff;
+    color: #fff;
+    height: 30px;
+    width: 30px;
+    text-align: center;
+    padding: 0;
+    z-index: 99;
+    border-radius: 50%;
+    position: absolute;
+    // top: -1%;
+    // right: 1%;
+    top: 1.5%;
+    right: 1%;
+    line-height: 30px;
+    cursor: pointer;
+}

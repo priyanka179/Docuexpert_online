@@ -1,0 +1,47 @@
+.price-container {
+    height: 89vh;
+    h4 {
+        font-family: 'M PLUS 2', sans-serif;
+    }
+    .cost {
+        font-size: 20px;
+        top: 90px;
+        right: 40px;
+        z-index: 10;
+    }
+    .card-container {
+        margin-bottom: 20px;
+    }
+    .card {
+        background-color: #F6F8FA;
+        border-radius: 20px;
+        margin-bottom: 1.5rem;
+        .form-select {
+            width: 130px;
+            font-size: 14px;
+        }
+    }
+}
+
+.card.selected {
+    background-color: #3F54FF !important;
+    color:  #fff !important;
+
+    .btn-primary {
+        background-color: #fff !important;
+        color: #000 !important;
+    }
+}
+
+.form-check-label {
+    top: -2px;
+}
+
+.mr {
+    margin-right: 1.5rem;
+}
+
+.fa-coins {
+    margin-right: 5px;
+    top: 2px;
+}

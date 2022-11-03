@@ -1,0 +1,59 @@
+.chart-container {
+    height: 60vh;
+    // height: 400px;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+
+    .stick {
+        // width: 10px;
+        height: 2px;
+        // height: 30px;
+        // border-radius: 50%;
+        // border-left: 2px solid rgb(190, 85, 36);
+        // border-right: 2px solid rgb(190, 85, 36);
+        // top: 40px;
+        // bottom: 10px;
+        // left: 20px;
+        .median-container {
+            .median {
+                width: 100%;
+                height: 2px;
+                background-color: rgb(190, 85, 36);
+                top: 0;
+                bottom: 0;
+                left: 50%;
+                transform: translateX(-50%);
+            }
+            .median-circle {
+                width: 7px;
+                height: 7px;
+                border: 2px solid rgb(190, 85, 36);
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                border-radius: 50%;
+            }
+            &::before {
+                position: absolute;
+                content: '';
+                left: 0;
+                width: 2px;
+                height: 10px;
+                background-color: rgb(190, 85, 36);
+                top: -4px;
+            }
+            &::after {
+                position: absolute;
+                content: '';
+                right: 0;
+                width: 2px;
+                height: 10px;
+                background-color: rgb(190, 85, 36);
+                top: -4px;
+            }
+        }
+    }
+
+    .label-x {
+        bottom: 0px;
+    }
+}

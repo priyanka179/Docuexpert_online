@@ -1,0 +1,97 @@
+$heading-color: rgb(128, 148, 174);
+$link-color: #6e82a5;
+$active-link-color: #798bff;
+
+.menu-links .form-check-label,
+.menu-links a,
+.menu-links {
+    transition: all 5s;
+    margin-bottom: 12px;
+
+    .featureheading,a,.form-check-label {
+        color: $link-color;
+        font-weight: 600;
+        cursor: pointer;
+    }
+    .sub-links:not(:last-child) {
+        margin-bottom: 10px;
+    }
+    
+    .sub-links a {
+        font-size: 14px;
+        font-weight: 400;
+    }
+    
+    .menuopen {
+        max-height: 100px;
+    }
+    
+    .menuclose {
+        height: 0px;
+    }
+    
+    .expandablemenu {
+        // padding-left: 32px;
+        padding-left: 20px;
+        margin-top: 10px;
+    }
+    
+    .feature {
+        font-size: 14px;
+        margin-bottom: 10px;
+        margin-top: 10px;
+    }
+    
+    .form-check-input {
+        position: relative;
+        top: 7px;
+    }
+    
+    .fa-tasks {
+        margin-right: 18px;
+    }
+    .fa-angle-right,
+    .fa-angle-down {
+        position: absolute;
+        // top: 2px;
+        // right: 30px;
+        right: 15px;
+        top: 5px;
+        font-size: 15px;
+    }
+    
+    .disableCursor {
+        cursor: not-allowed;
+    }
+    .disable {
+        pointer-events: none;
+        opacity: 0.4;
+    }    
+}
+
+.statustablelinks {
+    .expandablemenu {
+        padding-left: 10px;
+        margin-top: 10px;
+    }
+    .featureheading,a,.form-check-label {
+        font-size: 14px;
+    }
+    .fa-angle-right,
+    .fa-angle-down {
+        top: 4px;
+    }
+    @extend .menu-links
+}
+
+.form-check-label {
+    transition: all .3s !important;
+    &:hover {
+        color: #1b33ef !important;
+    }
+}
+
+.active {
+    color: #000 !important;
+    font-weight: 700 !important;
+}

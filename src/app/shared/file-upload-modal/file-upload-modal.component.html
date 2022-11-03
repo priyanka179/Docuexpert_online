@@ -1,0 +1,67 @@
+<div class="fileuploadmodal border">
+    <div class="header d-flex justify-content-between align-items-center roboto">
+        <p>
+            <!-- (_upload.totalFilesToUpload - _upload.errorUploadFileCount) -->
+            <span class="uploadcount" *ngIf="_upload.filesUploaded !== _upload.totalFilesToUpload">{{_upload.filesUploaded}}/{{_upload.totalFilesToUpload}}</span> 
+            <span class="uploadcount" *ngIf="_upload.filesUploaded === _upload.totalFilesToUpload">{{_upload.successFilesUploaded}}</span>
+            upload complete 
+            <span class="upload-errors cp" (click)="_modal.showError('File Already Exists!!!')" *ngIf="_upload.errorUploadFileCount > 0">{{_upload.errorUploadFileCount}} Errors</span>
+        </p>
+        <a href="javascript:void(0)" *ngIf="_upload.filesUploaded === _upload.totalFilesToUpload" (click)="_upload.showUploadProgress = false">
+            <svg class="a-qd-va undefined" x="0px" y="0px" width="14px" height="14px" viewBox="0 0 10 10" focusable="false" fill="#FFFFFF"><polygon class="a-s-fa-Ha-pa" points="10,1.01 8.99,0 5,3.99 1.01,0 0,1.01 3.99,5 0,8.99 1.01,10 5,6.01 8.99,10 10,8.99 6.01,5 "></polygon></svg>
+        </a>
+    </div>
+    <div class="body d-flex justify-content-between align-items-center">
+        <div class="d-flex align-items-center">
+            <!-- <svg x="0px" y="0px" height="24px" width="24px" focusable="false" viewBox="0 0 24 24" fill="#5f6368">
+                <g>
+                    <path
+                        d="M10 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-8l-2-2z">
+                    </path>
+                    <path d="M0 0h24v24H0z" fill="none"></path>
+                </g>
+            </svg> -->
+
+            <div class="upload-icon"><svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="30" height="30"
+                    viewBox="0 0 172 172" style=" fill:#000000;">
+                    <g transform="">
+                        <g fill="none" fill-rule="nonzero" stroke="none" stroke-width="none" stroke-linecap="butt"
+                            stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0"
+                            font-family="none" font-weight="none" font-size="none" text-anchor="none"
+                            style="mix-blend-mode: normal">
+                            <path d="M0,172v-172h172v172z" fill="none" stroke="none" stroke-width="1"></path>
+                            <g>
+                                <path
+                                    d="M143.33333,161.25h-114.66667v-150.5h78.83333l17.91667,17.91667l17.91667,17.91667z"
+                                    fill="#90caf9" stroke="none" stroke-width="1"></path>
+                                <path d="M57.33333,78.83333h60.91667" fill="none" stroke="#1976d2"
+                                    stroke-width="7.16667"></path>
+                                <path d="M57.33333,93.16667h46.58333" fill="none" stroke="#1976d2"
+                                    stroke-width="7.16667"></path>
+                                <path d="M57.33333,107.5h60.91667" fill="none" stroke="#1976d2" stroke-width="7.16667">
+                                </path>
+                                <path d="M57.33333,121.83333h46.58333" fill="none" stroke="#1976d2"
+                                    stroke-width="7.16667"></path>
+                                <g fill="#e1f5fe" stroke="none" stroke-width="1">
+                                    <path d="M137.95833,50.16667h-34.04167v-34.04167l17.2,17.2z"></path>
+                                </g>
+                            </g>
+                            <path d="" fill="none" stroke="none" stroke-width="1"></path>
+                            <path d="" fill="none" stroke="none" stroke-width="1"></path>
+                            <path d="" fill="none" stroke="none" stroke-width="1"></path>
+                            <path d="" fill="none" stroke="none" stroke-width="1"></path>
+                        </g>
+                    </g>
+                </svg>
+            </div>
+            <p class="roboto uploadtext">
+                File Upload <small class="filesize" *ngIf="_upload.filesUploaded !== _upload.totalFilesToUpload">{{_upload.totalUploadedFilesSize | filesize}} of {{_upload.totalFileSize | filesize}}</small>
+                <small class="filesize" *ngIf="(_upload.filesUploaded) === _upload.totalFilesToUpload">{{_upload.successTotalFileSize | filesize}}</small>
+            </p>
+        </div>
+        <div>
+            <round-progress [current]="_upload.totalUploadedFilesSize" [max]="_upload.totalFileSize" [radius]="14" [stroke]="4" [rounded]="true" [color]="'#18b66a'" [animation]="'easeOutQuart'" *ngIf="_upload.filesUploaded !== _upload.totalFilesToUpload"></round-progress>
+            <svg class="a-s-fa-Ha-pa" width="24px" height="24px" viewBox="0 0 24 24" fill="#0F9D58" *ngIf="_upload.filesUploaded === _upload.totalFilesToUpload"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"></path></svg>
+        </div>
+    </div>
+</div>

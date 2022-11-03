@@ -1,0 +1,49 @@
+.docu-offcanvas {
+    width: auto;
+    min-width: 340px;
+    max-width: 90vw;
+    height: 100vh;
+    background-color: #fff;
+    box-shadow: 0 25.6px 57.6px 0 rgb(0 0 0 / 22%), 0 4.8px 14.4px 0 rgb(0 0 0 / 18%);
+    padding: 1rem 24px 20px;
+    transition: all .3s;
+}
+
+.docu-offcanvas-end {
+    top: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1200;
+}
+.canvas-overlay {
+    left: 0;
+    z-index: 10;
+    background-color: #fff;
+    opacity: 0.4;
+    @extend .docu-offcanvas-end;
+}
+.canvas-show {
+    transform: none;
+    visibility: visible;
+}
+
+.canvas-hide {
+    transform: translateX(100%);
+    visibility: hidden;
+}
+
+.docu-offcanvas-header {
+    margin-bottom: 42px;
+}
+
+.docu-offcanvas-body {
+    .offcanvasRightLabel {
+        word-wrap: break-word;
+        font-size: 20px;
+        font-weight: 600;
+    }
+}
+
+.h-90 {
+    height: 87vh;
+}

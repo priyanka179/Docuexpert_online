@@ -1,0 +1,156 @@
+<div class="preview-csv px-5 pt-3" *ngIf="!isCsvSplitView" >
+    <div class="d-flex">
+        <pagination-template #p="paginationApi" (pageChange)="page = $event">
+            <div class="d-flex align-items-center mb-3 pagination">
+                <div>
+                    <p class="found-text">{{csvData.length}} Records Found</p>
+                </div>
+                <div class="d-flex align-items-center">
+                    <div>
+                        <p class="text-nowrap pagination-text"><input class="position-relative" type="text" value="p.getCurrent()" [(ngModel)]="page" style="width: 30px;text-align: center;border: none;outline: none;top: 0px;">of
+                            {{p.getLastPage()}}
+                        </p>
+                    </div>
+                    <select class="form-select" aria-label="Default select example" [(ngModel)]="pageSize" (change)="page = 1">
+                        <option value="14">14</option>
+                        <option value="20">20</option>
+                        <option value="30">30</option>
+                    </select>
+                    <div class="d-flex pagination-icon">
+                        <i class="fas fa-chevron-left cp" (click)="p.previous()" [class.fa-disabled]="p.isFirstPage()"></i>
+                        <i class="fas fa-chevron-right cp" (click)="p.next()" [class.fa-disabled]="p.isLastPage()"></i>
+                    </div>
+                </div>
+            </div>
+        </pagination-template>
+        <div class="form-check form-switch mr-6" *ngIf="isCsvSplitView">
+            <input class="form-check-input shadow-none cp" type="checkbox" id="flexSwitchCheckDefault2" [(ngModel)]="hideCsvtoggle" >
+            <label class="form-check-label roboto cp" for="flexSwitchCheckDefault2">Hide Csv</label>
+        </div>
+        <div class="form-check form-switch mr-6" *ngIf="isCsvSplitView">
+            <input class="form-check-input shadow-none cp" type="checkbox" id="flexSwitchCheckDefault4" [(ngModel)]="hidepdftoggle">
+            <label class="form-check-label roboto cp" for="flexSwitchCheckDefault4">Hide Pdf</label>
+        </div>
+        <div class="nunito d-flex align-items-center p-1 cp" >
+            <button type="button" class="btn-primary fun-btn" (click)="saveCsv()" >Save</button>
+            <!-- <button type="button" class="btn-primary" (click)="addCsv()" >Add</button> -->
+            <button type="button" class="btn-primary fun-btn" (click)="approveCsv()">Approve</button>
+            <button type="button" class="btn-primary fun-btn" (click)="downloadCsv()">Download</button>
+        </div>
+        <div class="close-btn position-absolute nunito d-flex align-items-center p-1 cp" (click)="hideCsv()">
+            <button type="button" class="btn-close" aria-label="Close"></button>
+        </div>
+    </div>
+    <div class="table-responsive" [class.h-auto]="csvData.length <= 14" style="overflow: auto;">
+        <table class="csvtable w-100" #csvtable>
+            <thead>
+                <tr>
+                    <th></th>
+                    <th *ngFor="let data of maxColumnSize;let i=index">{{getChar(i)}}</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let data of csvData | paginate: { itemsPerPage: pageSize, currentPage: page};let i = index">
+                    <td class="slno text-center">
+                        <span><i class="fas fa-plus mr-4 cp" style="margin-right:10px;" title="Add" (click)="addrow(i)"></i></span>
+                        <span><i class="fas fa-minus mr-4 cp" style="margin-right:10px;" title="Delete" (click)="deleterow(i)"></i></span>{{i+1}}</td>
+                    <td style="white-space: nowrap;" *ngFor="let cell of data;let j = index" [class.url]="isUrl(cell)" (click)="isUrl(cell) && redirectToDir(cell)" contenteditable="true" (blur)="updateCsv(cell,i,j,$event.target)" >{{cell}}
+                    </td>
+                    <td *ngFor="let dd of fillTable(data.length)"></td>
+                </tr>
+                <!-- <tr *ngFor="let data of csvData | paginate: { itemsPerPage: pageSize, currentPage: page};let i = index">
+                    <td class="slno text-center">{{i+1}}</td>
+                    <td style="white-space: nowrap;" *ngFor="let cell of data;let j = index">
+                       <div  [class.url]="isUrl(cell)" (click)="isUrl(cell) && redirectToDir(cell);toggle(i,j)">
+                        {{cell}}{{j}}
+                       </div> 
+                       <div contenteditable>
+                        <input type="text" [(ngModel)]="csvData[i][j]">
+                       </div>
+                    </td>
+                    <td *ngFor="let dd of fillTable(data.length)"></td>
+                </tr> -->
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+<!-- ------------------------------------------------------- Split view ---------------------------------------------------------------->
+<div class="preview-csv px-5 pt-3" *ngIf="isCsvSplitView">
+    <div class="d-flex">
+        <pagination-template #p="paginationApi" (pageChange)="page = $event">
+            <div class="d-flex align-items-center mb-3 pagination">
+                <div>
+                    <p class="found-text">{{csvData.length}} Records Found</p>
+                </div>
+                <div class="d-flex align-items-center">
+                    <div>
+                        <p class="text-nowrap pagination-text"><input class="position-relative" type="text" value="p.getCurrent()" [(ngModel)]="page" style="width: 30px;text-align: center;border: none;outline: none;top: 0px;">of
+                            {{p.getLastPage()}}
+                        </p>
+                    </div>
+                    <select class="form-select" aria-label="Default select example" [(ngModel)]="pageSize" (change)="page = 1">
+                        <option value="14">14</option>
+                        <option value="20">20</option>
+                        <option value="30">30</option>
+                    </select>
+                    <div class="d-flex pagination-icon">
+                        <i class="fas fa-chevron-left cp" (click)="p.previous()" [class.fa-disabled]="p.isFirstPage()"></i>
+                        <i class="fas fa-chevron-right cp" (click)="p.next()" [class.fa-disabled]="p.isLastPage()"></i>
+                    </div>
+                </div>
+            </div>
+        </pagination-template>
+        <div class="close-btn position-absolute nunito d-flex align-items-center p-1 cp" (click)="hideCsv()">
+            <button type="button" class="btn-close" aria-label="Close"></button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="table-responsive" [class.h-auto]="csvData.length <= 14" [class.col]="isLinkClicked && !isShowFullPDF" style="overflow: auto;">
+            <table class="csvtable w-100" #csvtable>
+                <thead>
+                    <tr>    
+                        <th></th>
+                        <th *ngFor="let data of maxColumnSize;let i=index">{{getChar(i)}}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let data of csvData | paginate: { itemsPerPage: pageSize, currentPage: page};let i = index">
+                        <td class="slno text-center">{{i+1}}</td>
+                        <td style="white-space: nowrap;" *ngFor="let cell of data" [class.px-0]="isArray(cell)">
+                            <p *ngIf="isArray(cell)" class="mb-0">
+                                <tr *ngFor="let subcell of cell">
+                                    <td class="" [class.url]="isUrl(subcell)" (click)="isUrl(subcell) && showPdfAtRight(subcell)">{{subcell.split("/").pop()}}</td>
+                                </tr>
+                            </p>
+                            <p class="mb-0" *ngIf="!isArray(cell)"  [class.url]="isUrl(cell)" (click)="isUrl(cell) && showPdfAtRight(cell)">{{cell}}</p>
+                            </td>
+                        <td *ngFor="let dd of fillTable(data.length)"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col">
+            <!-- <app-preview-pdf [path]="pdfFilePath" *ngIf="isLinkClicked" (onClose)="isLinkClicked= false"></app-preview-pdf> -->
+            <iframe [src]="pdfFilePath" class="vh-90" width="100%" height="100%" frameborder="0" style="position: relative;z-index: 1;" *ngIf="isLinkClicked"></iframe>
+        </div>
+    </div>
+</div>
+
+<!-- <div class="preview-csv px-5 pt-3" *ngIf="isXlView">
+    <div class="close-btn position-absolute nunito d-flex align-items-center p-1 cp" (click)="hideCsv()">
+        <button type="button" class="btn-close" aria-label="Close"></button>
+    </div>
+    <div>
+        <iframe [src]="xlsxPath" width="100%" height="100%" frameborder="0" type="application/msword" style="position: relative;z-index: 1;"></iframe>
+    </div>
+</div> -->
+
+<!-- <tbody>
+    <tr *ngFor="let data of csvData | paginate: { itemsPerPage: pageSize, currentPage: page};let i = index">
+        <td class="slno text-center">{{i+1}}</td>
+        <td style="white-space: nowrap;" *ngFor="let cell of data" [class.url]="isUrl(cell)" (click)=" showPdfAtRight(cell)">{{cell}}</td>
+        <td *ngFor="let dd of fillTable(data.length)"></td>
+    </tr>
+</tbody> -->

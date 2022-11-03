@@ -1,0 +1,8 @@
+<div ngxUiLoaderBlurred [blur]="14">
+    <router-outlet></router-outlet>
+</div>
+<ngx-ui-loader [fgsColor]="'#cad3c1'" [hasProgressBar]="false" [text]="_common.loaderText"></ngx-ui-loader>
+<app-modal></app-modal>
+<app-download-modal></app-download-modal>
+<app-virtual-upload-modal></app-virtual-upload-modal>
+<app-file-upload-modal *ngIf="_upload.showUploadProgress"></app-file-upload-modal>

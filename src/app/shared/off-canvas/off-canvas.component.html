@@ -1,0 +1,12 @@
+<div class="canvas-overlay position-fixed" *ngIf="showRightCanvas" (click)="showRightCanvas = !showRightCanvas"></div>
+<div class="docu-offcanvas docu-offcanvas-end position-fixed overflow-hidden" [ngClass]="showRightCanvas ? 'canvas-show':'canvas-hide'">
+    <div class="docu-offcanvas-header d-flex justify-content-end align-items-center">
+      <button type="button" class="btn-close text-reset" (click)="showRightCanvas = !showRightCanvas"></button>
+    </div>
+    <div class="docu-offcanvas-body w-100 overflow-auto h-90 pb-3">
+      <h5 class="offcanvasRightLabel nunito">{{title}}</h5>
+      <ng-content></ng-content>
+    </div>
+</div>
+
+<!-- <button (click)="showCanvas()">click</button> -->

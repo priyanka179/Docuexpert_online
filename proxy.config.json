@@ -1,0 +1,18 @@
+{
+    "/": {
+        "target": "https://docuexpert.online",
+        "secure": false,
+        "logLevel": "debug",
+        "changeOrigin": true
+    },
+    "/*": {
+        "target": "https://statvalustorage.file.core.windows.net/",
+        "secure": false,
+        "logLevel": "debug",
+        "changeOrigin": true,
+        "pathRewrite": {
+            "^/api": ""
+        }
+    }
+
+}

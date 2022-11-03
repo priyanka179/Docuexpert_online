@@ -1,0 +1,232 @@
+<div class="status-table-wrapper d-flex overflow-hidden">
+    <div class="docutablewrapper">
+        <div class="docu-table overflow-hidden px-6">
+
+            <div class="shadow-lg bg-white">
+                <div class="d-flex justify-content-between align-items-center tableDetailsMenu nunito">
+                    <div>
+                        <p class="title">{{currTableName}}</p>
+                        <!-- <button class="btn btn-primary" (click)="getTableData()" ripple>{{currTableName === "Status table" ? 'Request table': 'Status table'}}</button> -->
+                    </div>
+                    <div class="d-flex align-items-center px-4 mb-3 pagination mt-2">
+                        <div class="form-check position-relative" style="top: 4px;margin-right: 10px;">
+                            <input class="form-check-input cp shadow-none" type="checkbox" value=""
+                                id="flexCheckDefault" [(ngModel)]="isHighlight">
+                            <label class="form-check-label cp" for="flexCheckDefault">
+                                Highlight all
+                            </label>
+                        </div>
+                        <i class="fas fa-redo mx-3 cp" (click)="filterTable()"></i>
+                        <div>
+                            <p class="found-text fw-bold" style="color: #3249ff;">{{totalCount}} Record{{totalCount>1 ?
+                                's':''}} Found
+                            </p>
+                        </div>
+                        <div class="d-flex align-items-center">
+                            <div class="d-flex align-items-center">
+                                <input type="text" class="currPage text-center m-0 p-0 form-control"
+                                    [(ngModel)]="currPage" (blur)="getDataOnSpecificIndex()">
+                                <p class="text-nowrap pagination-text">of &nbsp; {{totalPage}}</p>
+                            </div>
+                            <div class="d-flex pagination-icon"><i class="fas fa-chevron-left cp" (click)="prevPage()"
+                                    [class.fa-disabled]="!prevPageUrl"></i><i class="fas fa-chevron-right cp"
+                                    (click)="nextPage()" [class.fa-disabled]="!nextPageUrl"></i></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="d-flex align-items-center w-100 mb-3">
+                    <div class="tab d-flex nunito w-100">
+                        <a href="javascript:void(0)" (click)="getStatusTableData()"
+                            [class.light-pink]="currTableName === 'Activity Log'" class="py-3 text-center">Activity
+                            log</a>
+                        <a href="javascript:void(0)" (click)="getRequestTableData()"
+                            [class.light-pink]="currTableName === 'Request Table'" class="py-3 text-center">Request
+                            table</a>
+                        <a href="javascript:void(0)" (click)="getVFolderTableData()"
+                            [class.light-pink]="currTableName === 'Virtual Folder'" class="py-3 text-center">Virtual
+                            folder</a>
+                    </div>
+                </div>
+                <table class="w-100">
+                    <thead>
+                        <tr>
+                            <th class="p-2" *ngIf="currTableName !== 'Request Table'">
+                                <input type="text" class="form-control mb-0" placeholder="Search document name"
+                                    [(ngModel)]="filerObj.document_name" (blur)="filterTable()">
+                            </th>
+                            <th class="p-2">
+                                <input type="text" class="form-control mb-0" placeholder="Search with request id"
+                                    [(ngModel)]="filerObj.request_id" (blur)="filterTable()">
+                            </th>
+                            <th class="p-2">
+                                <select class="form-select" (change)="filterTable()"
+                                    [(ngModel)]="filerObj.operation_requested">
+                                    <option value="">Features applied</option>
+                                    <option *ngFor="let option of featureList" [value]="option">{{option}}</option>
+                                </select>
+                            </th>
+                            <th class="p-2">
+                                <select class="form-select" [(ngModel)]="filerObj.operation_status"
+                                    (change)="filterTable()">
+                                    <option value="">Completion status</option>
+                                    <option value="COMPLETE">COMPLETE</option>
+                                    <option value="PENDING">PENDING</option>
+                                    <option value="FAILED">FAILED</option>
+                                </select>
+                            </th>
+                            <!-- <th class="p-2">
+                                                <select class="form-select">
+                                                    <option value="">folder selection</option>
+                                                    <option value="1">1</option>
+                                                  </select>
+                                            </th> -->
+                            <!-- <th class="p-2">
+                                                <input type="date" class="form-control mb-0" [(ngModel)]="filerObj.operation_request_time[0]" placeholder="start date" (change)="filterTable()">
+                                            </th>
+                                            <th class="p-2">
+                                                <input type="date" class="form-control mb-0" [(ngModel)]="filerObj.operation_request_time[1]" placeholder="end date" (change)="filterTable()">
+                                            </th> -->
+                            <!-- <th class="p-2">
+                                                <select class="form-select">
+                                                    <option value="">folder selection</option>
+                                                    <option value="1">1</option>
+                                                  </select>
+                                            </th> -->
+                        </tr>
+                    </thead>
+                </table>
+                <div class="w-100 overflow-auto table-wrapper topoptions roboto">
+
+                    <table class="table table-borderless table-striped roboto" *ngIf="!vfolder">
+                        <thead>
+                            <tr>
+                                <th scope="col" class="column_heading"
+                                    style="position: sticky;top: 0;background-color: #fff;"
+                                    *ngFor="let data of displayedColumns">{{data}}</th>
+                                <th *ngIf="currTableName !== 'Activity Log'" scope="col" class="column_heading"
+                                    style="position: sticky;top: 0;background-color: #fff;">Drive Link</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="border-bottom" *ngFor="let tdata of tableData;let i = index"
+                                [ngClass]="isHighlight ? addHighlightClass(tdata.OCR_status,tdata.operation_status) : ''">
+                                <td class="text-center">{{i+1}}</td>
+                                <td style="font-weight: 500;">{{tdata.request_id}}</td>
+                                <td *ngIf="currTableName === 'Activity Log'" [title]="tdata.document_name">
+                                    {{tdata.document_name.length
+                                    > 13 ? tdata.document_name.slice(0,14)+'...' : tdata.document_name}}</td>
+                                <td class="opreq">{{tdata.operation_requested}}</td>
+                                <td>{{tdata.operation_request_time | date:'medium'}}</td>
+                                <td>{{tdata.operation_completion_time | date:'medium'}}</td>
+                                <td class="url" (click)="redirectUserToDir(tdata.document_path)"
+                                    *ngIf="currTableName === 'Activity Log'">{{tdata.document_path || '-NA-'}}</td>
+                                <td class="url" (click)="redirectUserToDir(tdata.output_url)"
+                                    *ngIf="currTableName === 'Activity Log'">
+                                    {{tdata.output_url || '-NA-'}}</td>
+                                <td class="url" (click)="_common.redirectToDir(tdata.input_path,'input')"
+                                    *ngIf="currTableName !== 'Activity Log'">{{tdata.input_path || '-NA-'}}</td>
+                                <td class="url" (click)="redirectUserToDir(tdata.output_path)"
+                                    *ngIf="currTableName !== 'Activity Log'">
+                                    {{tdata.output_path || '-NA-'}}</td>
+                                <td style="text-align: center;" *ngIf="currTableName === 'Activity Log'">
+                                    {{tdata.OCR_status === 1 ?
+                                    'DONE': tdata.OCR_status === 0 ? 'NOT DONE':'-NA-'}}</td>
+                                <td style="text-align: center;font-weight: bold;" class="d-flex align-items-center">
+                                    <!-- <div class="led-box">
+                                                <div class="led-red"></div>
+                                            </div> -->
+                                    <div class="led-box" *ngIf="tdata.operation_status === 'PENDING'">
+                                        <div class="led-pending"></div>
+                                    </div>
+                                    <div>{{tdata.operation_status}}</div>
+                                </td>
+                                <td class="url" (click)="redirectUserToGdrive(tdata.output_link)"
+                                    *ngIf="currTableName !== 'Activity Log'">{{tdata.output_link || '-NA-'}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+
+                    <table class="table table-borderless table-striped roboto vfolder" *ngIf="vfolder">
+                        <thead>
+                            <tr>
+                                <th scope="col" class="column_heading"
+                                    style="position: sticky;top: 0;background-color: #fff;z-index: 1000;"
+                                    *ngFor="let data of vfolderDisplayedColumns">{{data}}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="border-bottom" *ngFor="let tdata of tableData;let i = index"
+                                [ngClass]="isHighlight ? addHighlightClass(tdata.OCR_status,tdata.operation_status) : ''">
+                                <td class="text-center">{{i+1}}</td>
+                                <td style="font-weight: 500;">{{tdata.request_id}}</td>
+                                <td [title]="tdata.folder_name">{{tdata.folder_name.length > 13
+                                    ? tdata.folder_name.slice(0,14)+'...' : tdata.folder_name}}</td>
+                                <td class="opreq">{{tdata.operation_requested}}</td>
+                                <td>{{tdata.operation_request_time | date:'medium'}}</td>
+                                <td class="text-center">{{tdata.timestamp}}</td>
+                                <td>{{tdata.status_name}}</td>
+                                <td><span class="badge bg-success"
+                                        *ngIf="tdata.operation_requested.trim() === 'Hard time folder' && tdata.progress_status == 100"
+                                        (click)="showResult(tdata.id,tdata.folder_name,tdata.operation_requested)">click
+                                        here</span>
+                                </td>
+
+                                <td class="d-flex flex-column">
+                                    <span *ngFor="let link of getLinkArr(tdata.input_link)"
+                                        (click)="redirectUserToGdrive(link)" class="url">{{link.substr(0, link.length -
+                                        2)}}</span>
+                                </td>
+
+                                <td>
+                                    <a [href]="tdata.output_link" target="_blank" rel="noopener noreferrer"
+                                        class="url">{{tdata.output_link ? tdata.output_link : 'NA'}}</a>
+                                </td>
+
+                                <td (click)="tdata.dir_path.includes('G_input') && _common.redirectToDir(tdata.dir_path,'ginput')"
+                                    [class.url]="tdata.dir_path && tdata.dir_path.includes('G_input')">
+                                    {{tdata.dir_path}}
+                                </td>
+
+                                <td (click)="redirectToFolders(tdata.dir_output)" [class.url]="tdata.dir_output">
+                                    {{tdata.dir_output}}
+                                </td>
+
+                                <!-- <td style="text-align: center;">{{tdata.OCR_status === 1 ? 'DONE':
+                                                tdata.OCR_status === 0 ? 'NOT DONE':'-NA-'}}</td> -->
+                                <td style="text-align: center;font-weight: bold;" class="d-flex align-items-center">
+                                    <div class="led-box" *ngIf="tdata.operation_status === 'PENDING'">
+                                        <div class="led-pending"></div>
+                                    </div>
+                                    <div>{{tdata.operation_status}}</div>
+                                </td>
+                                <td style="text-align: center;" class="position-relative"
+                                    [title]="tdata.progress_status">
+                                    <round-progress [current]="tdata.progress_status" [max]="100" [radius]="14"
+                                        [stroke]="4" [rounded]="true" [color]="'#18b66a'" [animation]="'easeOutQuart'"
+                                        *ngIf="tdata.progress_status !== 100" class="position-absolute"
+                                        style="left: 20px;top: 8px;">
+                                    </round-progress>
+                                    <span *ngIf="tdata.progress_status == 100">{{tdata.progress_status}}</span>
+                                </td>
+                                <td class="text-center">{{tdata['project_name'] ? tdata['project_name'] : 'NA' }}</td>
+                                <td class="text-center">{{tdata['error_path'] ? tdata['error_path'] : 'NA' }}</td>
+                                <td class="text-center">{{tdata['HT']}}</td>
+                                <td class="text-center">{{tdata['OCCM']}}</td>
+                                <td class="text-center">{{tdata['AD']}}</td>
+                                <td class="text-center">{{tdata['SB']}}</td>
+                                <td class="text-center">{{tdata['LDND']}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<app-off-canvas [showRightCanvas]="false"></app-off-canvas>
+
+
+<!-- {{tdata.output_link || '-NA-'}} -->

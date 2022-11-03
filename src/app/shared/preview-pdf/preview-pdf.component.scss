@@ -1,0 +1,133 @@
+.common {
+    top: 50%;
+    cursor: pointer;
+    color: #fff;
+    font-size: 20px;
+}
+
+.pdf-viewer-wrapper {
+    // width: 100vw;
+    // height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1200;
+    text-align: center;
+    background-color: #fff;
+    // overflow: auto;
+    overflow: hidden !important;
+    .close-btn {
+        top: 0;
+        right: 42px;
+        z-index: 1002;
+        box-shadow: 0 0 7px 2px rgb(0 0 0 / 15%);
+        transition: all 0.4s ease;
+        .btn-close {
+            font-size: 12px;
+        }
+    }
+}
+
+.left-icon {
+    left: 10px;
+    @extend .common;
+}
+
+.right-icon {
+    right: 30px;
+    @extend .common;
+}
+
+iframe {
+    border: none !important;
+}
+
+.controls {
+    height: 40px;
+    background-color: #faf9f8;
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1200;
+    .icon {
+        height: 100%;
+        width: 44px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        &:hover {
+            background-color: rgba($color: #000, $alpha: 0.08);
+        }
+        i {
+            color: lightslategray;
+        }
+    }
+    input {
+        width: 38px;
+        height: 34px;
+        text-align: center;
+        border: none;
+        border: 1px solid rgba($color: #000000, $alpha: 0.2);
+        margin-right: 6px;
+        position: relative;
+        top: 2px;
+        font-size: 14px;
+    }
+    .pagecount {
+        position: relative;
+        top: 2px;
+        padding-right: 6px;
+        font-size: 14px;
+    }
+}
+
+.hide {
+    transform: translateY(-100%);
+}
+
+.loadingtextcontainer {
+    position: fixed;
+    top: 10px;
+    left: 20px;
+    z-index: 1000;
+    p {
+        margin-bottom: 0px !important;
+    }
+}
+
+.switch-btn {
+    position: fixed;
+    bottom: 15px;
+    right: 40px;
+    z-index: 9999;
+    border-radius: 40px;
+}
+
+.close-btn-iframe {
+    width: fit-content;
+    top: 0;
+    right: 200px;
+    z-index: 9999;
+    box-shadow: 0 0 7px 2px rgb(0 0 0 / 15%);
+    transition: all 0.4s ease;
+
+    .btn-close {
+        color: #fff;
+        font-size: 12px;
+    }
+
+    i {
+        font-size: 20px;
+    }
+}
+
+.highlight-btn-iframe {
+    bottom: 50%;
+    left: 0px;
+    height: fit-content;
+    z-index: 9999;
+    box-shadow: 0 0 7px 2px rgb(0 0 0 / 15%);
+}

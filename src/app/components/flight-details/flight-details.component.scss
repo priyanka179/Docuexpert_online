@@ -1,0 +1,70 @@
+tbody {
+    tr {
+    &:hover {
+        background-color: #F2F2F2;
+        color: #000 !important;
+    }
+}
+}
+
+.selectedRow {
+    background-color: #F2F2F2;
+    color: #000 !important;
+}
+
+.card {
+    transition: all .3s;
+    font-weight: 500;
+    &:hover {
+        & {
+            transform: translateY(-10%);
+            font-weight: 600;
+        }
+    }
+}
+
+.fa-arrow-down {
+    margin-right: 8px;
+}
+
+.pnsnTable {
+    background-color: brown;
+    color: #fff;
+}
+
+.expandBtn {
+    color: #fff;
+    top: 33px;
+    right: 160px;
+    z-index: 999;
+    font-size: 14px;
+}
+
+.close-btn {
+    right: 205px;
+    font-size: 22px;
+    @extend .expandBtn;
+}
+
+.active {
+    background-color: #798BFF;
+    border-radius: 5px;
+    color: #fff !important;
+}
+
+.green-border {
+    border: 2px solid #00B050;
+}
+
+.pdfname {
+    top: 33px;
+    left: 82px;
+    z-index: 999;
+}
+
+.fa-download {
+    top: 36px;
+    right: 200px;
+    font-size: 16px;
+    @extend .expandBtn;
+}

@@ -1,0 +1,56 @@
+<div class="px-4 price-container overflow-auto">
+    <div class="d-flex justify-content-between align-items-center pt-4">
+        <h4>Here are the offers for you</h4>
+        <h4 class="cost position-fixed">total {{buyType === 'subscription' ? "credits":"cost"}}: <ng-container *ngIf="!(buyType === 'subscription')">€</ng-container>{{totalPrice}}</h4>
+    </div>
+
+    <div class="d-flex justify-content-between mt-3">
+        <div class="d-flex">
+            <div class="form-check mr cp">
+                <input class="form-check-input shadow-none" type="checkbox" id="selectall" [(ngModel)]="selectAllCheck"
+                    (change)="selectAllProduct()">
+                <label class="form-check-label feature mplus position-relative cp" for="selectall">select all</label>
+            </div>
+            <div class="form-check mr cp">
+                <input class="form-check-input shadow-none" type="radio" id="price1" [(ngModel)]="buyType" name="buytype" value="price" (change)="onChangeBuyingType('price')">
+                <label class="form-check-label feature text-nowrap mplus cp" for="price1">price based</label>
+            </div>
+            <div class="form-check cp">
+                <input class="form-check-input shadow-none" type="radio" id="price2" [(ngModel)]="buyType" name="buytype" value="subscription" (change)="onChangeBuyingType('subscription')">
+                <label class="form-check-label feature text-nowrap mplus cp" for="price2">subscription based</label>
+            </div>
+        </div>
+
+        <button class="btn btn-primary" (click)="buyProducts()">Buy Product</button>
+    </div>
+
+    <div>
+        <ng-container *ngFor="let data of featureList;let i = index;">
+            <h5>{{data.heading}}</h5>
+            <div class="row mt-3 card-container">
+                <div class="col-lg-3 col-md-4" *ngFor="let f of data.features; let j = index;">
+                    <div class="card border-0 shadow" [class.selected]="f.isSelected">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <h5 class="card-title roboto">{{f.product}}</h5>
+                                <h5 class="price d-flex flex-nowrap">{{buyType === 'subscription' ? '':'€'}}<ng-container *ngIf="buyType === 'subscription'"><i class="fas fa-coins position-relative"></i></ng-container>{{f.price}}</h5>
+                            </div>
+                            <p class="card-text lato">{{f.details}}</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <h5>amount</h5>
+                                <select class="form-select roboto" aria-label="Default select example"
+                                    [(ngModel)]="f.quantity" (change)="updatePrice(i,j)">
+                                    <option value="1000">1000 pages</option>
+                                    <option value="10000">10000 pages</option>
+                                    <option value="50000">50000 pages</option>
+                                </select>
+                            </div>
+                            <a href="javascript:void(0)" class="btn btn-primary mt-3 shadow"
+                                (click)="selectProduct(i,j)">{{f.isSelected ? 'Remove':'Select this plan'}}</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </ng-container>
+    </div>
+</div>

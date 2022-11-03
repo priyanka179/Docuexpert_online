@@ -1,0 +1,13 @@
+<div style="height: 100vh;" [class.overflow-y]="showScrollbar()">
+    <app-topnav *ngIf="hideAll()" style="overflow: hidden;">
+        <!-- <span class="position-absolute sidebar-toggle shadow-sm p-1 cp" (click)="showSidebar = !showSidebar;changeView()" *ngIf="router.url !== '/viewDir/subscriptions'"><i class="fas fa-bars"></i></span> -->
+    </app-topnav>
+    <div [ngClass]="hideAll() && hideSidebar() ? 'container-lg wide-xl d-flex maincontainer':''">
+        <div class="sidebar" [class.tree]="treeView || folderTreeview" *ngIf="hideAll() && hideSidebar() && showSidebar" @fade>
+            <app-sidebar></app-sidebar>
+        </div>
+        <div [class.px-2]="!showScrollbar()" [ngClass]="changeContentView ? 'content-halfwidth' : 'content-fullwidth'">
+            <router-outlet></router-outlet>
+        </div>
+    </div>
+</div>

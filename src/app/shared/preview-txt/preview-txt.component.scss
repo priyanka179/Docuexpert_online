@@ -1,0 +1,22 @@
+.text-viewer-wrapper {
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1200;
+    background-color: #fff;
+    overflow: auto;
+    .close-btn {
+        top: 0;
+        right: 42px;
+        z-index: 1002;
+        box-shadow: 0 0 7px 2px rgb(0 0 0 / 15%);
+        transition: all 0.4s ease;
+        .btn-close {
+            font-size: 12px;
+        }
+    }
+}

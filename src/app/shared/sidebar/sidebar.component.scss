@@ -1,0 +1,63 @@
+$heading-color: rgb(128, 148, 174);
+$link-color: #6e82a5;
+$active-link-color: #798bff;
+
+i {
+    font-size: 20px;
+    color: #080694;
+    cursor: pointer;
+}
+
+.heading {
+    font-size: 12px;
+    line-height: 1.2;
+    letter-spacing: 0.2em;
+    color: $heading-color;
+    text-transform: uppercase;
+    font-weight: 700;
+    margin-bottom: 16px;
+}
+
+.sidebar {
+    .menu {
+        margin-bottom: 50px;
+    }
+}
+
+.menu-links .form-check-label,.menu-links a {
+    color: $link-color;
+    font-weight: 600;
+    &:hover {
+        color: #F2906C;
+        border: 2px solid #3f54ff;
+        padding: 6px;
+    }
+} 
+
+.tablelinks {
+    color: #3f54ff;
+}
+
+.featureAll {
+    margin-bottom: 20px;
+    @extend .heading
+}
+
+.link-color {
+    color: rgb(8, 6, 148);
+}
+.coutput_img {
+    top: -1px;
+    margin-right: 5px;
+}
+.usage_img {
+    margin-left: 3.5px;
+    margin-right: 10px;
+    @extend .coutput_img;
+}
+.fa-folder {
+    color: #FFB32C;
+    margin-right: 10px;
+    position: relative;
+    top: 1px;
+}

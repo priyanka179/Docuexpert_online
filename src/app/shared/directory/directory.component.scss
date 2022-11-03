@@ -1,0 +1,245 @@
+$black: #364a63;
+$lightblack: #526484;
+$lightgrey: #8094ae;
+
+.folder {
+    // height: 172px;
+    min-height: 114px;
+    background: #fff;
+    border: 1px solid #dbdfea;
+    border-radius: 4px;
+    overflow: hidden;
+    // padding-top: 20px;
+    // padding-bottom: 12px;
+    // padding-left: 10px;
+    // padding-right: 10px;
+    cursor: pointer;
+
+    .icon {
+        width: 72px;
+        // width: 60px;
+        // top: -8px;
+    }
+
+    .title {
+        // width: 50px;
+        // margin-top: 14px;
+        margin-bottom: 0px;
+        font-weight: 500;
+        color: #364a63;
+        word-break: normal;
+        font-size: 12px;
+        top: -4px;
+        white-space: nowrap;
+
+        .bg {
+            height: 14px;
+            width: 14px;
+            line-height: 16px;
+            font-size: 6px;
+            display: inline-block;
+            border-radius: 50%;
+            text-align: center;
+            margin-right: 2px;
+            vertical-align: middle;
+            color: #fff;
+            position: relative;
+
+            span {
+                position: absolute;
+                color: #fff;
+            }
+            .fa-check {
+                top: 32% !important;
+                left: 26% !important;
+            }
+            .fa-times,
+            .fa-question {
+                top: 32%;
+                left: 32%;
+            }
+        }
+
+        .bg-warning {
+            background-color: #ff9007 !important;
+        }
+    }
+
+    .date {
+        // margin-bottom: 32px;
+        margin-bottom: 20px;
+    }
+
+    .directory-option {
+        // top: 5px;
+        top: 3px;
+        // right: 14px;
+        right: 6px;
+        color: $lightgrey;
+    }
+
+    .directory-detail-option {
+        top: 5px;
+        left: 14px;
+    }
+
+    .fileNumberDetails {
+        position: absolute;
+        top: 0;
+        left: 0;
+        padding-left: 5px;
+
+        p {
+            margin-bottom: 0px;
+            text-align: left !important;
+        }
+    }
+
+    .showFileDetails {
+        top: 5px;
+        left: 0;
+        padding-left: 10px;
+        padding-right: 10px;
+        // top: 5px;
+        // right: 14px;
+    }
+
+    p {
+        font-size: 12px;
+        color: $lightgrey;
+        font-weight: 600;
+    }
+}
+
+.folder-list {
+    margin-right: 10px;
+    cursor: pointer;
+    padding: 0px 15px;
+
+    .icon {
+        width: 50px;
+
+        svg {
+            margin-top: 4px;
+        }
+    }
+
+    .title {
+        // padding-bottom: 10px;
+        font-weight: 500;
+        color: #364a63;
+        font-size: 12px;
+        white-space: nowrap;
+    }
+
+    .directory-option {
+        top: 0px;
+        right: -14px;
+    }
+}
+
+.selected {
+    background-color: #e8f0fe;
+}
+
+.directory-option {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+
+    i {
+        color: #526484;
+        font-size: 14px;
+    }
+
+    &:hover {
+        background-color: #e8f0fe;
+    }
+}
+
+.directory-check {
+    // top: 5px;
+    // right: 14px;
+    top: 2px;
+    right: 8px;
+    box-shadow: none;
+}
+
+.filetypepdfimage {
+    img {
+        position: relative;
+        // left: -4px;
+    }
+}
+
+.filetypeimage {
+    img {
+        top: 5px;
+    }
+
+    @extend .filetypepdfimage;
+}
+
+.fa-times {
+    position: absolute;
+    right: 30px;
+    top: 0;
+    color: rgb(181, 54, 54);
+}
+
+.fa-check {
+    color: #62c462;
+    @extend .fa-times;
+}
+
+.list-view {
+    padding: 0 5px;
+    min-height: 20px !important;
+    border: none !important;
+
+    .icon {
+        width: 18px;
+        display: inline-block;
+        margin-right: 4px;
+
+    }
+
+    .title {
+        top: 0;
+        display: inline-block;
+        font-size: 12px;
+        letter-spacing: 0.3px;
+        width: auto !important;
+        word-break: normal;
+    }
+
+    .filetypeimage {
+        img {
+            top: 0px !important;
+        }
+    }
+
+
+    .fa-info-circle {
+        font-size: 11px;
+        margin-left: 2px;
+        vertical-align: text-bottom;
+        margin-right: 2px;
+    }
+
+    .directory-check {
+        margin: 8px 4px 0px 0px;
+        font-size: 13px;
+    }
+}
+
+.mat-menu-item {
+    line-height: 20px;
+    height: 22px;
+    padding: 0 9px;
+    font-size: 13px;
+
+    &:hover {
+        background-color: #e8f0fe;
+    }
+}

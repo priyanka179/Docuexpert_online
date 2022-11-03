@@ -1,0 +1,39 @@
+.modal-body {
+    height: 335px;
+    padding: 0px 10px !important;
+    overflow-y: scroll;
+    overflow-x: hidden;
+
+    .table {
+        margin-bottom: 0px;
+        font-size: 13px;
+
+        .form-select {
+            font-size: inherit;
+        }
+    }
+
+}
+
+.modal-header {
+    border-bottom: none;
+
+    h5 {
+        font-size: 17px;
+        margin-right: 10px;
+        padding: 0px 12px;
+        cursor: pointer;
+
+        &.active {
+            border-bottom: 2px solid #6576ff;
+        }
+    }
+
+    .btn-close {
+        background-size: 13px;
+    }
+}
+
+.modal-footer {
+    border-top: none;
+}

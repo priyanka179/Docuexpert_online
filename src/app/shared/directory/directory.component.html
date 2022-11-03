@@ -1,0 +1,206 @@
+<div class="folder
+  d-flex mb-3
+  align-items-center
+  position-relative shadow-sm" [class.selected]="data.isSelected || data.isSelectedSingle"
+  *ngIf="largeView && !listview" (click)="selectDirectory($event, data.directory, data.name, data.path)"
+  [ngClass]="getOcrStatus(data)" [title]="data.name">
+  <div class="text-center">
+    <div class="d-flex
+    flex-column 
+    align-items-center
+    justify-content-center position-relative">
+      <div class="icon position-relative">
+        <!-- (mouseover)="showDetails = true" (mouseout)="showDetails = false" -->
+        <app-svg-folder *ngIf="data.directory === 'Folder' && !data.isVirtualfolder"></app-svg-folder>
+
+        <img src="assets/images/virtual_folder.ico" alt="" width="60px"
+          *ngIf="data.directory === 'Folder' && data.isVirtualfolder">
+
+        <div class="filetypepdfimage" style="margin-bottom: 8px;margin-top: 8px;"
+          *ngIf="data.directory === 'File' && excelExtensionList.includes(data.type.toLowerCase())">
+          <img src="assets/images/filetypecsv.png" alt="" width="60px">
+        </div>
+
+        <app-svg-pdf-file *ngIf="data.directory === 'File' && data.type.toLowerCase() === 'pdf'"></app-svg-pdf-file>
+
+        <div class="filetypeimage" style="margin-bottom: 17px;"
+          *ngIf="data.directory === 'File' && imageExtensionList.includes(data.type.toLowerCase())">
+          <img src="assets/images/filetypeimage.png" alt="" width="50px">
+        </div>
+
+        <div class="filetypeimage" style="margin-bottom: 6px;"
+          *ngIf="data.directory === 'File' && data.type.toLowerCase() === 'txt'">
+          <!-- <img src="assets/images/filetypeimage.png" alt="" width="50px"> -->
+          <img
+            src="https://img.icons8.com/external-flatart-icons-flat-flatarticons/64/000000/external-txt-file-online-learning-flatart-icons-flat-flatarticons.png" />
+        </div>
+      </div>
+      <p class="title roboto position-relative" [style.width]="data.directory === 'Folder' ? '95px':'110px'"
+        [class.px-2]="data.directory === 'File'">
+        {{ nameMode==='short' ? data.name.slice(0,4)+'...' : data.name }}
+        <i class="far fa-edit" (click)="renameDir(data.directory, data.name, data.type)"
+          *ngIf="router.url === '/viewDir/myfiles'"></i>
+      </p>
+      <!-- 16 -->
+      <!-- <p class="title roboto position-relative" [title]="data.name">{{ data.name.length > 16 ? data.name.slice(0,16)+'...' : data.name}}</p> -->
+      <!-- <p class="date">12-Aug-2020</p> -->
+    </div>
+
+    <input class="form-check-input position-absolute directory-check" type="checkbox" [(ngModel)]="data.isSelected"
+      *ngIf="showCheckbox && !showDetails" (click)="emitSelectEvent(data.directory, data.name, data.path)" />
+    <div class="position-absolute directory-option"
+      *ngIf="!showDetails && !showCheckbox && !imageExtensionList.includes(data.type) && showInfoBtn && data.directory !== 'Folder'"
+      (click)="showMetadata()"><i class="fas fa-info-circle"></i></div>
+    <div class="fileNumberDetails d-flex flex-column nunito">
+      <p *ngIf="data.directory === 'Folder' && !showBibleDirDetails">{{data.total_dirs}} <small>SF</small></p>
+      <p *ngIf="data.directory === 'Folder' && !showBibleDirDetails">{{data.total_files}} <small>files</small></p>
+      <p *ngIf="data.directory === 'Folder' && !showBibleDirDetails">{{showPdfCount(data)}} <small>pdf</small></p>
+      <p *ngIf="data.directory === 'Folder' && !showBibleDirDetails">{{data.file_counts['csv'] || 0}} <small>csv</small>
+      </p>
+      <p *ngIf="data.directory === 'Folder' && !showBibleDirDetails">{{showImageCount(data.file_counts)}}
+        <small>img</small>
+      </p>
+
+      <p *ngIf="data.directory === 'Folder' && showBibleDirDetails" [class.text-danger]="showPdfCount(data) == 0"
+        [class.text-success]="showPdfCount(data) > 0" style="font-size:14px;">{{showPdfCount(data)}}
+        <small>record{{showPdfCount(data) > 1 ? 's':''}}</small>
+      </p>
+    </div>
+    <!-- showDetails -->
+    <div class="position-absolute showFileDetails d-flex justify-content-between w-100"
+      *ngIf="(data.directory === 'Folder')">
+      <i class="fas fa-times" *ngIf="showPdfCount(data) == 0 && data.directory === 'Folder' && showBibleDirDetails"></i>
+      <i class="fas fa-check" *ngIf="showPdfCount(data) > 0 && data.directory === 'Folder' && showBibleDirDetails"></i>
+    </div>
+  </div>
+  <!-- <i class="fab fa-vimeo-v position-absolute" style="top: 5px;left: 35px;" *ngIf="data.directory === 'Folder' && data.isVirtualfolder"></i> -->
+</div>
+
+
+<div class="text-center folder-list d-flex flex-column align-items-center justify-content-center position-relative"
+  [class.selected]="data.isSelected || data.isSelectedSingle" *ngIf="!largeView && !listview"
+  (click)="selectDirectory($event, data.directory, data.name, data.path)">
+  <div class="icon">
+    <app-svg-folder *ngIf="data.directory === 'Folder'"></app-svg-folder>
+
+    <div class="filetypepdfimage" style="margin-bottom: 10px;"
+      *ngIf="data.directory === 'File' && excelExtensionList.includes(data.type.toLowerCase())">
+      <img src="assets/images/filetypecsv.png" alt="" width="40px">
+    </div>
+
+    <app-svg-pdf-file *ngIf="data.directory === 'File' && data.type.toLowerCase() === 'pdf'" size="50">
+    </app-svg-pdf-file>
+
+    <div class="filetypeimage" style="margin-bottom: 10px;"
+      *ngIf="data.directory === 'File' && imageExtensionList.includes(data.type.toLowerCase())">
+      <img src="assets/images/filetypeimage.png" alt="" width="40px">
+    </div>
+  </div>
+  <p class="title roboto" [title]="data.name">{{ data.name.length > 7 ? data.name.slice(0,7)+'...' : data.name }}</p>
+</div>
+
+<!-- ------------------------------------------------------------------------------------------------ -->
+
+<div class="folder list-view" [class.selected]="data.isSelected || data.isSelectedSingle" *ngIf="listview"
+  (contextmenu)="onContextMenu($event, data)" (click)="selectDirectory($event, data.directory, data.name, data.path)"
+  [ngClass]="getOcrStatus(data)" [title]="data.name">
+  <div class="position-relative">
+    <input class="form-check-input directory-check" type="checkbox" [(ngModel)]="data.isSelected"
+      *ngIf="showCheckbox && !showDetails" (click)="emitSelectEvent(data.directory, data.name, data.path)" />
+    <div class="icon position-relative">
+      <!-- (mouseover)="showDetails = true" (mouseout)="showDetails = false" -->
+
+      <app-svg-folder *ngIf="data.directory === 'Folder' && !data.isVirtualfolder"></app-svg-folder>
+
+      <img src="assets/images/virtual_folder.ico" alt="" width="18"
+        *ngIf="data.directory === 'Folder' && data.isVirtualfolder">
+
+      <div class="filetypepdfimage"
+        *ngIf="data.directory === 'File' && excelExtensionList.includes(data.type.toLowerCase())">
+        <img src="assets/images/filetypecsv.png" alt="" width="16">
+      </div>
+
+      <app-svg-pdf-file *ngIf="data.directory === 'File' && data.type.toLowerCase() === 'pdf'"></app-svg-pdf-file>
+
+      <div class="filetypeimage"
+        *ngIf="data.directory === 'File' && imageExtensionList.includes(data.type.toLowerCase())">
+        <img src="assets/images/filetypeimage.png" alt="" width="18">
+      </div>
+
+      <div class="filetypeimage" style="margin-bottom: 6px;"
+        *ngIf="data.directory === 'File' && data.type.toLowerCase() === 'txt'">
+        <!-- <img src="assets/images/filetypeimage.png" alt="" width="50px"> -->
+        <img
+          src="https://img.icons8.com/external-flatart-icons-flat-flatarticons/64/000000/external-txt-file-online-learning-flatart-icons-flat-flatarticons.png" />
+      </div>
+    </div>
+    <p class="title roboto position-relative" [style.width]="data.directory === 'Folder' ? '95px':'100%'">
+      {{data.name.length > 35 ? data.name.slice(0,35)+'...':data.name}}
+      <!-- {{data.total_dirs!=null &&
+      data.total_files!=null && !showBibleDirDetails? "("+(data.total_dirs+data.total_files)+")":"" }} -->
+      {{data.total_dirs!=null && data.total_dirs!=0 && !showBibleDirDetails?"("+ data.total_dirs+")":"" }}
+      {{data.total_files!=null && data.total_files!=0 && data.total_dirs==0 && !showBibleDirDetails? "("+
+      data.total_files+")":"" }}
+      {{data.total_files!=null && showBibleDirDetails?
+      "("+data.total_files+")":"" }}
+      <i class="far fa-edit" (click)="renameDir(data.directory, data.name, data.type)"
+        *ngIf="router.url === '/viewDir/output-folder'"></i>
+      <span class="directory-option"
+        *ngIf="!showDetails && !imageExtensionList.includes(data.type) && showInfoBtn && data.directory !== 'Folder'"
+        (click)="showMetadata()"><i class="fas fa-info-circle"></i></span>
+        <span *ngIf="showBibleDirDetails">
+          <span *ngIf="data.not_verified>0" class="bg-danger bg" >{{data.not_verified}}  </span>
+          <span *ngIf="data.q_mark>0" class="bg-primary bg">{{data.q_mark}}</span>
+          <span *ngIf="data.is_verified>0" class="bg-success bg">{{data.is_verified}}</span>
+          <span *ngIf="data.un_tuched>0" class="bg-warning bg">{{data.un_tuched}}</span>
+        </span>
+        <span *ngIf="showVarifiedPDF">
+          <span *ngIf="data.not_verified> 0" class="bg-danger bg" >
+            <span class="fas fa-times"></span>
+          </span>
+          <span *ngIf="data.q_mark> 0" class="bg-primary bg">
+            <span class="fas fa-question"></span>
+          </span>
+          <span *ngIf="data.is_verified> 0" class="bg-success bg">
+            <span class="fas fa-check"></span>
+          </span>
+          <!-- <span *ngIf="data.un_tuched>0" class="bg-warning bg">
+            <span class="fas fa-times"></span>
+          </span> -->
+        </span>
+        
+    </p>
+    <span><button mat-button [id]="data.name" style="visibility: hidden;"
+        [matMenuTriggerFor]="aboveMenu"></button></span>
+
+    <!-- 16 -->
+    <!-- <p class="title roboto position-relative" [title]="data.name">{{ data.name.length > 16 ? data.name.slice(0,16)+'...' : data.name}}</p> -->
+    <!-- <p class="date">12-Aug-2020</p> -->
+  </div>
+
+
+  <!-- <div class="fileNumberDetails nunito">
+      <p *ngIf="data.directory === 'Folder' && !showBibleDirDetails">{{data.total_dirs}} <small>SF</small></p>
+      <p *ngIf="data.directory === 'Folder' && !showBibleDirDetails">{{data.total_files}} <small>files</small></p>
+      <p *ngIf="data.directory === 'Folder' && !showBibleDirDetails">{{showPdfCount(data)}} <small>pdf</small></p>
+      <p *ngIf="data.directory === 'Folder' && !showBibleDirDetails">{{data.file_counts['csv'] || 0}} <small>csv</small></p>
+      <p *ngIf="data.directory === 'Folder' && !showBibleDirDetails">{{showImageCount(data.file_counts)}} <small>img</small></p>
+
+      <p *ngIf="data.directory === 'Folder' && showBibleDirDetails" [class.text-danger]="showPdfCount(data) == 0" [class.text-success]="showPdfCount(data) > 0" style="font-size:14px;">{{showPdfCount(data)}} <small>record{{showPdfCount(data) > 1 ? 's':''}}</small></p>
+    </div> -->
+  <!-- showDetails -->
+  <div class="position-absolute showFileDetails justify-content-between w-100" *ngIf="(data.directory === 'Folder')">
+    <i class="fas fa-times" *ngIf="showPdfCount(data) == 0 && data.directory === 'Folder' && showBibleDirDetails"></i>
+    <i class="fas fa-check" *ngIf="showPdfCount(data) > 0 && data.directory === 'Folder' && showBibleDirDetails"></i>
+  </div>
+
+  <!-- <i class="fab fa-vimeo-v position-absolute" style="top: 5px;left: 35px;" *ngIf="data.directory === 'Folder' && data.isVirtualfolder"></i> -->
+</div>
+
+<mat-menu #aboveMenu="matMenu" xPosition="after">
+  <button mat-menu-item>Add Folder</button>
+  <button mat-menu-item>Remove Folder</button>
+  <button mat-menu-item (click)="addUser(data)">Add Users</button>
+  <button mat-menu-item (click)="showBuildBible()">Show Build Bible</button>
+</mat-menu>
+<!-- ------------------------------------------------------------------------------------------------ -->
