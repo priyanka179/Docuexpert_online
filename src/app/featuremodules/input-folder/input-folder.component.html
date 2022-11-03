@@ -1031,8 +1031,8 @@
       class="fas fa-grip-vertical cp" *ngIf="!largeView" (click)="changeView()"></i>
     <!-- <i class="fas fa-list cp" title="Expand" (click)="listView()"></i> -->
     <!-- <i class="fas fa-folder cp"></i> -->
-    <i class="fas fa-calendar cp" *ngIf="varifyOptions && ispdfClicked" (click)="addNotes()"></i>
-    <i class="fas fa-tags cp" *ngIf="varifyOptions && ispdfClicked" (click)="addTags()"></i>
+    <i class="fas fa-calendar cp" *ngIf="varifyOptions && ispdfClicked" title="Add notes" (click)="addNotes()"></i>
+    <i class="fas fa-tags cp" *ngIf="varifyOptions && ispdfClicked" title="Add tags" (click)="addTags()"></i>
 
   </div>
 </div>

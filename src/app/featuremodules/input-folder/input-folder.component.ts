@@ -25,8 +25,8 @@ import { MatChipInputEvent } from '@angular/material/chips';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { log } from 'console';
 //autocomplete
-import {Observable} from 'rxjs';
-import {map, startWith} from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { map, startWith } from 'rxjs/operators';
 // import { NavigationService } from './navigation.service';
 
 export interface Fruit {
@@ -46,7 +46,7 @@ export class InputFolderComponent implements OnInit, OnDestroy {
 
   //autocomplete
   // myControl = new FormControl('');
-  msnFeild:any
+  msnFeild: any
   options: string[] = ['One', 'Two', 'Three'];
   filteredOptions: Observable<string[]>;
 
@@ -60,7 +60,7 @@ export class InputFolderComponent implements OnInit, OnDestroy {
   showAllCsvFoldersFiles: boolean = false;
   showImageFile: boolean = false;
   showFilesMove: boolean = false;
-  
+
 
   //Feature Directory show and hide ====================================================
   searchTerm: string = "";
@@ -219,7 +219,7 @@ export class InputFolderComponent implements OnInit, OnDestroy {
   showCombinedSearch: boolean = false;
 
   metadataSearchForm: FormGroup;
-  airCraftSearchForm:FormGroup;
+  airCraftSearchForm: FormGroup;
   contentSearchForm: FormGroup;
   documentFolderSearchForm: FormGroup;
 
@@ -292,9 +292,9 @@ export class InputFolderComponent implements OnInit, OnDestroy {
   showBuildDeliveryUi: boolean;
   showBuildDeliveryUi2: boolean = false;
   ispdfClicked: boolean = false;
-  issearchClicked:boolean=false
+  issearchClicked: boolean = false
   pdfFilePathright: any;
-  searchPathright:any;
+  searchPathright: any;
 
   showQuestionList: boolean = false;
   selectedFileForQuestion = ''
@@ -312,6 +312,10 @@ export class InputFolderComponent implements OnInit, OnDestroy {
       }
     })
     this._common.$resetMyFile.subscribe((res: any) => {
+      this.showFilesMove = false
+      this.showBuildDeliveryUi2 = false
+      this.ispdfClicked=false
+      this.issearchClicked = false
       let currentUrl = this.router.url;
       console.log("currrrrr url my file", currentUrl)
       if (currentUrl == '/viewDir/myfiles') {
@@ -323,8 +327,10 @@ export class InputFolderComponent implements OnInit, OnDestroy {
   }
 
   back() {
+    this.showFilesMove = false
+    this.showBuildDeliveryUi2 = false
     this.ispdfClicked = false
-    this.issearchClicked=false
+    this.issearchClicked = false
     this._common.$varifyFolder.next('')
     // this.history.pop();
     if (this.pathList.length > 0) {
@@ -397,7 +403,7 @@ export class InputFolderComponent implements OnInit, OnDestroy {
       localStorage.setItem(params.type, JSON.stringify(this.pathList));
       console.log("paramss", params, input_dir_path);
       this.ispdfClicked = false
-      this.issearchClicked=false
+      this.issearchClicked = false
 
       if (params.type === 'myfiles') {
         this.base_path = "Input_Folder/";
@@ -489,11 +495,11 @@ export class InputFolderComponent implements OnInit, OnDestroy {
       formsArray: this._fb.array(this.createForms())
     });
 
-    this.airCraftSearchForm=this._fb.group({
-      msn:[''],
-      owner:[''],
-      project:[''],
-      type:['']
+    this.airCraftSearchForm = this._fb.group({
+      msn: [''],
+      owner: [''],
+      project: [''],
+      type: ['']
     })
 
 
@@ -615,16 +621,16 @@ export class InputFolderComponent implements OnInit, OnDestroy {
     });
   }
 
-  dataChanged(val:any){
-    console.log(">>>>>>>>>>>>",val)
-// autocomplete
+  dataChanged(val: any) {
+    console.log(">>>>>>>>>>>>", val)
+    // autocomplete
 
     // this.filteredOptions = this.myControl.valueChanges.pipe(
     //   startWith(''),
     //   map(value => this._filter(value || '')),
     // );
   }
-  
+
 
   private _filter(value: string): string[] {
     const filterValue = value.toLowerCase();
@@ -1815,7 +1821,7 @@ export class InputFolderComponent implements OnInit, OnDestroy {
 
   goToPath(path: string, index: any) {
     this.ispdfClicked = false
-    this.issearchClicked=false
+    this.issearchClicked = false
     this._common.$varifyFolder.next('')
     console.log("path is/// ", path, index)
     if (path.includes('External_Assigned')) {
@@ -1835,6 +1841,9 @@ export class InputFolderComponent implements OnInit, OnDestroy {
   }
 
   goToMyFiles() {
+    this.ispdfClicked = false
+    this.showFilesMove = false
+    this.showBuildDeliveryUi2 = false
     this.pathList = [];
     this.storeCurrentDirPath();
     this.listDirectories();
@@ -1909,13 +1918,13 @@ export class InputFolderComponent implements OnInit, OnDestroy {
 
         if (res.type === HttpEventType.Response) {
           console.log("////////res", res)
-          res['body']['res_data'] && this.readPdfright(res['body']['res_data']['encoded_string'],"viewPdf");
+          res['body']['res_data'] && this.readPdfright(res['body']['res_data']['encoded_string'], "viewPdf");
         }
 
       });
   }
 
-  readPdfright(res: any,type:string) {
+  readPdfright(res: any, type: string) {
     const byteCharacters = atob(res);
     const byteNumbers = new Array(byteCharacters.length);
     for (let i = 0; i < byteCharacters.length; i++) {
@@ -1923,7 +1932,7 @@ export class InputFolderComponent implements OnInit, OnDestroy {
     }
     const byteArray = new Uint8Array(byteNumbers);
     let objectUrl = URL.createObjectURL(new Blob([byteArray], { type: "application/pdf" }));
-    if(type=="viewPdf"){
+    if (type == "viewPdf") {
       this.pdfFilePathright = this.sanitizer.bypassSecurityTrustResourceUrl(objectUrl);
       console.log("pdf>>??>>??>??>", res, objectUrl, this.pdfFilePathright)
       if (this.pdfFilePathright) {
@@ -1931,7 +1940,7 @@ export class InputFolderComponent implements OnInit, OnDestroy {
       } else {
         this.ispdfClicked = false
       }
-    }else if(type=="searchPdf"){
+    } else if (type == "searchPdf") {
       this.searchPathright = this.sanitizer.bypassSecurityTrustResourceUrl(objectUrl);
       console.log("search>>??>>??>??>", res, objectUrl, this.searchPathright)
       if (this.searchPathright) {
@@ -1941,14 +1950,14 @@ export class InputFolderComponent implements OnInit, OnDestroy {
         this.issearchClicked = false
       }
     }
-    
+
 
     // console.log(this.pdfFilePathright, this.ispdfClicked)
 
 
   }
 
-  closeSearchView(){
+  closeSearchView() {
     this.issearchClicked = false
     this.ispdfClicked = true
   }
@@ -3240,13 +3249,12 @@ export class InputFolderComponent implements OnInit, OnDestroy {
     });
   }
   // getQuesToSub(obj:any){
-
   //   return removeEmpty
   // }
   // showBilble file movement
   showFileMovement() {
     this.showFilesMove = !this.showFilesMove
-    if (this.showFilesMove) {
+    if (this.showFilesMove === true) {
       this.showBuildDeliveryUi2 = true
       this.showFetchDirSpinner = false;
       console.log(">>>>>>>path list", this.pathList)
@@ -3298,14 +3306,14 @@ export class InputFolderComponent implements OnInit, OnDestroy {
   }
 
   fileCombinedSearch(data: any, path: any) {
-    let setpath=this.base_path.replace('/', '').trim().toString()+"/"+path[0]
-    console.log("????????//////", data,this.showFullPdfPath)
+    let setpath = this.base_path.replace('/', '').trim().toString() + "/" + path[0]
+    console.log("????????//////", data, this.showFullPdfPath)
     this._directory.fileCombineSearch(data, this.showFullPdfPath).subscribe((res: any) => {
       console.log(">>>>>>>>>>", res)
       // if (res.type === HttpEventType.Response) {
       //   console.log("////////res", res)
       // if(res)
-        res['res_data'] && this.readPdfright(res['res_data']['result'],'searchPdf');
+      res['res_data'] && this.readPdfright(res['res_data']['result'], 'searchPdf');
       // }
     })
   }
