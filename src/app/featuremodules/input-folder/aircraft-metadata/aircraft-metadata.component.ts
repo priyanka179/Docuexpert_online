@@ -1025,6 +1025,7 @@ export class AircraftMetadataComponent implements OnInit {
             '/adv_filelevel/auto_field/',
             formdata)
             .subscribe((res: any) => {
+                this.msnArray=res.res_data
                 console.log("?????????????????", res.res_data)
             });
     }

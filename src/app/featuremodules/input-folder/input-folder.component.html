@@ -86,11 +86,11 @@
                   <input type="text" class="form-control mr-4 mb-0 flex-grow-1" placeholder="Enter a Pattern/Text"
                     formControlName="search_rule" [class.is-invalid]="validateDirSearchForm('search_rule')">
                   <div _ngcontent-cmd-c111="" class="form-check mr-4"><input _ngcontent-cmd-c111="" type="checkbox"
-                      id="632" formcontrolname="fixed_left"
+                      id="632" (change)="checkBoxChanged($event,'begin')"
                       class="form-check-input shadow-none ng-valid ng-dirty ng-touched"><label _ngcontent-cmd-c111=""
                       for="632" class="form-check-label feature text-nowrap">Begins with</label></div>
                   <div _ngcontent-cmd-c111="" class="form-check mr-4"><input _ngcontent-cmd-c111="" type="checkbox"
-                      id="832" formcontrolname="fixed_right"
+                      id="832" (change)="checkBoxChanged($event,'end')"
                       class="form-check-input shadow-none ng-valid ng-dirty ng-touched"><label _ngcontent-cmd-c111=""
                       for="832" class="form-check-label feature text-nowrap">Ends with</label></div>
                   <!-- <input type="number" class="form-control mr-4 mb-0 w-115" placeholder="Left Fixed"
@@ -107,6 +107,7 @@
                   </div>
                 </div>
               </div>
+              {{documentFolderSearchForm.value.fixed_right}}
             </form>
           </div>
 
@@ -1267,7 +1268,7 @@
 
     <pagination-template #p2="paginationApi" (pageChange)="filepage = $event" id="second"
       *ngIf="showFile && (filteredFileList.length > 0) && !showBuildDeliveryUi && !showBuildDeliveryUi2">
-      <div class="d-flex justify-content-between pagination">
+      <div class="d-flex justify-content-between pagination stick">
         <div class="d-flex align-items-center">
           <i class="fas fa-file shadow-m" style="font-size: 17px;background-color: #fff;
           color: #080694; margin: 3px 10px 0px 3px; border-radius: 50px; width: 24px;
@@ -1446,7 +1447,7 @@
 
       </div>
       <div class="col-md-8 position-relative" *ngIf="ispdfClicked && !issearchClicked ">
-        <iframe [src]="pdfFilePathright" title="abcdefg" class="vh-90" width="100%" height="100%" frameborder="0"
+        <iframe [src]="pdfFilePathright" title="abcdefg" class="vh-90 pdf-stick" width="100%" height="100%" frameborder="0"
           style="position: relative;z-index: 1;" *ngIf="ispdfClicked && !issearchClicked">
         </iframe>
         <div class="highlight-btn-iframe align-items-center">

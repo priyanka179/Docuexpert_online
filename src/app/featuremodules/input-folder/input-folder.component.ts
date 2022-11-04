@@ -295,6 +295,7 @@ export class InputFolderComponent implements OnInit, OnDestroy {
   issearchClicked: boolean = false
   pdfFilePathright: any;
   searchPathright: any;
+  searchOutputPath: any = ''
 
   showQuestionList: boolean = false;
   selectedFileForQuestion = ''
@@ -314,7 +315,7 @@ export class InputFolderComponent implements OnInit, OnDestroy {
     this._common.$resetMyFile.subscribe((res: any) => {
       this.showFilesMove = false
       this.showBuildDeliveryUi2 = false
-      this.ispdfClicked=false
+      this.ispdfClicked = false
       this.issearchClicked = false
       let currentUrl = this.router.url;
       console.log("currrrrr url my file", currentUrl)
@@ -546,9 +547,11 @@ export class InputFolderComponent implements OnInit, OnDestroy {
     this.documentFolderSearchForm = this._fb.group({
       search_rule: ['', Validators.required],
       is_pattern: ['false'],
-      fixed_left: ['', Validators.required],
-      fixed_right: ['', Validators.required]
+      fixed_left: ['0', Validators.required],
+      fixed_right: ['0', Validators.required]
     })
+
+
 
     this.authService.authState.subscribe(user => {
       this.user = user;
@@ -643,6 +646,22 @@ export class InputFolderComponent implements OnInit, OnDestroy {
   }
   addTags() {
     this.tag = true
+  }
+
+  // set checkbox value for begins with and ends with
+  checkBoxChanged(val: any, type: String) {
+    let setVal
+    console.log("value change>>>", val.target.checked, type)
+    if (val.target.checked === true) {
+      setVal = 1
+    } else {
+      setVal = 0
+    }
+    if (type === 'begin') {
+      this.documentFolderSearchForm.controls['fixed_left'].setValue(setVal)
+    } else if (type === 'end') {
+      this.documentFolderSearchForm.controls['fixed_right'].setValue(setVal)
+    }
   }
 
   addKeywordFromInput(event: MatChipInputEvent) {
@@ -1960,6 +1979,17 @@ export class InputFolderComponent implements OnInit, OnDestroy {
   closeSearchView() {
     this.issearchClicked = false
     this.ispdfClicked = true
+    let formdata = new FormData;
+
+    formdata.append('input_path', this.searchOutputPath);
+    // formdata.append('input_path', this.searchOutputPath);
+
+    this.httpClient.post(
+      '/adv_filelevel/remove_entity/',
+      formdata)
+      .subscribe((res: any) => {
+        console.log("?????????????????", res)
+      });
   }
 
   showFullPdf() {
@@ -3313,6 +3343,7 @@ export class InputFolderComponent implements OnInit, OnDestroy {
       // if (res.type === HttpEventType.Response) {
       //   console.log("////////res", res)
       // if(res)
+      this.searchOutputPath = res.res_path
       res['res_data'] && this.readPdfright(res['res_data']['result'], 'searchPdf');
       // }
     })

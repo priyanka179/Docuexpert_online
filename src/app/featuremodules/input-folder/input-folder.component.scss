@@ -84,7 +84,7 @@ $lightgrey: #8094ae;
         cursor: not-allowed;
         background-color: none;
         border-radius: none;
-      }
+    }
 
 }
 
@@ -93,7 +93,7 @@ $lightgrey: #8094ae;
 }
 
 .fa-expand {
-    margin:0 10px;
+    margin: 0 10px;
     font-size: 20px;
     cursor: pointer;
 }
@@ -284,6 +284,7 @@ button {
 
     .operator-container {
         right: 12%;
+
         .operator {
             width: 80px;
             height: 30px;
@@ -585,16 +586,17 @@ pagination-template {
     color: #0d6efd !important;
 }
 
-.showquestion{
+.showquestion {
     border: 1px solid #6576ff;
     box-shadow: rgb(99 99 99 / 20%) 1px 3px 45px 57px;
     position: absolute;
     width: 33%;
     top: 1%;
     left: 1%;
-    .card-header{
-        h5{
-            .fas{
+
+    .card-header {
+        h5 {
+            .fas {
                 float: right;
                 height: 25px;
                 width: 25px;
@@ -602,39 +604,46 @@ pagination-template {
                 text-align: center;
                 font-size: 14px;
                 cursor: pointer;
-                &:hover{
+
+                &:hover {
                     background-color: #d0d0d0;
                     border-radius: 50%;
                 }
             }
         }
     }
-    .card-body{
+
+    .card-body {
         position: relative;
-        div{
-            .form-check-input{
-                margin-right: 5px;   
+
+        div {
+            .form-check-input {
+                margin-right: 5px;
                 margin-left: 10px;
             }
-            .form-control{
+
+            .form-control {
                 height: 2.1rem;
                 width: auto;
                 margin-bottom: 0;
             }
-            .fas{
+
+            .fas {
                 font-size: 13px;
             }
         }
-        p{
+
+        p {
             margin-top: 10px;
         }
-        .fa-paper-plane{
-           margin-left: 10px;
+
+        .fa-paper-plane {
+            margin-left: 10px;
         }
     }
 }
 
-.ifAdvanceSearch{
+.ifAdvanceSearch {
     height: 58vh;
 }
 
@@ -643,10 +652,12 @@ pagination-template {
 //     max-height: 268px;
 // }
 
-.icons{
+.icons {
     background-color: #fff;
     padding: 8px 20px;
-    .fas, .far{
+
+    .fas,
+    .far {
         color: gray;
         font-size: 20px;
         margin-right: 20px;
@@ -657,8 +668,19 @@ pagination-template {
     min-width: 150px;
     max-width: 500px;
     width: 100%;
-  }
-  
-  .example-full-width {
+}
+
+.example-full-width {
     width: 100%;
-  }
+}
+
+.stick{
+    position: sticky;
+    top: 12%;
+    z-index: 999;
+}
+
+.pdf-stick{
+    position: sticky !important;
+    top: 21%;
+}
