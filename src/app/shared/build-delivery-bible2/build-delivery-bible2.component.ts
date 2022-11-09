@@ -74,7 +74,7 @@ export class BuildDeliveryBible2Component implements OnInit, OnChanges, OnDestro
   ngOnInit(): void {
     let path2 = this.path.split("/").pop()
     console.log(">>>>>>>>>>>",this.path,path2)
-    this.openFolder(path2,path2.charAt(0))
+    
     console.log("In Buid Bible")
     console.log(this.router.url, this.router.url.split('/')[2]);
     // this.listDirectories();
@@ -108,6 +108,7 @@ export class BuildDeliveryBible2Component implements OnInit, OnChanges, OnDestro
     let letter = JSON.parse(localStorage.getItem('output')).pop()[2];
 
     localStorage.setItem('letter', letter);
+    this.openFolder(path2,path2.charAt(0))
   }
 
   pushDirToMyfiles() {
@@ -274,6 +275,7 @@ export class BuildDeliveryBible2Component implements OnInit, OnChanges, OnDestro
   }
 
   openFolder(dirName: string, letter: string) {
+    console.log(">>>>>>>>>>>build2test",dirName,letter)
     localStorage.setItem('letter', letter);
     let path = JSON.parse(localStorage.getItem('output'));
     console.log(">>>>>>>>>>>>>>>>>>",path,dirName,letter)

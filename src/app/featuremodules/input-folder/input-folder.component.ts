@@ -96,6 +96,8 @@ export class InputFolderComponent implements OnInit, OnDestroy {
 
   //searching show and hide ====================================================
 
+  addNoteInput: any = ""
+  addTagInput:any=[]
 
   // All Folders And Files Data =================================================
   folderList: any[] = [];
@@ -3347,6 +3349,36 @@ export class InputFolderComponent implements OnInit, OnDestroy {
       res['res_data'] && this.readPdfright(res['res_data']['result'], 'searchPdf');
       // }
     })
+  }
+
+  // add notes 
+
+  addNoteAPI() {
+    let dir_path = this.base_path + this._auth.org_name + '/' + this._auth.user_name;
+
+    let path = dir_path + "/" + this.pathList.join("/")
+    let projpath = path.substring(0, path.indexOf('/output'));
+    console.log(path, projpath, this.addNoteInput, this.selectedFileForQuestion)
+
+    let formdata = new FormData;
+
+    formdata.append("user_id", this._auth.user_id);
+    formdata.append('full_path', path);
+    formdata.append('file_name', this.selectedFileForQuestion);
+    formdata.append('projectpath', projpath);
+    formdata.append('note', this.addNoteInput);
+    // formdata.append('tags', "");
+
+
+
+    this.httpClient.post(
+      '/delivery_bible/addtags/',
+      formdata)
+      .subscribe((res: any) => {
+        console.log("?????????????????", res)
+        this._modal.showMsg("Note added", "Success!", "success");
+      });
+
   }
 
 

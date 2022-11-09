@@ -1196,7 +1196,7 @@
       <div class="d-flex justify-content-between pagination" [class.mb-3]="!listViewVal" [class.mb-2]="listViewVal">
         <div class="d-flex align-items-center">
           <i class="fas fa-folder shadow-m" style="font-size: 17px;background-color: #fff;
-          color: #080694; margin: 3px 10px 0px 3px; border-radius: 50px; width: 24px;
+          color: #ffb32c; margin: 3px 10px 0px 3px; border-radius: 50px; width: 24px;
           height: 24px; text-align: center; line-height: 24px;"></i>
           <p class="found-text ms-2">{{filteredFolderList.length}} Folder{{filteredFolderList.length>1 ? 's':''}} found
           </p>
@@ -1271,7 +1271,7 @@
       <div class="d-flex justify-content-between pagination stick">
         <div class="d-flex align-items-center">
           <i class="fas fa-file shadow-m" style="font-size: 17px;background-color: #fff;
-          color: #080694; margin: 3px 10px 0px 3px; border-radius: 50px; width: 24px;
+          color: #0b7dc3; margin: 3px 10px 0px 3px; border-radius: 50px; width: 24px;
           height: 24px; text-align: center; line-height: 24px;"></i>
           <p class="found-text">{{filteredFileList.length}} File{{filteredFileList.length>1 ? 's':''}} found</p>
           <div class="form-check mr position-relative featureselectalldir">
@@ -1392,8 +1392,8 @@
           </div>
           <div class="card-body">
             <div class="form-group">
-              <textarea class="form-control w-100" rows="6" style="height: 140px;" placeholder="Enter Notes"></textarea>
-              <button class="btn btn-primary mt-3">Submit</button>
+              <textarea class="form-control w-100" [(ngModel)]="addNoteInput" name="addNoteInput" rows="6" style="height: 140px;" placeholder="Enter Notes"></textarea>
+              <button class="btn btn-primary mt-3" (click)="addNoteAPI()">Submit</button>
             </div>
           </div>
         </div>
